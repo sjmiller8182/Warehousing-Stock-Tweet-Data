@@ -1,8 +1,8 @@
 
 ## Purpose
 
-Gather structed and unstructed data and import into a datalake. 
-Then structure in a dataware house under unified schema.
+Gather structured and unstructured data and import into a datalake. 
+Then structure data in a data warehouse under unified schema.
 
 ## Data Systems
 
