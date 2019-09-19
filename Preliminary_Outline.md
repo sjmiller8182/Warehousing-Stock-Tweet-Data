@@ -11,9 +11,9 @@ Then structure data in a data warehouse under unified schema.
 
 ## Sources
 
-* Yahoo Finance (Ticker - structure)
-* NYT API (natural language - unstructed)
-* CNN (cnn.io) (natural language - unstructed)
-* ?Wall Street Journal (natural language - unstructed)
-* Reddit (language + emoji)
-* Twitter (language + emoji + images)
+* Yahoo Finance (Ticker - structured)
+* NYT API (natural language - unstructured)
+* CNN (cnn.io) (natural language - unstructured)
+* ?Wall Street Journal (natural language - unstructured)
+* Reddit (language + emoji - unstructured)
+* Twitter (language + emoji + images - unstructured)
