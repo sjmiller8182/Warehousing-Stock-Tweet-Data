@@ -3,6 +3,7 @@
 
 Gather structured and unstructured data and import into a datalake. 
 Then structure data in a data warehouse under unified schema.
+Data will be put in a stucture suitable for natural language processing.
 
 ## Data Systems
 
