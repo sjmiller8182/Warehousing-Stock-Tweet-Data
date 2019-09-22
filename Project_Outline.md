@@ -9,3 +9,8 @@ As data is gathered, it will be stored locally, as buffer, then batch uploaded t
 - [ ] requester for NYT (API)
 - [ ] requester for Reddit (API?)
 - [ ] request scheduler
+
+## DataLake
+
+The datalake will be setup with Amazon EMR.
+
