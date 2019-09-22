@@ -14,3 +14,6 @@ As data is gathered, it will be stored locally, as buffer, then batch uploaded t
 
 The datalake will be setup with Amazon EMR.
 
+* Hadoop
+* Hive
+
