@@ -1,0 +1,2 @@
+# twitter API lib
+twython==3.7.0
