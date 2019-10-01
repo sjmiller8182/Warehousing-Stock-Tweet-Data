@@ -15,7 +15,7 @@ class TwitterScraper:
     Basic scraping utility for Twitter based on Twython
     """
 
-    def __init__(self, result_type: str = 'recent') -> None:
+    def __init__(self, path: str, result_type: str = 'recent') -> None:
         """
         Constructor
         result_type: twitter request type (mixed|recent|popular)
@@ -23,6 +23,7 @@ class TwitterScraper:
         self.tw_connection = None
         self.result_type = result_type
         self.twitter_keys = None
+        self.key_path = path
 
     @staticmethod
     def _get_api_keys(path: str) -> List:
@@ -34,7 +35,7 @@ class TwitterScraper:
         """
 
         file_path = str()
-        vals = List()
+        vals = list()
 
         # expand path if relative
         if path[0] == '~':
@@ -52,12 +53,15 @@ class TwitterScraper:
             vals = in_file.readline().strip().split(',')
         return vals
 
-    def connect_to_twitter(self, path: str) -> None:
+    def connect(self) -> None:
         """
         Creates a twitter obj and authenticates with Twitter
         path: a path to twitter access file
         """
-        self.tw_connection = Twython(self._get_api_keys(path))
+        if self.twitter_keys is None:
+            self.twitter_keys = self._get_api_keys(self.key_path)
+        # be sure to generate from list
+        self.tw_connection = Twython(*self.twitter_keys)        
 
     def search(self, query_term: str) -> None:
         """
