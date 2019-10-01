@@ -6,7 +6,7 @@ Basic scraping utility for Twitter based on Twython
 # imports
 import os
 import time
-from typing import List
+from typing import List, Dict
 from twython import Twython
 
 
@@ -63,10 +63,10 @@ class TwitterScraper:
         # be sure to generate from list
         self.tw_connection = Twython(*self.twitter_keys)        
 
-    def search(self, query_term: str) -> None:
+    def search(self, query_term: str) -> Dict:
         """
         Conducts a standard search
 
         https://developer.twitter.com/en/docs/tweets/search/api-reference/get-search-tweets
         """
-        tweets = self.tw_connection.search(q=query_term, result_type=self.result_type)
+        return self.tw_connection.search(q=query_term, result_type=self.result_type)
