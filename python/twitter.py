@@ -4,20 +4,25 @@ Basic scraping utility for Twitter based on Twython
 
 
 # imports
-from twython import Twython
 import os
 import time
 from typing import List
+from twython import Twython
 
-class TwitterScraper(object):
-    
-    def __init__(self, result_type:str = 'recent') -> None:
+
+class TwitterScraper:
+    """
+    Basic scraping utility for Twitter based on Twython
+    """
+
+    def __init__(self, result_type: str = 'recent') -> None:
         """
         Constructor
         result_type: twitter request type (mixed|recent|popular)
         """
         self.tw_connection = None
         self.result_type = result_type
+        self.twitter_keys = None
 
     @staticmethod
     def _get_api_keys(path: str) -> List:
@@ -27,10 +32,10 @@ class TwitterScraper(object):
         Returns: a dictionary keyed by the key names:
         APIKey, APISecretKey, AccessToken, AccessTokenSecret
         """
-        
+
         file_path = str()
         vals = List()
-        
+
         # expand path if relative
         if path[0] == '~':
             file_path = os.path.expanduser(path)
@@ -39,12 +44,12 @@ class TwitterScraper(object):
         else:
             # assume abs path
             file_path = path
-        
+
         # read in file assuming a header
         # comma delimited
-        with open(file_path, 'r') as f:
-            f.readline().strip().split(',')
-            vals = f.readline().strip().split(',')
+        with open(file_path, 'r') as in_file:
+            in_file.readline().strip().split(',')
+            vals = in_file.readline().strip().split(',')
         return vals
 
     def connect_to_twitter(self, path: str) -> None:
@@ -60,4 +65,4 @@ class TwitterScraper(object):
 
         https://developer.twitter.com/en/docs/tweets/search/api-reference/get-search-tweets
         """
-        tweets = self.tw_connection.search(q = query_term, result_type = self.result_type)
+        tweets = self.tw_connection.search(q=query_term, result_type=self.result_type)
