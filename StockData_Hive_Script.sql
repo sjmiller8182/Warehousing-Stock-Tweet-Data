@@ -47,7 +47,7 @@ LOCATION 'this/is/the/directory/we/will/have/on/the/server/${hiveconf:stockID}/$
 insert into table our_database.staging_${hiveconf:stockID}_${hiveconf:stockExchange}_${hiveconf:year}_${hiveconf:date}
 	Select market.company_name, market.open_price, market.close_price, market.date_of_trade, twit.proportion_of_all_non_stopwords
 	from our_database.stockData_${hiveconf:stockID}_${hiveconf:CompanyName}_${hiveconf:year}_${hiveconf:date} market
-	join our_database.tweetData_${hiveconf:contractType}_${hiveconf:CompanyName}_${hiveconf:year}_${hiveconf:date} twit
+	join our_database.tweetData_${hiveconf:stockID}_${hiveconf:CompanyName}_${hiveconf:year}_${hiveconf:date} twit
 	on market.company_name = twit.CompanyName
 	and from_unixtime(market.date_of_trade) = from_unixtime(twit.date_of_tweet)
 ;
