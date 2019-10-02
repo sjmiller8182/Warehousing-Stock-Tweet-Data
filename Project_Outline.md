@@ -6,6 +6,7 @@ As data is gathered, it will be stored locally, as buffer, then batch uploaded t
 ### Scrapers to write
 
 - [X] requester for Twitter (API)
+- [ ] requester for StockTwits 
 - [ ] requester for NYT (API)
 - [ ] requester for Reddit (API?)
 - [ ] request scheduler
