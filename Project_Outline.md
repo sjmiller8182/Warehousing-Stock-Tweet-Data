@@ -5,7 +5,7 @@ As data is gathered, it will be stored locally, as buffer, then batch uploaded t
 
 ### Scrapers to write
 
-- [ ] requester for Twitter (API)
+- [X] requester for Twitter (API)
 - [ ] requester for NYT (API)
 - [ ] requester for Reddit (API?)
 - [ ] request scheduler
@@ -23,7 +23,7 @@ The datalake will be setup with Amazon EMR.
 
 Two schemas will be designed.
 
-1. The first schema will ne a general purpose schema
+1. The first schema will be a general purpose schema
 2. The second schema will be optimized for the intended task
 
 We will look at the difference in performance in querying data from the datalake under these designs.
