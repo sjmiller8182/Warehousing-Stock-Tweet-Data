@@ -1,2 +1,4 @@
 # twitter API lib
 twython==3.7.0
+# selenium for headless webs craping
+selenium==3.141.0
