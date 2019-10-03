@@ -1,3 +1,5 @@
+#!/bin/bash 
+
 # Used for installing all dependencies
 # Call with sudo
 
