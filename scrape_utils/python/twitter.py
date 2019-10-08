@@ -143,3 +143,9 @@ def write_to_csv(tweets, filename: str) -> None:
             writer.writerow(get_items(item._json))
     csvfile.close()
 
+def get_handles(handles_file: str):
+    handles = list()
+    with open(handles_file, 'r')as in_f:
+        for line in in_f:
+            handles.append(line.strip())
+    return handles
