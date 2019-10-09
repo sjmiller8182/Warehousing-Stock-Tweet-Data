@@ -6,10 +6,42 @@ As data is gathered, it will be stored locally, as buffer, then batch uploaded t
 ### Scrapers to write
 
 - [X] requester for Twitter (API)
-- [ ] requester for StockTwits 
 - [ ] requester for NYT (API)
-- [ ] requester for Reddit (API?)
+- [ ] requester for StockNewsAPI (API)
+- [ ] requester for Reddit (API)
 - [ ] request scheduler
+- [ ] ~~requester for StockTwits~~ Disallowed by TOC
+
+### Source Details
+
+* Twitter - Collect daily tweets from notable finance related accounts such as `@jimcramer`
+  * Current [`handles`](https://github.com/sjmiller8182/DBMS_Proj/blob/master/scrape_utils/python/twitter_handles.txt) being scraped
+* NYT - Collect headlines related to stock symbols (should be more recent)
+
+### Technical Details
+
+* Twitter
+  * Scrape tweets from handles daily
+  * Store tweets in JSON, files named: <screen_name>_<time_created>.txt
+  * Store 'important' features in tsv file, named: <screen_name>_<date>.txt
+    * tweet_id
+    * text
+    * hashtags
+    * mentions
+    * urls
+    * created_at
+    * user_id
+    * screen_name
+  * Push results to an S3 bucket
+
+### Potential Extensions
+
+* Preprocess text
+  * Clean the text
+  * Vectorize with a pretrained tool
+    * [AllanNLP](https://allennlp.org/)
+    * [IXA Pipelines](http://ixa2.si.ehu.es/ixa-pipes/)
+* Use a continuous data ingestion platform
 
 ## Storage
 
