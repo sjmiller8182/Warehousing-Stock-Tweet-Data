@@ -5,11 +5,11 @@ As data is gathered, it will be stored locally, as buffer, then batch uploaded t
 
 ### Scrapers to write
 
-- [X] requester for Twitter (API)
-- [ ] requester for NYT (API)
-- [ ] requester for StockNewsAPI (API)
-- [ ] requester for Reddit (API)
-- [ ] request scheduler
+- [X] Twitter (API)
+- [ ] NYT (API)
+- [ ] StockNewsAPI (API)
+- [ ] Reddit (API)
+- [X] AlphaVantageAPI
 - [ ] ~~requester for StockTwits~~ Disallowed by TOC
 
 ### Source Details
