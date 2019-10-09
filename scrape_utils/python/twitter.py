@@ -8,10 +8,9 @@ import os
 import time
 import json
 import csv
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import List, Dict
 import tweepy
-
 
 class TwitterScraper:
     """
@@ -149,3 +148,6 @@ def get_handles(handles_file: str):
         for line in in_f:
             handles.append(line.strip())
     return handles
+
+def get_time_filter(delta: int = 1, time_format: str = '%Y-%m-%d'):
+    return datetime.strftime(datetime.now() - timedelta(delta), time_format)
