@@ -2,3 +2,5 @@
 twython==3.7.0
 # selenium for headless webs craping
 selenium==3.141.0
+# nyt api lib
+nytimesarticle==0.1.0
