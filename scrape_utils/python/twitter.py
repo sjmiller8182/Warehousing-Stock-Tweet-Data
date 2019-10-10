@@ -206,7 +206,7 @@ def run_scraper(key_path: str, handles: str, day_filter: int = 1) -> None:
             logger.info('finished scraping from ' + handle)
             # filter aquisition to the previous day
             write_json(statuses, get_time_filter(day_filter))
-            write_to_csv(statuses,'tweets' + handle[1:], get_time_filter(day_filter))
+            write_to_csv(statuses,'tweets' + handle[1:] + '_' + get_time_filter(day_filter), get_time_filter(day_filter))
             logger.info('sleeping before next request')
             time.sleep(5*60)
         except tweepy.RateLimitError:
