@@ -222,3 +222,4 @@ def run_scraper(key_path: str, handles: str, day_filter: int = 1) -> None:
 
     logger.info('\ndone')
     logger.info('There were {} rate limit hits'.format(limit_hits))
+    print(str(datetime.now()))
