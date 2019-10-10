@@ -147,7 +147,6 @@ def write_to_csv(tweets, filename: str, time_filter: str) -> None:
         # note where we call the helper functions from step 4 on hashtags, urls, and source
         for item in tweets:
             row = get_items(item._json)
-            print(row[5].split(' ')[0])
             if row[5].split(' ')[0] == time_filter:
                 writer.writerow(row)
     csvfile.close()
