@@ -180,8 +180,8 @@ def create_logger() -> logging.Logger:
     logger = logging.getLogger()
     logger.setLevel(logging.INFO)
     # file name
-    date_of_run = str(datetime.datetime.today()).split(' ')[0]
-    log_file_name = './twiiter_scrape_' + date_of_run + '.log'
+    date_of_run = str(datetime.today()).split(' ')[0]
+    log_file_name = './twitter_scrape_' + date_of_run + '.log'
     # create a file handler
     fh = logging.FileHandler(log_file_name)
     fh.setLevel(logging.INFO)
@@ -208,7 +208,7 @@ def run_scraper(key_path: str, handles: str, day_filter: int = 1, item_limit: in
     limit_hits = 0
 
     # load the handles to scrape
-    handles = get_handles(handles)
+    handles = set(get_handles(handles))
     # create connection to twitter
     ts = TwitterScraper(key_path)
     ts.connect()
