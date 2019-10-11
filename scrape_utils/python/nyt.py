@@ -2,7 +2,8 @@
 Basic scraping utility for NYT
 """
 import os
-from typing import List
+from typing import List, Tuple, Dict
+import json
 from nytimesarticle import articleAPI
 
 class NYTScraper:
@@ -57,5 +58,40 @@ class NYTScraper:
         # be sure to generate from list
         self.connection = articleAPI(self.keys[0])   
 
-    def search(self, search_term: str, filter_date: int):
-        self.connection.search(q = search_term, begin_date = filter_date)
+    def search(self, search_term: str, filter_date: int) -> Tuple:
+        """
+        Gets results of a query.
+        Returns a a tuple of status, List[docs]
+        """
+        api_ret = self.connection.search(q = search_term, begin_date = filter_date)
+        return api_ret['status'], api_ret['response']['docs']
+
+def good_request(status: str):
+    """
+    Check if request from NYT API was good
+    """
+    return ('OK' == status)
+
+def get_simple_dict(response_doc: Dict[str]) -> Dict[str]:
+    """
+    Create a simple version of the 'docs' returned from NYT api
+    """
+    out_dict = dict()
+    out_dict['web_url'] = response_doc['web_url']
+    out_dict['snippet'] = response_doc['snippet']
+    out_dict['lead_paragraph'] = response_doc['lead_paragraph']
+    out_dict['abstract'] = response_doc['abstract']
+    out_dict['source'] = response_doc['source']
+    out_dict['headline_main'] = response_doc['headline']['main']
+    out_dict['document_type'] = response_doc['document_type']
+    out_dict['pub_date'] = response_doc['pub_date']
+    out_dict['news_desk'] = response_doc['news_desk']
+    out_dict['section_name'] = response_doc['section_name']
+    return out_dict
+
+def write_json_file(file_name: str, doc: Dict[str]):
+    """
+    Write doc to JSON file
+    """
+    with open(file_name, 'w') as json_file:
+        json.dump(doc, json_file, indent=2)
