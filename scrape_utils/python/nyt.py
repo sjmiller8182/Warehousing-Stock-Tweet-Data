@@ -14,7 +14,7 @@ class NYTScraper:
     def __init__(self, path: str) -> None:
         """
         Constructor
-        result_type: twitter request type (mixed|recent|popular)
+        path: a path to NYT access file
         """
         self.connection = None
         self.keys = None
@@ -23,10 +23,8 @@ class NYTScraper:
     @staticmethod
     def _get_api_keys(path: str) -> List:
         """
-        Get twitter API keys.
-        path: a path to twitter access file
-        Returns: a dictionary keyed by the key names:
-        APIKey, APISecretKey, AccessToken, AccessTokenSecret
+        Get NYT API keys.
+        path: a path to NYT access file
         """
 
         file_path = str()
@@ -50,8 +48,7 @@ class NYTScraper:
 
     def connect(self) -> None:
         """
-        Creates a twitter obj and authenticates with Twitter
-        path: a path to twitter access file
+        Creates a connection to NYT
         """
         if self.keys is None:
             self.keys = self._get_api_keys(self.path)
