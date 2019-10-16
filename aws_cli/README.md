@@ -1,6 +1,21 @@
-# CLI Commands
+# Project CLI
 
-Details on the usage of the CLI for this project. This is built on the [AWS CLI](https://aws.amazon.com/cli/).
+Details on the usage of the CLI for this project. 
+
+## [AWS CLI](https://aws.amazon.com/cli/)
+
+This is built on the [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html).
+
+### Prereqs
+
+Install the AWS CLI and configure the CLI. Get AWS CLI credentials from your AWS account.
+
+```bash
+$ sudo apt-get update
+$ sudo apt-get install awscli
+$ aws configure
+```
+## Project CLI Commands
 
 * `create_cluster.sh`: This command spins up an EMR cluster. Optionally, takes a name as argument. 
 Name of the cluster is written to `./cluster_name.txt`
@@ -8,3 +23,14 @@ Name of the cluster is written to `./cluster_name.txt`
   * m5.xlarge
   * 3 instances
 * `get_DnsName.sh`: Gets the DSN name of the EMR cluster created by `create_cluster.sh`
+
+```bash
+# spin up an EMR cluster
+$ sudo ./create_cluster
+# wait for cluster to spin up then proced
+$ sudo ./get_DnsName
+# start connect to server interactively (hue)
+$ sudo ./start_hue /path/to/pem/file
+# kill server when done
+$ ./terminate
+```
