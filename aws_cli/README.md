@@ -1,6 +1,6 @@
 # CLI Commands
 
-Details on the usage of the CLI for this project.
+Details on the usage of the CLI for this project. This is built on the [AWS CLI](https://aws.amazon.com/cli/).
 
 * `create_cluster.sh`: This command spins up an EMR cluster. Optionally, takes a name as argument. 
 Name of the cluster is written to `./cluster_name.txt`
