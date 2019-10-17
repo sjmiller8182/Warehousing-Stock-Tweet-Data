@@ -29,8 +29,9 @@ Name of the cluster is written to `./cluster_name.txt`
 $ sudo ./create_cluster
 # wait for cluster to spin up then proced
 $ sudo ./get_DnsName
+DNSNAME
 # start connect to server interactively (hue)
-$ sudo ./start_hue /path/to/pem/file
+$ sudo ./start_hue /path/to/pem/file DNSNAME
 # kill server when done
 $ ./terminate
 ```
