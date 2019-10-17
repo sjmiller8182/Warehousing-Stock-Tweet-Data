@@ -8,7 +8,7 @@ This is built on the [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/
 
 ### Prereqs
 
-Install the AWS CLI and configure the CLI. Get AWS CLI credentials from your AWS account.
+Install the AWS CLI and [configure the CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html). Get AWS CLI credentials from your AWS account.
 
 ```bash
 $ sudo apt-get update
