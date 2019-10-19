@@ -8,7 +8,7 @@ This is built on the [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/
 
 ### Prereqs
 
-Install the AWS CLI and configure the CLI. Get AWS CLI credentials from your AWS account.
+Install the AWS CLI and [configure the CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html). Get AWS CLI credentials from your AWS account.
 
 ```bash
 $ sudo apt-get update
@@ -22,7 +22,9 @@ Name of the cluster is written to `./cluster_name.txt`
   * us-east-2
   * m5.xlarge
   * 3 instances
-* `get_DnsName.sh`: Gets the DSN name of the EMR cluster created by `create_cluster.sh`
+* `get_DnsName.sh`: Gets the DSN name of the EMR cluster created by `create_cluster.sh` Name is printed to the screen.
+* `./start_hue`: Starts and ssh connection to the cluster. The browser link is printed. SSH connection is left in foreground. Kill manually.
+* `./terminate`: Terminates the current ERM cluster
 
 ```bash
 # spin up an EMR cluster
