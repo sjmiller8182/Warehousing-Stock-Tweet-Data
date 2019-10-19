@@ -10,6 +10,7 @@ import json
 import csv
 from datetime import datetime, timedelta
 from typing import List, Dict
+import logging
 import tweepy
 
 class TwitterScraper:
@@ -66,12 +67,14 @@ class TwitterScraper:
         auth.set_access_token(*self.keys[2:])    
         self.connection = tweepy.API(auth)   
 
-    def get_user_timeline(self, screen_name, items = None, tweet_mode="extended"):
+    def get_user_timeline(self, screen_name, items = None, item_limit: int = 0, tweet_mode="extended"):
         """
         Use the twitter API to get a user timeline
         """
         statuses = list()
-        for status in tweepy.Cursor(self.connection.user_timeline, screen_name=screen_name, tweet_mode=tweet_mode).items():
+        for status in tweepy.Cursor(self.connection.user_timeline,
+                                    screen_name=screen_name,
+                                    tweet_mode=tweet_mode).items(limit = item_limit):
             statuses.append(status)
         return statuses
 
@@ -83,18 +86,27 @@ def string_to_datetime(date_str: str):
     return datetime.strptime(date_str, '%a %b %d %H:%M:%S %z %Y')
 
 def get_mentions(content) -> str:
+    """
+    Get user mentions from json
+    """
     mentions = list()
     for name in content['entities']['user_mentions']:
         mentions.append(name['screen_name'])
     return '|'.join(mentions)
 
 def get_urls(content) -> str:
+    """
+    Get urls from json
+    """
     mentions = list()
     for name in content['entities']['urls']:
         mentions.append(name['expanded_url'])
     return '|'.join(mentions)
 
 def get_hashtags(content) -> str:
+    """
+    Get hashtags from json
+    """
     mentions = list()
     for name in content['entities']['hashtags']:
         mentions.append(name['text'])
@@ -115,39 +127,115 @@ def get_items(content) -> List[str]:
     return [tweet_id, text, hashtags, mentions,
            urls, created_at, user_id, screen_name]
 
-def write_json(tweets) -> None:
-    
+def get_time_filter(delta: int = 1, time_format: str = '%Y-%m-%d'):
+    """
+    Provide time for filtering tweets
+    """
+    return datetime.strftime(datetime.now() - timedelta(delta), time_format)
+
+def write_json(tweets, time_filter: str) -> None:
+    """
+    Dump json of tweets to file
+    """
     features = list()
-    
     for item in tweets:
         features = get_items(item._json)
-        file_name = features[7] + '_' + features[5].replace(' ','_') + '.txt'
-        with open(file_name, 'w') as outfile:
-            json.dump(item._json, outfile, indent=2)
+        if features[5].split(' ')[0] == time_filter:
+            file_name = features[7] + '_' + features[5].replace(' ','_') + '.txt'
+            with open(file_name, 'w') as outfile:
+                json.dump(item._json, outfile, indent=2)
 
-def write_to_csv(tweets, filename: str) -> None:
-    # the headers are the fields that we identified in step 4
+def write_to_csv(tweets, filename: str, time_filter: str) -> None:
+    """
+    Write tweets to tsv file
+    """
+    # the headers
     headers = ['tweet_id', 'text', 'hashtags', 'mentions', 'urls', 'created_at', 'user_id', 'screen_name']
-    
-    # here we create the file and write the header row with the headers list
-    # note that the 'filename' argument will be the name of the csv file
+    # open for writing
     with open(filename + '.tsv', 'w', newline='') as csvfile:
+        row = list()
         writer = csv.writer(csvfile, delimiter='\t')
         writer.writerow(headers)
-        
-        # in this loop, we write a new row for each tweet object, with the data taken from the tweet object in 
-        # the order we listed the headers
-        # note where we call the helper functions from step 4 on hashtags, urls, and source
         for item in tweets:
-            writer.writerow(get_items(item._json))
+            row = get_items(item._json)
+            if row[5].split(' ')[0] == time_filter:
+                writer.writerow(row)
     csvfile.close()
 
 def get_handles(handles_file: str):
+    """
+    Read twitter handles from file
+    """
     handles = list()
     with open(handles_file, 'r')as in_f:
         for line in in_f:
             handles.append(line.strip())
     return handles
 
-def get_time_filter(delta: int = 1, time_format: str = '%Y-%m-%d'):
-    return datetime.strftime(datetime.now() - timedelta(delta), time_format)
+def create_logger() -> logging.Logger:
+    """
+    create default logging
+    """
+    # setup logging
+    logger = logging.getLogger()
+    logger.setLevel(logging.INFO)
+    # file name
+    date_of_run = str(datetime.today()).split(' ')[0]
+    log_file_name = './twitter_scrape_' + date_of_run + '.log'
+    # create a file handler
+    fh = logging.FileHandler(log_file_name)
+    fh.setLevel(logging.INFO)
+    # create console handler with a higher log level
+    ch = logging.StreamHandler()
+    ch.setLevel(logging.ERROR)
+    # define formatter
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    fh.setFormatter(formatter)
+    ch.setFormatter(formatter)
+    # add the handlers
+    logger.addHandler(fh)
+    logger.addHandler(ch)
+
+    return logger
+
+def run_scraper(key_path: str, handles: str, day_filter: int = 1, item_limit: int = 0) -> None:
+    """
+    Run the scraper over the handlers given in the input file
+    """
+    # setup logger
+    logger = create_logger()
+    # set the rate limit counter
+    limit_hits = 0
+
+    # load the handles to scrape
+    handles = set(get_handles(handles))
+    # create connection to twitter
+    ts = TwitterScraper(key_path)
+    ts.connect()
+
+    logger.info("Start scraper")
+    # loop over handles 
+    for handle in handles:
+        try:
+            logger.info('scraping from ' + handle)
+            # get the statuses
+            statuses = ts.get_user_timeline(screen_name=handle, item_limit = item_limit)
+            logger.info('finished scraping from ' + handle)
+            # filter aquisition to the previous day
+            write_json(statuses, get_time_filter(day_filter))
+            write_to_csv(statuses,'tweets' + handle[1:] + '_' + get_time_filter(day_filter), get_time_filter(day_filter))
+            logger.info('sleeping before next request')
+            time.sleep(5*60)
+        except tweepy.RateLimitError:
+            # wait 15 minutes in case of a rate limit hit
+            logger.error("Rate Limit Error on " + handle)
+            limit_hits += 1
+            time.sleep(15*60)
+        except tweepy.TweepError:
+            # still wait when a general error occurs
+            logger.error("General error caught on " + handle)
+            time.sleep(5*60)
+
+    logger.info('\ndone')
+    logger.info('There were {} rate limit hits'.format(limit_hits))
+    print(str(datetime.now()))
