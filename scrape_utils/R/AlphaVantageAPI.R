@@ -190,17 +190,19 @@ symbolsNASDAQ <- c("AAL", "AAOI", "AAON", "AAPL", "AAWW", "AAXJ", "AAXN", "ABCB"
                    "XNET", "XOG", "XOMA", "XON", "XONE", "XPEL", "XPER", "XRAY", "XSPA", "XT", "XTLB", "YGYI", "YGYIP", "YI", "YIN", "YJ", "YLCO", "YMAB", "YNDX", "YORW", "YRCW", "YTEN", "YTRA", "YVR", 
                    "YY", "Z", "ZAGG", "ZBIO", "ZBRA", "ZEAL", "ZEUS", "ZFGN", "ZG", "ZGNX", "ZION", "ZIOP", "ZIV", "ZIXI", "ZKIN", "ZLAB", "ZM", "ZN", "ZNGA", "ZS", "ZSAN", "ZUMZ", "ZVO", "ZYNE", "ZYXI")
 
+setwd("c:/users/pablo/desktop/NASDAQ_BBands_Open_15min")
 av_api_key("")
 
 for(i in 1:length(symbolsNASDAQ)){
   
-  #getSomething <- function() alphavantager::av_get(symbol = symbolsNASDAQ[i], av_fun = "BBANDS", interval = "15min", time_period = 200, series_type = "open")
+  getSomething <- function() alphavantager::av_get(symbol = symbolsNASDAQ[i], av_fun = "BBANDS", interval = "15min", time_period = 254, series_type = "high")
   #getSomething <- function() alphavantager::av_get(symbol = symbolsNASDAQ[i], av_fun = "MACD", interval = "15min", datatype="csv", series_type = "open")
-  getSomething <- function() alphavantager::av_get(symbol = symbolsNASDAQ[i], av_fun = "MACD", interval = "15min", datatype="csv", series_type = "close")
+  #getSomething <- function() alphavantager::av_get(symbol = symbolsNASDAQ[i], av_fun = "MACD", interval = "15min", datatype="csv", series_type = "close")
+  #getSomething <- function() alphavantager::av_get(symbol = symbolsNASDAQ[i], av_fun = "TIME_SERIES_DAILY", datatype="csv", series_type = "full")
   #getSomething <- function() alphavantager::av_get(symbol = symbolsNASDAQ[i], av_fun = "TIME_SERIES_INTRADAY", interval = "15min", outputsize = "full")
   #getSomething <- function() alphavantager::av_get(symbol = symbolsNASDAQ[i], av_fun = "STOCH", interval = "15min", datatype="csv") # default = (fastkperiod=5, slowkpariod=3, slowdperiod=3)
   badNews <- function() write(symbolsNASDAQ[i],"badSymbols.txt", append = T)
-  
+
   tryCatch(
     {
       getSomething()
@@ -208,9 +210,12 @@ for(i in 1:length(symbolsNASDAQ)){
       #name <- paste0("NASDAQ_Intraday_15min_",symbolsNASDAQ[i],".csv")
       #name <- paste0("NASDAQ_MACD_High_15min_",symbolsNASDAQ[i],".csv")
       #name <- paste0("NASDAQ_MACD_Open_15min_",symbolsNASDAQ[i],".csv")
-      name <- paste0("NASDAQ_MACD_Close_15min_",symbolsNASDAQ[i],".csv")
-      write.csv(data.frame(getSomething(),symbolsNASDAQ[i]), name, row.names = F)
-      #print(nameBands)
+      name <- paste0("NASDAQ_BBands_High_15min_",symbolsNASDAQ[i],".csv")
+      article <- data.frame(getSomething(),symbolsNASDAQ[i], "NASDAQ")
+      colnames(article) = c("times", "real_lower_band", "real_middle_band", "real_upper_band", "symbol", "market") #columns for daily and intraday prices
+      #write.csv(data.frame(getSomething(),symbolsNASDAQ[i], "NASDAQ"), name, row.names = F)
+      write.csv(article, name, row.names = F)
+      write.table(article, file = "nasdaq_bbands_high_15_min.csv", row.names = F, col.names = F, append = T, sep = ",")
     },
     error = function(e)
     {
@@ -219,6 +224,7 @@ for(i in 1:length(symbolsNASDAQ)){
   )
   Sys.sleep(3) #sleep the for loop for n.n seconds since max pull is once every n seconds
 }
+
 
 ########################################################################################################
 ########################################################################################################
@@ -350,9 +356,10 @@ tryCatch(
    {
      getSomething()
      name <- paste0("NYSE_MACD_Close_15min_",symbolsNYSE[i],".csv")
-     df <- data.frame(getSomething(),symbolsNYSE[i])
-     colnames(df) <- c("times", "macd","macd_hist", "mkacd_signal", "symbolNYSE")
+     df <- data.frame(getSomething(),symbolsNYSE[i], "NYSE")
+     colnames(df) <- c("times", "macd","macd_hist", "mkacd_signal", "symbol", "market")
      write.csv(df, name, row.names = F)
+     write.table(df, file = "nyse_macd_close_15_min.csv", row.names = F, col.names = F, append = T, sep = ",")
    },
    error = function(e)
    {
