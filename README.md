@@ -15,6 +15,8 @@ For this project, we will use the following types of data
 
 ## Overview of the Big Data Solution
 
+![Overview of Solution](https://github.com/sjmiller8182/DBMS_Proj/blob/master/reports/support/images/Overview_of_Solution.png)
+
 ## Data Warehouse Overview
 
 ## Results
