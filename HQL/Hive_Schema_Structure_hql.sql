@@ -1,4 +1,7 @@
-set mapred.tasktracker.reduce|map.tasks.maximum; -- an effort to make the processing faster; it needs improving
+--set mapred.tasktracker.reduce|map.tasks.maximum; -- an effort to make the processing faster; it needs improving
+set mapreduce.map.memory.mb=8096;
+set mapreduce.reduce.memory.mb=10020;
+set mapreduce.job.reduces=30;
 
 create database ds7330_term_project_schema; -- this is the normalized schema; only the tables in the E-R diagram go here
 create database ds7330_term_raw_data; --this is the database for the data tables we need to create the project database
@@ -56,15 +59,17 @@ create table if not exists ds7330_term_project.twitter_tweet_url( -- multiple ur
 
 create table if not exists ds7330_term_project.companies(
 	symbol string --primary key
-	, market_exchange string
 	, company_name string
-	, company_details string
+	, market_exchange string
+	-- , company_details string
 );
 
 create table if not exists ds7330_term_project.daily(
   unique_daily_id bigint
   , report_date string
   , symbol string
+  , trade_volume
+  , market
   , open_price double
   , close_price double
   , high_price double
@@ -72,31 +77,42 @@ create table if not exists ds7330_term_project.daily(
 );
 
 create table if not exists ds7330_term_project.intraday(
-	unique_intra_id bigint --primary key
-	, report_date string --foreign key
-	, report_time string
-	, symbol string --foreign key
-	, market string
+	unique_intra_id bigint not null --primary key
+	, report_date string not null --foreign key
+	, report_time string not null
+	, symbol string not null --foreign key
+	, market string not null
 	, trade_volume string
 	, open_price double
 	, close_price double
 	, high_price double
 	, low_price double
-	, stochastic_slowd double
-	, stochastic_slowk double
-	, bollinger_open_lower double
-	, bollinger_open_middle double
-	, bollinger_open_upper double
+	, open_bollinger_band_low double
+	, open_bollinger_band_close double
+	, open_bollinger_band_high double
+	, close_bollinger_band_open double
+	, close_bollinger_band_close double
+	, close_bollinger_band_high double
+	, high_bollinger_band_low double
+	, high_bollinger_band_close double
+	, high_bollinger_band_high double
+	, low_bollinger_band_open double
+	, low_bollinger_band_close double
+	, low_bollinger_band_high double
 	, macd_open double
 	, macd_hist_open double
 	, mkacd_signal_open double
+	, macd_close double
+	, macd_hist_close double
+	, mkacd_signal_close double
 	, macd_high double
 	, macd_hist_high double
 	, mkacd_signal_high double
 	, macd_low double
 	, macd_hist_low double
 	, mkacd_signal_low double
-	, macd_close double
-	, macd_hist_close double
-	, mkacd_signal_close double
+	, slowd_stochastic double
+	, slowk_stochastic double
+	, primary key (unique_intra_id)
+	, constraint fk foreign key (report_date) references ds7330_term_project.daily(report_date)
 );
