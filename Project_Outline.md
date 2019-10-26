@@ -45,18 +45,13 @@ As data is gathered, it will be stored locally, as buffer, then batch uploaded t
 
 ## Storage
 
-The data will be stored in a datalake based on Hadoop.
-
-The datalake will be setup with Amazon EMR.
-
-* Hadoop
-* Hive
+Data will be stored in an amazon S3 bucket for long term storage. S3 buckets can be easily integrated with other AWS tools such as EMR. The datalake will be setup on-demand with Amazon EMR.
 
 ## Study 
 
 Two schemas will be designed.
 
-1. The first schema will be a general purpose schema
+1. The first schema will be a general purpose schema in 3NF
 2. The second schema will be optimized for the intended task
 
 We will look at the difference in performance in querying data from the datalake under these designs.
