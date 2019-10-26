@@ -1,0 +1,15 @@
+
+
+# defualt owners
+*       @sjmiller8182 @PaulAdams4361
+
+# owner of HQL
+HQL/	@PaulAdams4361
+
+# owner of scraping_utils
+scrape_utils/	@sjmiller8182
+scrape_utils/python/ @sjmiller8182
+scrape_utils/R/	@PaulAdams4361
+
+# owner of aws_cli
+aws_cli/	@sjmiller8182
