@@ -19,9 +19,13 @@ For this project, we will use the following types of data
 
 ## Data Warehouse Overview
 
-The dataware house will be created with Hive HQL.
+The dataware house will be created with Hive HQL in an AWS EMR cluster.
+
+An effective schema of the normalized dataware house is shown below. 
 
 ![Normalized_Schema](https://github.com/sjmiller8182/DBMS_Proj/blob/master/reports/support/images/Warehouse_Schema_Normalized.png)
+
+This schema was created with MySQL WorkBench the schema design can be accessed [here](https://github.com/sjmiller8182/DBMS_Proj/tree/master/reports/support).
 
 ## Results
 
