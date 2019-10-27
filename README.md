@@ -19,6 +19,10 @@ For this project, we will use the following types of data
 
 ## Data Warehouse Overview
 
+The dataware house will be created with Hive HQL.
+
+![Normalized_Schema](https://github.com/sjmiller8182/DBMS_Proj/blob/master/reports/support/images/Warehouse_Schema_Normalized.png)
+
 ## Results
 
 ## Analysis
