@@ -27,6 +27,12 @@ An effective schema of the normalized dataware house is shown below.
 
 This schema was created with MySQL WorkBench the schema design can be accessed [here](https://github.com/sjmiller8182/DBMS_Proj/tree/master/reports/support).
 
+## Big Data Solution Implementation
+
+The big data solution is build on AWS.
+
+![Big_data_solution_AWS](https://github.com/sjmiller8182/DBMS_Proj/blob/master/reports/support/images/Big_Data_Solution_AWS.png)
+
 ## Results
 
 ## Analysis
