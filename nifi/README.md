@@ -10,6 +10,8 @@ The following steps are required for NiFi setup on an EC2 instance
 
 ### Scripting
 
+Run [`./install_nifi.sh`](https://github.com/sjmiller8182/DBMS_Proj/blob/master/nifi/install_nifi.sh) to install nifi.
+
 The install script installs the following
 
 * java 8
