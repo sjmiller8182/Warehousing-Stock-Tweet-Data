@@ -43,3 +43,7 @@ Configure nifi with the instance IP address
 The following page(s) were used as references:
 
 * http://ijokarumawak.github.io/nifi/2017/01/27/nifi-s2s-local-to-aws/
+
+#### TODO
+
+* Add a CLI command to create/terminate this instance
