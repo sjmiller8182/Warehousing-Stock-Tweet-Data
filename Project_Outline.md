@@ -34,24 +34,31 @@ As data is gathered, it will be stored locally, as buffer, then batch uploaded t
     * screen_name
   * Push results to an S3 bucket
 
+## Data Ingestion
+
+NiFi will be used to bring in data from web sources. This data will be pushed to an S3 bucket for long-term storage.
+
+## Storage
+
+Data will be stored in an amazon S3 bucket for long term storage. 
+S3 buckets can be easily integrated with other AWS tools such as EMR. 
+The datalake will be setup on-demand with Amazon EMR and Hive.
+
+## Study 
+
+Two schemas will be designed. 
+One will be a general purpose normalized schema and the second will be a non-normalized optimized schema.
+We will look at the difference in performance in querying data from the datalake under these designs.
+
+- [X] General purpose schema in 3NF
+- [ ] Optimized schema
+
 ### Potential Extensions
 
+* Scrape with multiple agents
 * Preprocess text
   * Clean the text
   * Vectorize with a pretrained tool
     * [AllanNLP](https://allennlp.org/)
     * [IXA Pipelines](http://ixa2.si.ehu.es/ixa-pipes/)
 * Use a continuous data ingestion platform
-
-## Storage
-
-Data will be stored in an amazon S3 bucket for long term storage. S3 buckets can be easily integrated with other AWS tools such as EMR. The datalake will be setup on-demand with Amazon EMR.
-
-## Study 
-
-Two schemas will be designed.
-
-1. The first schema will be a general purpose schema in 3NF
-2. The second schema will be optimized for the intended task
-
-We will look at the difference in performance in querying data from the datalake under these designs.
