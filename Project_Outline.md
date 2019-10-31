@@ -1,3 +1,25 @@
+
+# Milestones and Status
+
+The following table shows milestone identified to complete the project.
+
+| Milestones   |      Planned Completion      | Actual Completion  | Status |
+|----------|:-------------:|:------:|:--:|
+| AWS infrastructure Setup          | Oct. 6, 2019 | Oct. 6, 2019 | Complete |
+| Initial Data Collection Complete  | Oct. 6, 2019 | Oct. 6, 2019 | Complete |
+| Design Normalized Schema          | Oct. 27, 2019 | Oct. 27, 2019 | Complete |
+| Design Optimized Schema           | Nov. 27, 2019  |  | In Progress |
+| Integrate All Tools (full system) | Nov. 3, 2019  |  | In Progress |
+| Verify Data WareHouse Builds (both schemas) | Nov. 3, 2019 |  | In Progress  |
+| Rough Draft of Paper              | Nov. 10, 2019 |  |  |
+| Test Performance                  | Nov. 17, 2019 |  |  |
+| Complete Final Presentation       | Dec. 1, 2019  |  |  |
+| Complete Final Paper              | Dec. 3, 2019 |  |  |
+
+# Detailed Steps
+
+The following details are expected for completion of the project.
+
 ## Initial Data Gathering
 
 The data will be gathered using python. 
