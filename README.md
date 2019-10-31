@@ -1,4 +1,7 @@
-# DBMS_Proj
+# Big Data Solution for Stock Prices and Tweet Collections
+
+This project is currently in progress.
+The [project outline](https://github.com/sjmiller8182/DBMS_Proj/blob/master/Project_Outline.md) provides a list of [projected milestones](https://github.com/sjmiller8182/DBMS_Proj/blob/master/Project_Outline.md#milestones-and-status) for completion of the project.
 
 ## Problem Statement
 
