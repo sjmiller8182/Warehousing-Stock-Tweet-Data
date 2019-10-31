@@ -2,9 +2,9 @@
 
 Details on the usage of the CLI for this project. 
 
-## [AWS CLI](https://aws.amazon.com/cli/)
+## AWS CLI Setup
 
-This is built on the [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html).
+This is built on the [AWS CLI](https://aws.amazon.com/cli/).
 
 ### Prereqs
 
@@ -16,6 +16,10 @@ $ sudo apt-get install awscli
 $ aws configure
 ```
 ## Project CLI Commands
+
+### EMR
+
+These scripts are used to work with AWS EMR clusters
 
 * `create_cluster.sh`: This command spins up an EMR cluster. Optionally, takes a name as argument. 
 Name of the cluster is written to `./cluster_name.txt`
@@ -37,3 +41,22 @@ $ sudo ./start_hue /path/to/pem/file DNSNAME
 # kill server when done
 $ ./terminate
 ```
+
+### S3
+
+These scripts are used to work with S3 bucket for this project
+
+* `push_to_bucket.sh`: Recursely and quietly copies files to S3 bucket for this project
+
+```bash
+# push a path to S3
+$ sudo push_to_bucket.sh /path/to/push
+```
+
+### EC2
+
+These scripts are used to work with AWS EC2 for this project
+
+**TODO**
+
+* Provisioning of NiFi instance
