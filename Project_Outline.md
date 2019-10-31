@@ -1,14 +1,13 @@
-## Data Gathering
+## Initial Data Gathering
 
-The data will be gathered using python. APIs will be used when available. 
-As data is gathered, it will be stored locally, as buffer, then batch uploaded to AWS (S3). 
+The data will be gathered using python. 
+APIs will be used when available. 
+As data is gathered, it will be stored locally, as buffer, then batch uploaded to AWS (S3).
+Later this will be moved to automatic data ingestion pipeline.
 
 ### Scrapers to write
 
 - [X] Twitter (API)
-- [ ] NYT (API)
-- [ ] StockNewsAPI (API)
-- [ ] Reddit (API)
 - [X] AlphaVantageAPI
 - [ ] ~~requester for StockTwits~~ Disallowed by TOC
 
@@ -16,7 +15,6 @@ As data is gathered, it will be stored locally, as buffer, then batch uploaded t
 
 * Twitter - Collect daily tweets from notable finance related accounts such as `@jimcramer`
   * Current [`handles`](https://github.com/sjmiller8182/DBMS_Proj/blob/master/scrape_utils/python/twitter_handles.txt) being scraped
-* NYT - Collect headlines related to stock symbols (should be more recent)
 
 ### Technical Details
 
@@ -53,9 +51,14 @@ We will look at the difference in performance in querying data from the datalake
 - [X] General purpose schema in 3NF
 - [ ] Optimized schema
 
-### Potential Extensions
+## Potential Extensions
 
 * Scrape with multiple agents
+* Bring in data from other sources
+  * NYT (API)
+  * StockNewsAPI (API)
+  * Reddit (API)
+  * Other alternative data such as weather events
 * Preprocess text
   * Clean the text
   * Vectorize with a pretrained tool
