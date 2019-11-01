@@ -33,11 +33,18 @@ Name of the cluster is written to `./cluster_name.txt`
 ```bash
 # spin up an EMR cluster
 $ sudo ./create_cluster
+
 # wait for cluster to spin up then proced
 $ sudo ./get_DnsName
 DNSNAME
+
 # start connect to server interactively (hue)
 $ sudo ./start_hue /path/to/pem/file DNSNAME
+
+# open SSH connection to cluster
+# this will make a web conenction to Hue possible
+$ ssh /path/to/pem/file -N -D 8157 hadoop@DNSNAME
+
 # kill server when done
 $ ./terminate
 ```
