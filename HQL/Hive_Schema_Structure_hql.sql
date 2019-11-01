@@ -3,7 +3,7 @@ set mapreduce.map.memory.mb=8096;
 set mapreduce.reduce.memory.mb=10020;
 set mapreduce.job.reduces=30;
 
-create database ds7330_term_project_schema; -- this is the normalized schema; only the tables in the E-R diagram go here
+create database ds7330_term_project; -- this is the normalized schema; only the tables in the E-R diagram go here
 create database ds7330_term_raw_data; --this is the database for the data tables we need to create the project database
 
 create table if not exists ds7330_term_project.dates(
