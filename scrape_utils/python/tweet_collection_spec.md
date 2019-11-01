@@ -1,5 +1,8 @@
+# Tweet Collection and Storage Spec
 
-# Normalized Tables
+This file describe how the collected tweets will be stored.
+
+## Normalized Tables
 
 The following describes the normalized tables. 
 This is required for building the data collection backend.
@@ -10,7 +13,7 @@ they will be generated with a checksumm calculator so that the ID is predictable
 Lets say MD5. 
 This should be ok because MD5 has a very low collision rate.
 
-## Tweets
+### Tweets
 
 tweet_id: twitter generated id
 text: raw tweet text
@@ -19,29 +22,29 @@ time: from from the time stamp (what format?)
 user_id: Value given by the users table
 symbol: any company symbols contained in the tweet (scan the tweet for symbols)
 
-## Twitter_Users
+### Twitter_Users
 
 * user_id: MD5 version of handle (without @); built on-the-fly since since twitter id is not necessay known (if known user twitter id)
 * screen_name: the twitter screen name
 
 
-## Hashtags
+### Hashtags
 
 * hashtag_id: MD5 version of the tag (without #); build on-the-fly
 * hashtag: actual tag without the '#'
 
-## URLs
+### URLs
 
 * url_id: MD5 version of the url; build on-the-fly
 * url: actual url
 
-# Data Collection/Storage Strategy
+## Data Collection/Storage Strategy
 
 This is based on the structure of the tables above.
 Store the values for each row of Twitter_Users, HashTags, and URLs on a duplicated row of the Tweets table in separate tables.
 Do this because one tweet maps to many instances in the other tables 'on collection.'
 
-## Collection Example
+### Collection Example
 
 Lets say there is a tweet that mentions some handles,
 contains some hashtags,
@@ -73,7 +76,7 @@ Note the duplication of the information in columns `tweet_id` through `symbol`.
 **How to handle tweets that relate to more than one symbol?**
 Duplicate all information between `tweet_id` and `user_id` for each symbol?
 
-### Mentions
+#### Mentions
 
 ```
 tweet_id,   text,                   date,       time,   user_id,    symbol,     mention_id,     screen_name
@@ -84,7 +87,7 @@ tweet_id,   text,                   date,       time,   user_id,    symbol,     
 123         some text about #AAPL   10/10/2019  1:3:00  1234        AAPL        7362            @name4     
 ```
 
-### Hashtags
+#### Hashtags
 
 ```
 tweet_id,   text,                   date,       time,   user_id,    symbol,     hashtag_id,     hashtag
@@ -95,7 +98,7 @@ tweet_id,   text,                   date,       time,   user_id,    symbol,     
 123         some text about #AAPL   10/10/2019  1:3:00  1234        AAPL        7362            WhyTimCookWhy
 ```
 
-### URLs
+#### URLs
 
 ```
 tweet_id,   text,                   date,       time,   user_id,    symbol,     URL_id,         URL
