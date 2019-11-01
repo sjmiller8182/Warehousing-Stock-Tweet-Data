@@ -1,0 +1,6 @@
+tweet_id	text	date	time	user_id	symbol	mention_id	screen_name
+123	some text about #AAPL	10/10/2019	1:03:00	1234	AAPL	1523	@name
+123	some text about #AAPL	10/10/2019	1:03:00	1234	AAPL	4039	@name1
+123	some text about #AAPL	10/10/2019	1:03:00	1234	AAPL	4982	@name2
+123	some text about #AAPL	10/10/2019	1:03:00	1234	AAPL	3748	@name3
+123	some text about #AAPL	10/10/2019	1:03:00	1234	AAPL	7362	@name4
