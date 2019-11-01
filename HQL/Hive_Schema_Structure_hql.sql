@@ -32,7 +32,7 @@ create table if not exists ds7330_term_project.twitter_user(
 create table if not exists ds7330_term_project.twitter_mention(
 	tweet_id string --foreign key
 	, user_id string --primary key
-	, seq_id --primary key
+	, seq_id bigint--primary key
 );
 
 create table if not exists ds7330_term_project.twitter_hashtag( -- only one hashtag per hashtag_id
@@ -68,8 +68,8 @@ create table if not exists ds7330_term_project.daily(
   unique_daily_id bigint
   , report_date string
   , symbol string
-  , trade_volume
-  , market
+  , trade_volume bigint
+  , market string
   , open_price double
   , close_price double
   , high_price double
@@ -77,11 +77,11 @@ create table if not exists ds7330_term_project.daily(
 );
 
 create table if not exists ds7330_term_project.intraday(
-	unique_intra_id bigint not null --primary key
-	, report_date string not null --foreign key
-	, report_time string not null
-	, symbol string not null --foreign key
-	, market string not null
+	unique_intra_id bigint --primary key
+	, report_date string --foreign key
+	, report_time string
+	, symbol string --foreign key
+	, market string
 	, trade_volume string
 	, open_price double
 	, close_price double
@@ -113,6 +113,10 @@ create table if not exists ds7330_term_project.intraday(
 	, mkacd_signal_low double
 	, slowd_stochastic double
 	, slowk_stochastic double
-	, primary key (unique_intra_id)
-	, constraint fk foreign key (report_date) references ds7330_term_project.daily(report_date)
+	, exponential_ma_open double
+	, exponential_ma_high double
+	, exponential_ma_low double
+  	, exponential_ma_close double
+	--, primary key (unique_intra_id)
+	--, constraint fk foreign key (report_date) references ds7330_term_project.daily(report_date)
 );

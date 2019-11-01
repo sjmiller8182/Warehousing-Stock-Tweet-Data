@@ -113,7 +113,7 @@ insert into ds7330_term_project.companies(
 	        , company
 	        , "NYSE"
 
-UNION ALL
+	UNION ALL
 
 	select symbol as symbol
 	    , company as company_name
@@ -146,18 +146,18 @@ insert into ds7330_term_project.daily(
 ----------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------
 insert into ds7330_term_project.intraday(
-	Select some_random_thing as unique_intra_id -- primary key
-	, intra.times as report_dtm
+	Select --some_random_thing as unique_intra_id -- primary key
+	 intra.times as report_dtm
 	, trim(left(intra.times, 10)) as report_date
 	--, right(regexp_replace(intra.times, '/-', ''), 8) as report_date -- foreign key (need to test this)
 	, trim(right(intra.times, 5)) as report_time -- foreign key
 	, intra.symbol as symbol -- foreign key
-	, market as market
-	, volume as trade_volume
-	, open as open_price
-	, close as close_price
-	, high as high_price
-	, low as low_price
+	, intra.market as market
+	, intra.volume as trade_volume
+	, intra.open as open_price
+	, intra.close as close_price
+	, intra.high as high_price
+	, intra.low as low_price
 	, obb.lower_bband_open as open_bollinger_band_low
 	, obb.middle_bband_open as open_bollinger_band_close
 	, obb.upper_bband_open as open_bollinger_band_high
@@ -184,6 +184,10 @@ insert into ds7330_term_project.intraday(
 	, mcdl.mkacd_signal_low as mkacd_signal_low
 	, stoch.slowd as slowd_stochastic
 	, stoch.slowk as slowk_stochastic
+	, exp.exponential_ma_open as exponential_ma_open
+	, exp.exponential_ma_high as exponential_ma_high
+	, exp.exponential_ma_low as exponential_ma_low
+	, exp.exponential_ma_close as exponential_ma_close
 	from ds7330_term_raw_data.intraday_prices_15_min intra
 	right join ( -- keep all dates, even the ones from open table that don't correspond to dates intraday has; we
 		  select -- we can get those later
@@ -343,18 +347,40 @@ insert into ds7330_term_project.intraday(
 		  ) stoch
 	on intra.times = stoch.times
 	and intra.symbol = stoch.symbol
-group by some_random_thing -- primary key
+	right join (
+		  select
+		  	times
+		  	, exponential_ma_open
+		  	, exponential_ma_high
+		  	, exponential_ma_low
+		  	, exponential_ma_close
+		  	, symbol
+		  	, market
+		  from ds7330_term_raw_data.macd_close_15_min
+		  group by
+		    times
+		  	, exponential_ma_open
+		  	, exponential_ma_high
+		  	, exponential_ma_low
+		  	, exponential_ma_close
+		  	, symbol
+		  	, market
+		  ) exp
+	on intra.times = exp.times
+	and intra.symbol = exp.symbol
+group by 
+	--some_random_thing -- primary key
 	, intra.times
-	, trim(left(intra.times, 10))
+	 trim(left(intra.times, 10))
 	--, right(regexp_replace(intra.times, '/-', ''), 8) -- foreign key (need to test this)
 	, trim(right(intra.times, 5)) -- foreign key
 	, intra.symbol -- foreign key
-	, market
-	, volume
-	, open
-	, close
-	, high
-	, low
+	, intra.market
+	, intra.volume
+	, intra.open
+	, intra.close
+	, intra.high
+	, intra.low
 	, obb.lower_bband_open
 	, obb.middle_bband_open
 	, obb.upper_bband_open
@@ -381,6 +407,10 @@ group by some_random_thing -- primary key
 	, mcdl.mkacd_signal_low
 	, stoch.slowd
 	, stoch.slowk
+	, exp.exponential_ma_open
+	, exp.exponential_ma_high
+	, exp.exponential_ma_low
+	, exp.exponential_ma_close
 );
 
 ----------------------------------------------------------------------------------------------
