@@ -1,4 +1,5 @@
 --set mapred.tasktracker.reduce|map.tasks.maximum; -- an effort to make the processing faster; it needs improving
+set mapred.job.queue.name=root.batch;
 set mapreduce.map.memory.mb=8096;
 set mapreduce.reduce.memory.mb=10020;
 set mapreduce.job.reduces=30;
@@ -16,12 +17,14 @@ create table if not exists ds7330_term_project.times(
 
 --tweets table not in normal form:
 create table if not exists ds7330_term_project.twitter_tweet(
-	tweet_id string --primary key
+	tweet_id string --primary key; this comes from the file
 	, tweet_text string
 	, tweet_date string --foreign key
 	, tweet_time string --foreign key
 	, user_id string --foreign key
 	, symbol string  --foreign key
+	, mention_id string
+	, screen_name string
 );
 
 create table if not exists ds7330_term_project.twitter_user(
@@ -32,7 +35,7 @@ create table if not exists ds7330_term_project.twitter_user(
 create table if not exists ds7330_term_project.twitter_mention(
 	tweet_id string --foreign key
 	, user_id string --primary key
-	, seq_id bigint--primary key
+	--, seq_id bigint--primary key
 );
 
 create table if not exists ds7330_term_project.twitter_hashtag( -- only one hashtag per hashtag_id
@@ -43,7 +46,7 @@ create table if not exists ds7330_term_project.twitter_hashtag( -- only one hash
 create table if not exists ds7330_term_project.twitter_tweet_hashtag( -- multiple hashtags per tweet_id via hashtag_id
 	tweet_id string -- foreign key
 	, hashtag_id string --foreign key
-	, seq_id bigint --primary key
+	--, seq_id bigint --primary key
 );
 
 create table if not exists ds7330_term_project.twitter_url( -- only one url per url_id
@@ -54,7 +57,7 @@ create table if not exists ds7330_term_project.twitter_url( -- only one url per 
 create table if not exists ds7330_term_project.twitter_tweet_url( -- multiple urls per tweet_id via url_id
 	tweet_id string --primary key
 	, url_id string --foreign key
-	, seq_id bigint --foreign key
+	--, seq_id bigint --foreign key; composite key of tweet_id and substring(url_id, 0, nchar(url_id)-round(nchar(url_id)*.60)
 );
 
 create table if not exists ds7330_term_project.companies(
@@ -65,8 +68,7 @@ create table if not exists ds7330_term_project.companies(
 );
 
 create table if not exists ds7330_term_project.daily(
-  unique_daily_id bigint
-  , report_date string
+   report_date string
   , symbol string
   , trade_volume bigint
   , market string
@@ -77,7 +79,7 @@ create table if not exists ds7330_term_project.daily(
 );
 
 create table if not exists ds7330_term_project.intraday(
-	unique_intra_id bigint --primary key
+	report_dtm
 	, report_date string --foreign key
 	, report_time string
 	, symbol string --foreign key

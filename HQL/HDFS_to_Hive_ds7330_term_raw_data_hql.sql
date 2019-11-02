@@ -163,3 +163,22 @@ tblproperties ("skip.header.line.count"="1");
 LOAD DATA INPATH '/user/hue_username/stochastic_15_min.csv' 
 INTO TABLE ds7330_term_raw_data.stochastic_15_min;
 -------------------------------------------------------------------- end of stochastic oscillator indicators
+
+create table if not exists ds7330_term_raw_data.nyse_symbols(
+symbol string
+, company string
+)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY "\t" ESCAPED BY '\\'
+tblproperties ("skip.header.line.count"="1");
+LOAD DATA INPATH '/user/hue_username/NYSE_Symbols.txt' 
+INTO TABLE ds7330_term_raw_data.nyse_symbols;
+
+create table if not exists ds7330_term_raw_data.nasdaq_symbols(
+symbol string
+, company string
+)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY "\t" ESCAPED BY '\\'
+tblproperties ("skip.header.line.count"="1");
+LOAD DATA INPATH '/user/hue_username/NASDAQ_Symbols.txt'
+INTO TABLE ds7330_term_raw_data.nasdaq_symbols;
+-------------------------------------------------------------------- end of stochastic oscillator indicators
