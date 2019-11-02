@@ -17,8 +17,8 @@ This should be ok because MD5 has a very low collision rate.
 
 * tweet_id: twitter generated id
 * text: raw tweet text
-* date: date from the time stamp (what format?)
-* time: from from the time stamp (what format?)
+* date: date from the time stamp (%y-%m-%d)
+* time: from of day from the time stamp (%H:%M:%S")
 * user_id: Value given by the users table
 * symbol: any company symbols contained in the tweet (scan the tweet for symbols)
 
