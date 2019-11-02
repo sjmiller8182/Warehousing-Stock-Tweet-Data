@@ -1,11 +1,11 @@
---set mapred.tasktracker.reduce|map.tasks.maximum; -- an effort to make the processing faster; it needs improving
-set mapred.job.queue.name=root.batch;
-set mapreduce.map.memory.mb=8096;
+--set mapred.tasktracker.reduce|map.tasks.maximum;
+set mapred.job.queue.name=root.batch; --1st run this
+set mapreduce.map.memory.mb=8096; --then run this and the next 2 mapreduce queries before running the DDL
 set mapreduce.reduce.memory.mb=10020;
 set mapreduce.job.reduces=30;
 
-create database ds7330_term_project; -- this is the normalized schema; only the tables in the E-R diagram go here
-create database ds7330_term_raw_data; --this is the database for the data tables we need to create the project database
+create database if not exists ds7330_term_project; -- this is the normalized schema; only the tables in the E-R diagram go here
+create database if not exists ds7330_term_raw_data; --this is the database for the data tables we need to create the project database
 
 create table if not exists ds7330_term_project.dates(
 	report_date string -- primary key; dates are unique
@@ -23,8 +23,6 @@ create table if not exists ds7330_term_project.twitter_tweet(
 	, tweet_time string --foreign key
 	, user_id string --foreign key
 	, symbol string  --foreign key
-	, mention_id string
-	, screen_name string
 );
 
 create table if not exists ds7330_term_project.twitter_user(
@@ -32,7 +30,7 @@ create table if not exists ds7330_term_project.twitter_user(
 	, screen_name string
 );
 
-create table if not exists ds7330_term_project.twitter_mention(
+create table if not exists ds7330_term_project.twitter_tweet_mention(
 	tweet_id string --foreign key
 	, user_id string --primary key
 	--, seq_id bigint--primary key
@@ -79,7 +77,7 @@ create table if not exists ds7330_term_project.daily(
 );
 
 create table if not exists ds7330_term_project.intraday(
-	report_dtm
+	report_dtm string
 	, report_date string --foreign key
 	, report_time string
 	, symbol string --foreign key

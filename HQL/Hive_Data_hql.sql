@@ -1,110 +1,33 @@
---set mapred.tasktracker.reduce|map.tasks.maximum; -- an effort to make the processing faster; it needs improving
-set mapreduce.map.memory.mb=8096;
+--set mapred.tasktracker.reduce|map.tasks.maximum;
+set mapred.job.queue.name=root.batch; --1st run this
+set mapreduce.map.memory.mb=8096; --then run this and the next 3 mapreduce and hive.exec queries before running the DML
 set mapreduce.reduce.memory.mb=10020;
 set mapreduce.job.reduces=30;
+set hive.exec.dynamic.partition.mode=nonstrict;
 
-create database ds7330_term_project_schema; -- this is the normalized schema; only the tables in the E-R diagram go here
-create database ds7330_term_raw_data; --this is the database for the data tables we need to create the project database
--- we need a process to get the data into HDFS, then get the tables from R and Python and get them into HDFS
 ----------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------
---@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
---@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ this has not been tested @@@@@@@@@@@@@@@
---@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 ------------------------ loading dates table
-insert into ds7330_term_project.dates
-	select t.times as report_date
-	from -- use unique dates from all tables
-	(
-		select trim(substr(times, 2,11)) as times --these are the dates
-		from ds7330_term_raw_data.bbands_open_15_min
-		group by trim(substr(times, 2,11))
-
-		UNION ALL
-
-		select trim(substr(times, 2,11)) as times
-		from ds7330_term_raw_data.intraday_15_min
-		group by trim(substr(times, 2,11))
-
-		UNION ALL
-
-		select trim(substr(times, 2,11)) as times
-		from ds7330_term_raw_data.macd_open_15_min
-		group by trim(substr(times, 2,11))
-
-		UNION ALL
-
-		select trim(substr(times, 2,11)) as times
-		from ds7330_term_raw_data.macd_high_15_min
-		group by trim(substr(times, 2,11))
-
-		UNION ALL
-
-		select trim(substr(times, 2,11)) as times
-		from ds7330_term_raw_data.macd_low_15_min
-		group by trim(substr(times, 2,11))
-
-		UNION ALL
-
-		select trim(substr(times, 2,11)) as times
-		from ds7330_term_raw_data.macd_close_15_min
-		group by trim(substr(times, 2,11))
-	) as t
-
-	group by t.times
-;
+insert into ds7330_term_project.dates( --this has been tested with data 11-2-2019
+	select trim(substring(regexp_replace(times, '"', ''), 1, 10)) as report_date
+	from ds7330_term_raw_data.intraday_prices_15_min
+	group by trim(substring(regexp_replace(times, '"', ''), 1, 10))
+);
 
 ----------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------
 ------------------------ loading times table 
---@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
---@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ this has not been tested @@@@@@@@@@@@@@@
---@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
--- use unique dates from all tables	
-insert into ds7330_term_project.times
-	select t.times as report_time
-	from
-	(
-		select trim(substr(times, 13,8)) as times --these are the times
-		from ds7330_term_raw_data.bbands_open_15_min
-		group by trim(substr(times, 13,8))
-
-		UNION ALL
-
-		select trim(substr(times, 13,8)) as times
-		from ds7330_term_raw_data.intraday_15_min
-		group by trim(substr(times, 13,8))
-
-		UNION ALL
-
-		select trim(substr(times, 13,8)) as times
-		from ds7330_term_raw_data.macd_open_15_min
-		group by trim(substr(times, 13,8))
-
-		UNION ALL
-
-		select trim(substr(times, 13,8)) as times
-		from ds7330_term_raw_data.macd_high_15_min
-		group by trim(substr(times, 13,8))
-
-		UNION ALL
-
-		select trim(substr(times, 13,8)) as times
-		from ds7330_term_raw_data.macd_low_15_min
-		group by trim(substr(times, 13,8))
-
-		UNION ALL
-
-		select trim(substr(times, 13,8)) as times
-		from ds7330_term_raw_data.macd_close_15_min
-		group by trim(substr(times, 13,8))
-	) as t
-	group by t.times
-;
+-- use unique dates from all tables
+--since we are joining all tables to intraday (since this has the price data), we only need intraday time
+insert into ds7330_term_project.times( --this has been tested with data 11-2-2019
+	select trim(substring(regexp_replace(times, '"', ''), (length(regexp_replace(times, '"', ''))-1)-6, length(times))) as report_time
+	from ds7330_term_raw_data.intraday_prices_15_min
+	group by trim(substring(regexp_replace(times, '"', ''), (length(regexp_replace(times, '"', ''))-1)-6, length(times)))
+);
 
 ----------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------
@@ -206,16 +129,16 @@ insert into ds7330_term_project.intraday( --this has been tested with data 11-1-
 	join (
 		  select
 		  	times
-		  	, real_lower_band_high as lower_bband_open
-		  	, real_middle_band_high as middle_bband_open
-		  	, real_upper_band_high as upper_bband_open
+		  	, real_lower_band as lower_bband_open
+		  	, real_middle_band as middle_bband_open
+		  	, real_upper_band as upper_bband_open
 		  	, symbol
 		  	, market
 		  from ds7330_term_raw_data.bbands_open_15_min
 		  group by times
-		  	, real_lower_band_high
-		  	, real_middle_band_high
-		  	, real_upper_band_high
+		  	, real_lower_band
+		  	, real_middle_band
+		  	, real_upper_band
 		  	, symbol
 		  	, market
 		  ) obb
@@ -434,3 +357,84 @@ group by
 ----------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------
+--@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+--@@@@@@@@@@@@@@@@@@@@@@@@@@ BIENVENIDO ZONA LOS TWEETS @@@@@@@@@@@@@@@@@@@@@@@@@@
+--@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+insert into ds7330_term_project.twitter_tweet( --this has been tested with data 11-1-2019
+  Select
+    tweet_id
+    , text
+    , `date` as report_date
+    , `time`  as report_time
+    , user_id
+    , regexp_replace(symbol, '"','') as symbol
+  from ds7330_term_raw_data.tweet_urls
+  group by
+    tweet_id
+    , text
+    , `date`
+    , `time`
+    , user_id
+    , regexp_replace(symbol, '"','')
+);
+
+insert into ds7330_term_project.twitter_user( --this has been tested with data 11-1-2019
+  Select
+    user_id
+    , screen_name
+  from ds7330_term_raw_data.tweet_mentions
+  group by
+    user_id
+    , screen_name
+);
+
+insert into ds7330_term_project.twitter_tweet_mention( --this has been tested with data 11-1-2019
+  Select
+    tweet_id
+    , user_id
+  from ds7330_term_raw_data.tweet_mentions
+  group by
+    tweet_id
+    , user_id
+);
+
+insert into ds7330_term_project.twitter_tweet_url( --this has been tested with data 11-1-2019
+  Select
+    tweet_id
+    , url_id
+  from ds7330_term_raw_data.tweet_urls
+  group by
+    tweet_id
+    , url_id
+);
+
+insert into ds7330_term_project.twitter_tweet_hashtag( --this has been tested with data 11-1-2019
+  Select
+    tweet_id
+    , hashtag_id
+  from ds7330_term_raw_data.tweet_hashtags
+  group by
+    tweet_id
+    , hashtag_id
+);
+
+insert into ds7330_term_project.twitter_hashtag( --this has been tested with data 11-1-2019
+  Select
+    hashtag_id
+    , hashtag
+  from ds7330_term_raw_data.tweet_hashtags
+  group by
+    hashtag_id
+    , hashtag
+);
+
+insert into ds7330_term_project.twitter_url( --this has been tested with data 11-1-2019
+  Select
+    url_id
+    , url
+  from ds7330_term_raw_data.tweet_urls
+  group by
+    url_id
+    , url
+);

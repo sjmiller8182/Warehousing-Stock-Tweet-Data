@@ -1,3 +1,13 @@
+--@@@ NOTE: you must replace hue_username with your Hue username for all "LOAD DATA INPATH" directories @@@
+-- to drop a database with data: drop database databaseName cascade;
+set mapred.job.queue.name=root.batch; -- 1st run this
+set mapreduce.map.memory.mb=8096; --then run this and the next 2 mapreduce queries. Then, run the DDL
+set mapreduce.reduce.memory.mb=10020;
+set mapreduce.job.reduces=30;
+
+create database if not exists ds7330_term_project; -- this is the normalized schema; only the tables in the E-R diagram go here
+create database if not exists ds7330_term_raw_data; --this is the database for the data tables we need to create the project database
+
 create table if not exists ds7330_term_raw_data.bbands_close_15_min(
 times string
 , real_lower_band double
@@ -39,9 +49,9 @@ INTO TABLE ds7330_term_raw_data.bbands_low_15_min;
 
 create table if not exists ds7330_term_raw_data.bbands_open_15_min(
 times string
-, real_lower_band_high double
-, real_middle_band_high double
-, real_upper_band_high double
+, real_lower_band double
+, real_middle_band double
+, real_upper_band double
 , symbol string
 , market string
 )
@@ -181,4 +191,49 @@ ROW FORMAT DELIMITED FIELDS TERMINATED BY "\t" ESCAPED BY '\\'
 tblproperties ("skip.header.line.count"="1");
 LOAD DATA INPATH '/user/hue_username/NASDAQ_Symbols.txt'
 INTO TABLE ds7330_term_raw_data.nasdaq_symbols;
--------------------------------------------------------------------- end of stochastic oscillator indicators
+-------------------------------------------------------------------- end of nyse and nasdaq symbols
+
+create table if not exists ds7330_term_raw_data.tweet_hashtags(
+tweet_id bigint
+, `text` string
+, `date` string
+, `time` string
+, user_id bigint
+, symbol string
+, hashtag_id bigint
+, hashtag string
+)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY "\t" ESCAPED BY '\\'
+tblproperties ("skip.header.line.count"="1");
+LOAD DATA INPATH '/user/hue_username/Tweet_Hashtags.tsv'
+INTO TABLE ds7330_term_raw_data.tweet_hashtags;
+
+create table if not exists ds7330_term_raw_data.tweet_mentions(
+tweet_id bigint
+, `text` string
+, `date` string
+, `time` string
+, user_id bigint
+, symbol string
+, mention_id bigint
+, screen_name string
+)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY "\t" ESCAPED BY '\\'
+tblproperties ("skip.header.line.count"="1");
+LOAD DATA INPATH '/user/hue_username/Tweet_Mentions.tsv'
+INTO TABLE ds7330_term_raw_data.tweet_mentions;
+
+create table if not exists ds7330_term_raw_data.tweet_urls(
+tweet_id bigint
+, `text` string
+, `date` string
+, `time` string
+, user_id bigint
+, symbol string
+, url_id bigint
+, url string
+)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY "\t" ESCAPED BY '\\'
+tblproperties ("skip.header.line.count"="1");
+LOAD DATA INPATH '/user/hue_username/Tweet_URLS.tsv'
+INTO TABLE ds7330_term_raw_data.tweet_urls;
