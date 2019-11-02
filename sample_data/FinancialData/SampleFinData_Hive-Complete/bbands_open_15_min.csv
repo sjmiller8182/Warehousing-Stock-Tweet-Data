@@ -1,4 +1,4 @@
-"times","real_lower_band_high","real_middle_band_high","real_upper_band_high","symbol","market"
+"times","real_lower_band","real_middle_band","real_upper_band","symbol","market"
 "2019-10-09 15:30:00",24.7016,26.159,27.6163,"AAL","NASDAQ"
 "2019-10-09 15:15:00",24.7033,26.1576,27.6119,"AAL","NASDAQ"
 "2019-10-09 15:00:00",24.7043,26.157,27.6097,"AAL","NASDAQ"
