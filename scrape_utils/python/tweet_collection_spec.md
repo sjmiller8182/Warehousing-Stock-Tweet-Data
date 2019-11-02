@@ -15,12 +15,12 @@ This should be ok because MD5 has a very low collision rate.
 
 ### Tweets
 
-tweet_id: twitter generated id
-text: raw tweet text
-date: date from the time stamp (what format?)
-time: from from the time stamp (what format?)
-user_id: Value given by the users table
-symbol: any company symbols contained in the tweet (scan the tweet for symbols)
+* tweet_id: twitter generated id
+* text: raw tweet text
+* date: date from the time stamp (%y-%m-%d)
+* time: from of day from the time stamp (%H:%M:%S")
+* user_id: Value given by the users table
+* symbol: any company symbols contained in the tweet (scan the tweet for symbols)
 
 ### Twitter_Users
 
@@ -72,19 +72,23 @@ The data in `text` is mostly a placeholder.
   * www.wehateappleproducts.com
 
 Note the duplication of the information in columns `tweet_id` through `symbol`.
-
-**How to handle tweets that relate to more than one symbol?**
-Duplicate all information between `tweet_id` and `user_id` for each symbol?
+`tweet_symbol_id` is introduced to handle cases where there are multiple stock symbols in a single tweet.
+It is an integer generated from the combination of tweet_id and symbol.
 
 #### Mentions
 
 ```
-tweet_id,   text,                   date,       time,   user_id,    symbol,     mention_id,     screen_name
-123         some text about #AAPL   10/10/2019  1:3:00  1234        AAPL        1523            @name      
-123         some text about #AAPL   10/10/2019  1:3:00  1234        AAPL        4039            @name1     
-123         some text about #AAPL   10/10/2019  1:3:00  1234        AAPL        4982            @name2     
-123         some text about #AAPL   10/10/2019  1:3:00  1234        AAPL        3748            @name3     
-123         some text about #AAPL   10/10/2019  1:3:00  1234        AAPL        7362            @name4     
+tweet_id,   text,                   date,       time,   user_id,    symbol,     mention_id,     screen_name, tweet_symbol_id
+123         some text about #AAPL   10/10/2019  1:3:00  1234        AAPL        1523            @name        46572
+123         some text about #AAPL   10/10/2019  1:3:00  1234        AAPL        4039            @name1       46572
+123         some text about #AAPL   10/10/2019  1:3:00  1234        AAPL        4982            @name2       46572
+123         some text about #AAPL   10/10/2019  1:3:00  1234        AAPL        3748            @name3       46572
+123         some text about #AAPL   10/10/2019  1:3:00  1234        AAPL        7362            @name4       46572
+123         some text about #AAPL   10/10/2019  1:3:00  1234        TXNZ        1523            @name        75637
+123         some text about #AAPL   10/10/2019  1:3:00  1234        TXNZ        4039            @name1       75637
+123         some text about #AAPL   10/10/2019  1:3:00  1234        TXNZ        4982            @name2       75637
+123         some text about #AAPL   10/10/2019  1:3:00  1234        TXNZ        3748            @name3       75637
+123         some text about #AAPL   10/10/2019  1:3:00  1234        TXNZ        7362            @name4       75637
 ```
 
 #### Hashtags
