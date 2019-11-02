@@ -15,12 +15,12 @@ This should be ok because MD5 has a very low collision rate.
 
 ### Tweets
 
-tweet_id: twitter generated id
-text: raw tweet text
-date: date from the time stamp (what format?)
-time: from from the time stamp (what format?)
-user_id: Value given by the users table
-symbol: any company symbols contained in the tweet (scan the tweet for symbols)
+* tweet_id: twitter generated id
+* text: raw tweet text
+* date: date from the time stamp (what format?)
+* time: from from the time stamp (what format?)
+* user_id: Value given by the users table
+* symbol: any company symbols contained in the tweet (scan the tweet for symbols)
 
 ### Twitter_Users
 
