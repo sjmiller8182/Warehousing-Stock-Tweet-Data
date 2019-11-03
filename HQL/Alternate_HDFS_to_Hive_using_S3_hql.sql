@@ -6,7 +6,7 @@
 
 -- to drop a database with data: drop database databaseName cascade;
 set mapred.job.queue.name=root.batch; -- 1st run this
-set mapreduce.map.memory.mb=8096; --then run this
+set mapreduce.map.memory.mb=8096; --then run this 
 set mapreduce.reduce.memory.mb=10020; --then run this
 set mapreduce.job.reduces=30; --then this and after, run the DDL
 
@@ -23,7 +23,7 @@ times string
 )
 ROW FORMAT DELIMITED FIELDS TERMINATED BY "," ESCAPED BY '\\'
 tblproperties ("skip.header.line.count"="1");
-LOAD DATA INPATH '/user/hue_username/bbands_close_15_min.csv'
+LOAD DATA INPATH 's3a://aws-logs-093952938136-us-east-1/elasticmapreduce/j-XN0BA1CYK16P/DataWarehouse/bbands_close_15_min.csv'
 INTO TABLE ds7330_term_raw_data.bbands_close_15_min;
 
 create table if not exists ds7330_term_raw_data.bbands_high_15_min(
@@ -36,7 +36,7 @@ times string
 )
 ROW FORMAT DELIMITED FIELDS TERMINATED BY "," ESCAPED BY '\\'
 tblproperties ("skip.header.line.count"="1");
-LOAD DATA INPATH '/user/hue_username/bbands_high_15_min.csv'
+LOAD DATA INPATH 's3a://aws-logs-093952938136-us-east-1/elasticmapreduce/j-XN0BA1CYK16P/DataWarehouse/bbands_high_15_min.csv'
 INTO TABLE ds7330_term_raw_data.bbands_high_15_min;
 
 create table if not exists ds7330_term_raw_data.bbands_low_15_min(
@@ -49,7 +49,7 @@ times string
 )
 ROW FORMAT DELIMITED FIELDS TERMINATED BY "," ESCAPED BY '\\'
 tblproperties ("skip.header.line.count"="1");
-LOAD DATA INPATH '/user/hue_username/bbands_low_15_min.csv'
+LOAD DATA INPATH 's3a://aws-logs-093952938136-us-east-1/elasticmapreduce/j-XN0BA1CYK16P/DataWarehouse/bbands_low_15_min.csv'
 INTO TABLE ds7330_term_raw_data.bbands_low_15_min;
 
 create table if not exists ds7330_term_raw_data.bbands_open_15_min(
@@ -62,7 +62,7 @@ times string
 )
 ROW FORMAT DELIMITED FIELDS TERMINATED BY "," ESCAPED BY '\\'
 tblproperties ("skip.header.line.count"="1");
-LOAD DATA INPATH '/user/hue_username/bbands_open_15_min.csv' 
+LOAD DATA INPATH 's3a://aws-logs-093952938136-us-east-1/elasticmapreduce/j-XN0BA1CYK16P/DataWarehouse/bbands_open_15_min.csv' 
 INTO TABLE ds7330_term_raw_data.bbands_open_15_min;
 -------------------------------------------------------------------- end of bollinger bands
 
@@ -78,7 +78,7 @@ times string
 )
 ROW FORMAT DELIMITED FIELDS TERMINATED BY "," ESCAPED BY '\\'
 tblproperties ("skip.header.line.count"="1");
-LOAD DATA INPATH '/user/hue_username/daily_prices_20_years.csv' 
+LOAD DATA INPATH 's3a://aws-logs-093952938136-us-east-1/elasticmapreduce/j-XN0BA1CYK16P/DataWarehouse/daily_prices_20_years.csv' 
 INTO TABLE ds7330_term_raw_data.daily_prices_20_years;
 -------------------------------------------------------------------- end of daily prices
 
@@ -93,7 +93,7 @@ times string
 )
 ROW FORMAT DELIMITED FIELDS TERMINATED BY "," ESCAPED BY '\\'
 tblproperties ("skip.header.line.count"="1");
-LOAD DATA INPATH '/user/hue_username/exp_moving_average_15_min.csv' 
+LOAD DATA INPATH 's3a://aws-logs-093952938136-us-east-1/elasticmapreduce/j-XN0BA1CYK16P/DataWarehouse/exp_moving_average_15_min.csv' 
 INTO TABLE ds7330_term_raw_data.exp_moving_average_15_min;
 -------------------------------------------------------------------- end of exponential moving averages
 
@@ -109,7 +109,7 @@ times string
 )
 ROW FORMAT DELIMITED FIELDS TERMINATED BY "," ESCAPED BY '\\'
 tblproperties ("skip.header.line.count"="1");
-LOAD DATA INPATH '/user/hue_username/intraday_prices_15_min.csv' 
+LOAD DATA INPATH 's3a://aws-logs-093952938136-us-east-1/elasticmapreduce/j-XN0BA1CYK16P/DataWarehouse/intraday_prices_15_min.csv' 
 INTO TABLE ds7330_term_raw_data.intraday_prices_15_min;
 -------------------------------------------------------------------- end of intraday prices
 
@@ -123,7 +123,7 @@ times string
 )
 ROW FORMAT DELIMITED FIELDS TERMINATED BY "," ESCAPED BY '\\'
 tblproperties ("skip.header.line.count"="1");
-LOAD DATA INPATH '/user/hue_username/macd_close_15_min.csv' 
+LOAD DATA INPATH 's3a://aws-logs-093952938136-us-east-1/elasticmapreduce/j-XN0BA1CYK16P/DataWarehouse/macd_close_15_min.csv' 
 INTO TABLE ds7330_term_raw_data.macd_close_15_min;
 
 create table if not exists ds7330_term_raw_data.macd_high_15_min(
@@ -136,7 +136,7 @@ times string
 )
 ROW FORMAT DELIMITED FIELDS TERMINATED BY "," ESCAPED BY '\\'
 tblproperties ("skip.header.line.count"="1");
-LOAD DATA INPATH '/user/hue_username/macd_high_15_min.csv' 
+LOAD DATA INPATH 's3a://aws-logs-093952938136-us-east-1/elasticmapreduce/j-XN0BA1CYK16P/DataWarehouse/macd_high_15_min.csv' 
 INTO TABLE ds7330_term_raw_data.macd_high_15_min;
 
 create table if not exists ds7330_term_raw_data.macd_low_15_min(
@@ -149,7 +149,7 @@ times string
 )
 ROW FORMAT DELIMITED FIELDS TERMINATED BY "," ESCAPED BY '\\'
 tblproperties ("skip.header.line.count"="1");
-LOAD DATA INPATH '/user/hue_username/macd_low_15_min.csv' 
+LOAD DATA INPATH 's3a://aws-logs-093952938136-us-east-1/elasticmapreduce/j-XN0BA1CYK16P/DataWarehouse/macd_low_15_min.csv' 
 INTO TABLE ds7330_term_raw_data.macd_low_15_min;
 
 create table if not exists ds7330_term_raw_data.macd_open_15_min(
@@ -162,7 +162,7 @@ times string
 )
 ROW FORMAT DELIMITED FIELDS TERMINATED BY "," ESCAPED BY '\\'
 tblproperties ("skip.header.line.count"="1");
-LOAD DATA INPATH '/user/hue_username/macd_open_15_min.csv' 
+LOAD DATA INPATH 's3a://aws-logs-093952938136-us-east-1/elasticmapreduce/j-XN0BA1CYK16P/DataWarehouse/macd_open_15_min.csv' 
 INTO TABLE ds7330_term_raw_data.macd_open_15_min;
 -------------------------------------------------------------------- end of moving average convergence/divergence
 
@@ -175,7 +175,7 @@ times string
 )
 ROW FORMAT DELIMITED FIELDS TERMINATED BY "," ESCAPED BY '\\'
 tblproperties ("skip.header.line.count"="1");
-LOAD DATA INPATH '/user/hue_username/stochastic_15_min.csv' 
+LOAD DATA INPATH 's3a://aws-logs-093952938136-us-east-1/elasticmapreduce/j-XN0BA1CYK16P/DataWarehouse/stochastic_15_min.csv' 
 INTO TABLE ds7330_term_raw_data.stochastic_15_min;
 -------------------------------------------------------------------- end of stochastic oscillator indicators
 
@@ -185,7 +185,7 @@ symbol string
 )
 ROW FORMAT DELIMITED FIELDS TERMINATED BY "\t" ESCAPED BY '\\'
 tblproperties ("skip.header.line.count"="1");
-LOAD DATA INPATH '/user/hue_username/NYSE_Symbols.txt' 
+LOAD DATA INPATH 's3a://aws-logs-093952938136-us-east-1/elasticmapreduce/j-XN0BA1CYK16P/DataWarehouse/NYSE_Symbols.txt' 
 INTO TABLE ds7330_term_raw_data.nyse_symbols;
 
 create table if not exists ds7330_term_raw_data.nasdaq_symbols(
@@ -194,7 +194,7 @@ symbol string
 )
 ROW FORMAT DELIMITED FIELDS TERMINATED BY "\t" ESCAPED BY '\\'
 tblproperties ("skip.header.line.count"="1");
-LOAD DATA INPATH '/user/hue_username/NASDAQ_Symbols.txt'
+LOAD DATA INPATH 's3a://aws-logs-093952938136-us-east-1/elasticmapreduce/j-XN0BA1CYK16P/DataWarehouse/NASDAQ_Symbols.txt'
 INTO TABLE ds7330_term_raw_data.nasdaq_symbols;
 -------------------------------------------------------------------- end of nyse and nasdaq symbols
 
@@ -212,7 +212,7 @@ tweet_id bigint
 )
 ROW FORMAT DELIMITED FIELDS TERMINATED BY "," ESCAPED BY '\\'
 tblproperties ("skip.header.line.count"="1");
-LOAD DATA INPATH '/user/hue_username/hashtags.csv'
+LOAD DATA INPATH 's3a://aws-logs-093952938136-us-east-1/elasticmapreduce/j-XN0BA1CYK16P/DataWarehouse/hashtags.csv'
 INTO TABLE ds7330_term_raw_data.tweet_hashtags;
 
 create table if not exists ds7330_term_raw_data.tweet_mentions(
@@ -229,7 +229,7 @@ tweet_id bigint
 )
 ROW FORMAT DELIMITED FIELDS TERMINATED BY "," ESCAPED BY '\\'
 tblproperties ("skip.header.line.count"="1");
-LOAD DATA INPATH '/user/hue_username/mentions.csv'
+LOAD DATA INPATH 's3a://aws-logs-093952938136-us-east-1/elasticmapreduce/j-XN0BA1CYK16P/DataWarehouse/mentions.csv'
 INTO TABLE ds7330_term_raw_data.tweet_mentions;
 
 create table if not exists ds7330_term_raw_data.tweet_urls(
@@ -246,5 +246,5 @@ tweet_id bigint
 )
 ROW FORMAT DELIMITED FIELDS TERMINATED BY "," ESCAPED BY '\\'
 tblproperties ("skip.header.line.count"="1");
-LOAD DATA INPATH '/user/hue_username/urls.csv'
+LOAD DATA INPATH 's3a://aws-logs-093952938136-us-east-1/elasticmapreduce/j-XN0BA1CYK16P/DataWarehouse/urls.csv'
 INTO TABLE ds7330_term_raw_data.tweet_urls;
