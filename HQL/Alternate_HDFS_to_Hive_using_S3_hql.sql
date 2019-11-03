@@ -8,7 +8,8 @@
 set mapred.job.queue.name=root.batch; -- 1st run this
 set mapreduce.map.memory.mb=8096; --then run this 
 set mapreduce.reduce.memory.mb=10020; --then run this
-set mapreduce.job.reduces=30; --then this and after, run the DDL
+set mapreduce.job.reduces=30; 
+--set mapreduce.block.size.property = 124;--then this and after, run the DDL
 
 create database if not exists ds7330_term_project; -- this is the normalized schema; only the tables in the E-R diagram go here
 create database if not exists ds7330_term_raw_data; --this is the database for the data tables we need to create the project database
@@ -62,7 +63,7 @@ times string
 )
 ROW FORMAT DELIMITED FIELDS TERMINATED BY "," ESCAPED BY '\\'
 tblproperties ("skip.header.line.count"="1");
-LOAD DATA INPATH 's3a://aws-logs-093952938136-us-east-1/elasticmapreduce/j-XN0BA1CYK16P/DataWarehouse/bbands_open_15_min.csv' 
+LOAD DATA INPATH 's3a://aws-logs-093952938136-us-east-1/elasticmapreduce/j-XN0BA1CYK16P/DataWarehouse/bbands_open_15_min.csv'
 INTO TABLE ds7330_term_raw_data.bbands_open_15_min;
 -------------------------------------------------------------------- end of bollinger bands
 
@@ -78,7 +79,7 @@ times string
 )
 ROW FORMAT DELIMITED FIELDS TERMINATED BY "," ESCAPED BY '\\'
 tblproperties ("skip.header.line.count"="1");
-LOAD DATA INPATH 's3a://aws-logs-093952938136-us-east-1/elasticmapreduce/j-XN0BA1CYK16P/DataWarehouse/daily_prices_20_years.csv' 
+LOAD DATA INPATH 's3a://aws-logs-093952938136-us-east-1/elasticmapreduce/j-XN0BA1CYK16P/DataWarehouse/daily_prices_20_years.csv'
 INTO TABLE ds7330_term_raw_data.daily_prices_20_years;
 -------------------------------------------------------------------- end of daily prices
 
@@ -93,7 +94,7 @@ times string
 )
 ROW FORMAT DELIMITED FIELDS TERMINATED BY "," ESCAPED BY '\\'
 tblproperties ("skip.header.line.count"="1");
-LOAD DATA INPATH 's3a://aws-logs-093952938136-us-east-1/elasticmapreduce/j-XN0BA1CYK16P/DataWarehouse/exp_moving_average_15_min.csv' 
+LOAD DATA INPATH 's3a://aws-logs-093952938136-us-east-1/elasticmapreduce/j-XN0BA1CYK16P/DataWarehouse/exp_moving_average_15_min.csv'
 INTO TABLE ds7330_term_raw_data.exp_moving_average_15_min;
 -------------------------------------------------------------------- end of exponential moving averages
 
@@ -109,7 +110,7 @@ times string
 )
 ROW FORMAT DELIMITED FIELDS TERMINATED BY "," ESCAPED BY '\\'
 tblproperties ("skip.header.line.count"="1");
-LOAD DATA INPATH 's3a://aws-logs-093952938136-us-east-1/elasticmapreduce/j-XN0BA1CYK16P/DataWarehouse/intraday_prices_15_min.csv' 
+LOAD DATA INPATH 's3a://aws-logs-093952938136-us-east-1/elasticmapreduce/j-XN0BA1CYK16P/DataWarehouse/intraday_prices_15_min.csv'
 INTO TABLE ds7330_term_raw_data.intraday_prices_15_min;
 -------------------------------------------------------------------- end of intraday prices
 
@@ -123,7 +124,7 @@ times string
 )
 ROW FORMAT DELIMITED FIELDS TERMINATED BY "," ESCAPED BY '\\'
 tblproperties ("skip.header.line.count"="1");
-LOAD DATA INPATH 's3a://aws-logs-093952938136-us-east-1/elasticmapreduce/j-XN0BA1CYK16P/DataWarehouse/macd_close_15_min.csv' 
+LOAD DATA INPATH 's3a://aws-logs-093952938136-us-east-1/elasticmapreduce/j-XN0BA1CYK16P/DataWarehouse/macd_close_15_min.csv'
 INTO TABLE ds7330_term_raw_data.macd_close_15_min;
 
 create table if not exists ds7330_term_raw_data.macd_high_15_min(
@@ -136,7 +137,7 @@ times string
 )
 ROW FORMAT DELIMITED FIELDS TERMINATED BY "," ESCAPED BY '\\'
 tblproperties ("skip.header.line.count"="1");
-LOAD DATA INPATH 's3a://aws-logs-093952938136-us-east-1/elasticmapreduce/j-XN0BA1CYK16P/DataWarehouse/macd_high_15_min.csv' 
+LOAD DATA INPATH 's3a://aws-logs-093952938136-us-east-1/elasticmapreduce/j-XN0BA1CYK16P/DataWarehouse/macd_high_15_min.csv'
 INTO TABLE ds7330_term_raw_data.macd_high_15_min;
 
 create table if not exists ds7330_term_raw_data.macd_low_15_min(
@@ -149,7 +150,7 @@ times string
 )
 ROW FORMAT DELIMITED FIELDS TERMINATED BY "," ESCAPED BY '\\'
 tblproperties ("skip.header.line.count"="1");
-LOAD DATA INPATH 's3a://aws-logs-093952938136-us-east-1/elasticmapreduce/j-XN0BA1CYK16P/DataWarehouse/macd_low_15_min.csv' 
+LOAD DATA INPATH 's3a://aws-logs-093952938136-us-east-1/elasticmapreduce/j-XN0BA1CYK16P/DataWarehouse/macd_low_15_min.csv'
 INTO TABLE ds7330_term_raw_data.macd_low_15_min;
 
 create table if not exists ds7330_term_raw_data.macd_open_15_min(
@@ -162,7 +163,7 @@ times string
 )
 ROW FORMAT DELIMITED FIELDS TERMINATED BY "," ESCAPED BY '\\'
 tblproperties ("skip.header.line.count"="1");
-LOAD DATA INPATH 's3a://aws-logs-093952938136-us-east-1/elasticmapreduce/j-XN0BA1CYK16P/DataWarehouse/macd_open_15_min.csv' 
+LOAD DATA INPATH 's3a://aws-logs-093952938136-us-east-1/elasticmapreduce/j-XN0BA1CYK16P/DataWarehouse/macd_open_15_min.csv'
 INTO TABLE ds7330_term_raw_data.macd_open_15_min;
 -------------------------------------------------------------------- end of moving average convergence/divergence
 
@@ -175,7 +176,7 @@ times string
 )
 ROW FORMAT DELIMITED FIELDS TERMINATED BY "," ESCAPED BY '\\'
 tblproperties ("skip.header.line.count"="1");
-LOAD DATA INPATH 's3a://aws-logs-093952938136-us-east-1/elasticmapreduce/j-XN0BA1CYK16P/DataWarehouse/stochastic_15_min.csv' 
+LOAD DATA INPATH 's3a://aws-logs-093952938136-us-east-1/elasticmapreduce/j-XN0BA1CYK16P/DataWarehouse/stochastic_15_min.csv'
 INTO TABLE ds7330_term_raw_data.stochastic_15_min;
 -------------------------------------------------------------------- end of stochastic oscillator indicators
 
@@ -185,7 +186,7 @@ symbol string
 )
 ROW FORMAT DELIMITED FIELDS TERMINATED BY "\t" ESCAPED BY '\\'
 tblproperties ("skip.header.line.count"="1");
-LOAD DATA INPATH 's3a://aws-logs-093952938136-us-east-1/elasticmapreduce/j-XN0BA1CYK16P/DataWarehouse/NYSE_Symbols.txt' 
+LOAD DATA INPATH 's3a://aws-logs-093952938136-us-east-1/elasticmapreduce/j-XN0BA1CYK16P/DataWarehouse/NYSE_Symbols.txt'
 INTO TABLE ds7330_term_raw_data.nyse_symbols;
 
 create table if not exists ds7330_term_raw_data.nasdaq_symbols(
@@ -199,14 +200,14 @@ INTO TABLE ds7330_term_raw_data.nasdaq_symbols;
 -------------------------------------------------------------------- end of nyse and nasdaq symbols
 
 create table if not exists ds7330_term_raw_data.tweet_hashtags(
-tweet_id bigint
+tweet_id string
 , `text` string
 , `time` string
 , `date` string
-, user_id bigint
+, user_id string
 , `user` string
 , symbol string
-, hashtag_id bigint
+, hashtag_id string
 , hashtag string
 , tweet_symbol_id string
 )
@@ -216,14 +217,14 @@ LOAD DATA INPATH 's3a://aws-logs-093952938136-us-east-1/elasticmapreduce/j-XN0BA
 INTO TABLE ds7330_term_raw_data.tweet_hashtags;
 
 create table if not exists ds7330_term_raw_data.tweet_mentions(
-tweet_id bigint
+tweet_id string
 , `text` string
 , `time` string
 , `date` string
-, user_id bigint
+, user_id string
 , `user` string
 , symbol string
-, mention_id bigint
+, mention_id string
 , mention string
 , tweet_symbol_id string
 )
@@ -233,14 +234,14 @@ LOAD DATA INPATH 's3a://aws-logs-093952938136-us-east-1/elasticmapreduce/j-XN0BA
 INTO TABLE ds7330_term_raw_data.tweet_mentions;
 
 create table if not exists ds7330_term_raw_data.tweet_urls(
-tweet_id bigint
+tweet_id string
 , `text` string
 , `time` string
 , `date` string
-, user_id bigint
+, user_id string
 , `user` string
 , symbol string
-, url_id bigint
+, url_id string
 , url string
 , tweet_symbol_id string
 )

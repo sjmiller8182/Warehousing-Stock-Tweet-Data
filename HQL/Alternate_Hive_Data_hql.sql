@@ -1,5 +1,6 @@
 --set mapred.tasktracker.reduce|map.tasks.maximum;
 set mapred.job.queue.name=root.batch; --1st run this
+-- @@Map tutorial at: https://hadoop.apache.org/docs/r1.2.1/mapred_tutorial.html#Mapper
 set mapreduce.map.memory.mb=8096; --then run this
 set mapreduce.reduce.memory.mb=10020; --then run this
 set mapreduce.job.reduces=30; --then run this
