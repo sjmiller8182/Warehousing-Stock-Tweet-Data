@@ -118,18 +118,18 @@ create table if not exists ds7330_term_project.bollinger_intraday(
 	, report_time string
 	, symbol string
 	, market string
-	, open_bollinger_band_low double
-	, open_bollinger_band_close double
-	, open_bollinger_band_high double
-	, close_bollinger_band_open double
-	, close_bollinger_band_close double
-	, close_bollinger_band_high double
-	, high_bollinger_band_low double
-	, high_bollinger_band_close double
-	, high_bollinger_band_high double
-	, low_bollinger_band_open double
-	, low_bollinger_band_close double
-	, low_bollinger_band_high double
+	, open_bollinger_band_lower double
+	, open_bollinger_band_middle double
+	, open_bollinger_band_upper double
+	, close_bollinger_band_lower double
+	, close_bollinger_band_middle double
+	, close_bollinger_band_upper double
+	, high_bollinger_band_lower double
+	, high_bollinger_band_middle double
+	, high_bollinger_band_upper double
+	, low_bollinger_band_lower double
+	, low_bollinger_band_middle double
+	, low_bollinger_band_upper double
 );
 
 create table if not exists ds7330_term_project.moving_averages_intraday(
@@ -494,7 +494,7 @@ insert into ds7330_term_project.intraday(
 
 insert into ds7330_term_project.bollinger_intraday(
     Select
-    obb.times as report_dtm
+    regexp_replace(obb.times, '"', ''), 1, 10) as report_dtm
     , trim(substring(regexp_replace(obb.times, '"', ''), 1, 10)) as report_date
     , trim(substring(regexp_replace(obb.times, '"', ''), (length(regexp_replace(obb.times, '"', ''))-1)-6, length(obb.times)))  as report_time
 	, regexp_replace(obb.symbol, '"', '') as symbol
