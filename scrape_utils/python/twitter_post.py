@@ -1,6 +1,11 @@
+
+# imports
 import hashlib
 import json
 import string
+import glob
+import csv
+import os
 from datetime import datetime
 from typing import List, Tuple, Dict
 
@@ -100,7 +105,7 @@ class Tweet:
         created_time = self._string_to_datetime(tweet['created_at'])
 
         tweet_id = tweet['id']
-        text = tweet['full_text']
+        text = tweet['full_text'].translate(str.maketrans('', '', string.punctuation)).replace('\n','')
         time = created_time.strftime("%H:%M:%S")
         date = created_time.strftime("%y-%m-%d")
         twitter_user = tweet['user']
@@ -194,3 +199,70 @@ class Tweet:
         return {'hashtags':hashtag_rows,
                 'urls':url_rows,
                 'mentions':mention_rows}
+
+def read_stock_listing(exchange: str) -> List[str]:
+    """
+    Read the stock listings for NYSE or NASDAQ
+
+    exchange: (NYSE | NASDAQ)
+    """
+
+    symbols = list()
+    filename = str()
+    filename = exchange.upper()
+
+    with open('../stock_symbols/sym_' + filename, 'r') as stock_list_file:
+        for line in stock_list_file:
+            line = line.strip()
+            symbols.append(line)
+    return symbols
+
+def post_process_tweets(path: str) -> None:
+    """ 
+    Post process a given set of tweets. Processing is not recursive.
+
+    path: path to tweets
+    """
+
+    tweet_precessor = Tweet()
+    tweet_rows = list()
+    sym_nyse = list()
+    sym_nasdaq = list()
+
+    # glob the tweets
+    tweets = glob.glob(path + '/*.txt')
+
+    # read in the stock symbols
+    sym_nyse += read_stock_listing('NYSE') 
+    sym_nasdaq += read_stock_listing('NASDAQ') 
+
+    # process the tweets
+    for t in tweets:
+        tweet_precessor.read_json(t)
+        tweet_precessor.find_symbols([sym_nasdaq,sym_nyse])
+        tweet_rows.append(tweet_precessor.to_rows())
+        files = ['hashtags','urls','mentions']
+
+    for filename in files:
+        if not os.path.exists('./' + filename + '.csv'):
+            with open(filename + '.csv', 'w', newline='') as csvfile:
+                writer = csv.writer(csvfile, delimiter=',')
+                writer.writerow(['tweet_id', 
+                                'text',
+                                'date',
+                                'time',
+                                'user_id',
+                                'user',
+                                'symbol',
+                                filename[:-1] + '_id',
+                                filename[:-1],
+                                'tweet_symbol_id'])
+
+    for filename in files:
+        with open(filename + '.csv', 'a', newline='') as csvfile:
+            writer = csv.writer(csvfile, delimiter=',')
+            for d in tweet_rows:
+                if len([filename]) > 0:
+                    for item in d[filename]:
+                        writer.writerow(item)
+

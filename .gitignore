@@ -1,9 +1,18 @@
 # project specific ignores
 
+# backup MySQL files
 reports/support/schemas/*.bak
+
+# temp files from tex compile
 reports/support/tex/*.log
 reports/support/tex/*.aux
 reports/support/tex/*.gz
+
+# temp from vscode IDE
+.vscode/
+
+# scraped data files
+scrape_utils/python/data/
 
 # python ignores
 
