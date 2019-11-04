@@ -3,18 +3,18 @@
 
 The following table shows milestone identified to complete the project.
 
-| Milestones   |      Planned Completion      | Actual Completion  | Status |
-|----------|:-------------:|:------:|:--:|
-| AWS infrastructure Setup          | Oct. 6, 2019 | Oct. 6, 2019 | Complete |
-| Initial Data Collection Complete  | Oct. 6, 2019 | Oct. 6, 2019 | Complete |
-| Design Normalized Schema          | Oct. 27, 2019 | Oct. 27, 2019 | Complete |
-| Design Optimized Schema           | Nov. 27, 2019  |  | In Progress |
-| Integrate All Tools (full system) | Nov. 3, 2019  |  | In Progress |
-| Verify Data WareHouse Builds (both schemas) | Nov. 3, 2019 |  | In Progress  |
-| Rough Draft of Paper              | Nov. 10, 2019 |  |  |
-| Test Performance                  | Nov. 17, 2019 |  |  |
-| Complete Final Presentation       | Dec. 1, 2019  |  |  |
-| Complete Final Paper              | Dec. 3, 2019 |  |  |
+| Milestones                                  | Planned Completion | Actual Completion  | Status   |
+|---------------------------------------------|:------------------:|:------------------:|:--------:|
+| AWS infrastructure Setup                    | Oct. 6, 2019       | Oct. 6, 2019       | Complete |
+| Initial Data Collection Complete            | Oct. 6, 2019       | Oct. 6, 2019       | Complete |
+| Design Normalized Schema                    | Oct. 27, 2019      | Oct. 27, 2019      | Complete |
+| Design Optimized Schema                     | Oct. 27, 2019      | Nov. 3, 2019       | Complete |
+| Integrate All Tools (full system)           | Nov. 3, 2019       |  | In Progress |
+| Verify Data WareHouse Builds (both schemas) | Nov. 3, 2019       | Nov. 3, 2019       | Complete  |
+| Rough Draft of Paper                        | Nov. 10, 2019      |  | In Progress |
+| Test Performance                            | Nov. 17, 2019      |  |  |
+| Complete Final Presentation                 | Dec. 1, 2019       |  |  |
+| Complete Final Paper                        | Dec. 3, 2019       |  |  |
 
 # Detailed Steps
 
@@ -70,8 +70,10 @@ Two schemas will be designed.
 One will be a general purpose normalized schema and the second will be a non-normalized optimized schema.
 We will look at the difference in performance in querying data from the datalake under these designs.
 
+### Schemas
+
 - [X] General purpose schema in 3NF
-- [ ] Optimized schema
+- [X] Optimized schema
 
 ## Potential Extensions
 
