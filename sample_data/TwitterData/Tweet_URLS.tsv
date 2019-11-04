@@ -1,6 +1,0 @@
-tweet_id	text	date	time	user_id	symbol	URL_id	URL
-123	some text about #AAPL	10/10/2019	1:03:00	1234	AAPL	1523	www.apple.com
-123	some text about #AAPL	10/11/2019	1:03:00	1234	AAPL	4039	www.niceapple.com
-123	some text about #AAPL	10/12/2019	1:03:00	1234	AAPL	4982	www.weirdapple.com
-123	some text about #AAPL	10/13/2019	1:03:00	1234	AAPL	3748	www.coolapple.com
-123	some text about #AAPL	10/14/2019	1:03:00	1234	AAPL	7362	www.wehateappleproducts.com

@@ -1,21 +1,20 @@
 import hashlib
 import json
+import string
 from datetime import datetime
-from typing import List, Tuple
+from typing import List, Tuple, Dict
 
-def get_md5(conv_value: str) -> int:
-    """
-    Convert a string to an MD5 value
-    """
-    md5 = hashlib.md5(conv_value.encode('utf-8'))
-    return int(md5.hexdigest())
+"""
+This file contains a class Tweet used for post processing JSON representations of tweets
 
-def string_to_datetime(date_str: str):
-    """
-    Turns a string including date and time like this - Sun Jul 01 21:06:07 +0000 2018 - to a Python datetime object
-    like this - datetime.datetime(2018, 7, 1, 21, 6, 7, tzinfo=datetime.timezone.utc)
-    """
-    return datetime.strptime(date_str, '%a %b %d %H:%M:%S %z %Y')
+**Example**
+
+tweet = Tweet()
+tweet.read_json("./tweets_2019-10-25/SJosephBurns_2019-10-25_01:00:33+00:00.txt")
+tweet.find_symbols([sym_nasdaq,sym_nyse])
+tweet.to_rows()
+
+"""
 
 class Tweet:
     """
@@ -37,28 +36,54 @@ class Tweet:
         self.mentions = list()      # list of tuples (id, value)
         self.hashtags = list()      # list of tuples
         self.urls = list()          # list of tuples
-
+    
+    def get_state(self) -> List:
+        return [self.tweet_id,
+                self.text,
+                self.time,
+                self.date,
+                self.user_id,
+                self.symbols,
+                self.mentions,
+                self.urls,
+                self.hashtags]
+    
     @staticmethod
-    def _get_entities_from_listing(entity_list, key: str) -> List[Tuple]:
+    def _string_to_datetime(date_str: str):
+        """
+        Turns a string including date and time like this - Sun Jul 01 21:06:07 +0000 2018 - to a Python datetime object
+        like this - datetime.datetime(2018, 7, 1, 21, 6, 7, tzinfo=datetime.timezone.utc)
+        """
+        return datetime.strptime(date_str, '%a %b %d %H:%M:%S %z %Y')
+    
+    @staticmethod
+    def _get_md5(conv_value: str) -> int:
+        """
+        Convert a string to an MD5 value
+        """
+        md5 = hashlib.md5(conv_value.encode('utf-8'))
+        return int(md5.hexdigest(), 16)
+    
+    def _get_entities_from_listing(self, entity_list, key: str) -> List[Tuple]:
         """
         Get tweet entities from list of them. 
         Can be used to get urls, mentions, and hashtags
         """
         items = list()
-        for item in entity_list:
-            ent = item[key]
-            # if this is a mention or a hashtag remove the 
-            # heading symbols
-            if 'http:' not in ent:
-                ent.replace('#','').replace('@','')
-            if key == 'mention':
-                ent_id = item['mention_id']
-            else:
-                ent_id = get_md5(ent)
+        ent_id = 1
+        for item in entity_list[key]:
+            if key == 'user_mentions':
+                ent = item['screen_name']
+                ent_id = item['id_str']
+            elif key == 'urls':
+                ent = item['expanded_url']
+                ent_id = self._get_md5(item['expanded_url'])
+            elif key == 'hashtags':
+                ent = item['text']
+                ent_id = self._get_md5(item['text'])
             items.append((ent_id,ent))
         return items
 
-    @staticmethod
     def _get_attributes(self, tweet) -> List:
         """
         Extract the following from a tweet:
@@ -72,22 +97,19 @@ class Tweet:
         * hashtags
         * urls
         """
-        tweet_main = tweet['statuses'][0]
-        created_time = string_to_datetime(tweet_main['created_at'])
+        created_time = self._string_to_datetime(tweet['created_at'])
 
-        tweet_id = tweet_main['id']
-        text = tweet_main['text']
+        tweet_id = tweet['id']
+        text = tweet['full_text']
         time = created_time.strftime("%H:%M:%S")
         date = created_time.strftime("%y-%m-%d")
-
         twitter_user = tweet['user']
         twitter_user = (twitter_user['id'],
                         twitter_user['screen_name'])
-
-        entities = tweet_main['entities']
-        mentions = self._get_entities_from_listing(entities,'mention')
-        urls = self._get_entities_from_listing(entities,'expanded_url')
-        hashtags = self._get_entities_from_listing(entities,'hashtag')
+        entities = tweet['entities']
+        mentions = self._get_entities_from_listing(entities,'user_mentions')
+        urls = self._get_entities_from_listing(entities,'urls')
+        hashtags = self._get_entities_from_listing(entities,'hashtags')
 
         # return values as a list
         return [tweet_id,
@@ -98,10 +120,77 @@ class Tweet:
                 mentions,
                 urls,
                 hashtags]
-
+    
     def read_json(self, path: str) -> None:
         with open(path) as tweet_file:
             content = json.load(tweet_file)
-            attributes = self._get_attributes(content)
+            # get the attributes from tweets
+            [self.tweet_id,
+            self.text,
+            self.date,
+            self.time,
+            self.user_id,
+            self.mentions,
+            self.urls,
+            self.hashtags] = self._get_attributes(content)
+    
+    @staticmethod
+    def _get_symbols(text: str, symbols_lists: List[List[str]]) -> List[str]:
+        """
+        Extract stock symbols from tweet string based on input lists
+        """
+        symbols = list()
+        listed_text = text.translate(str.maketrans('', '', string.punctuation)).split(' ')
+        for sym_list in symbols_lists:
+            symbols = symbols + list(set(listed_text) & set(sym_list))
+        return symbols
+    
+    def find_symbols(self, symbols_lists: List[List[str]]) -> None:
+        self.symbols = self._get_symbols(self.text, symbols_lists)
+        
+    def to_rows(self) -> Dict[str,List]:
+        """
+        Generate rows from a tweet.
+        There is a set of rows for mentions, hashtags, and urls
+        """
+        base_row = list()
+        mention_rows = list()
+        url_rows = list()
+        hashtag_rows = list()
+        
+        # get the row base
+        base_row += [self.tweet_id,
+                     self.text,
+                     self.date,
+                     self.time,
+                     self.user_id[0],
+                     self.user_id[1]]
+        
+        if len(self.symbols) == 0:
+            self.symbols = ['']
+            
+        for symbol in self.symbols:
+            # mention suffix of rows
+            for mention in self.mentions:
+                mention_rows.append(base_row +
+                                    [symbol] +
+                                    list(mention) +
+                                    [str(self._get_md5(symbol + str(self.tweet_id)))])
 
+            # url suffix of rows
+            for url in self.urls:
+                url_rows.append(base_row + 
+                                [symbol] + 
+                                list(url) +
+                                [str(self._get_md5(symbol + str(self.tweet_id)))])
 
+            # hashtag suffix of rows
+            for hashtag in self.hashtags:
+                hashtag_rows.append(base_row +
+                                    [symbol] +
+                                    list(hashtag) +
+                                    [str(self._get_md5(symbol + str(self.tweet_id)))])
+
+        return {'hashtags':hashtag_rows,
+                'urls':url_rows,
+                'mentions':mention_rows}

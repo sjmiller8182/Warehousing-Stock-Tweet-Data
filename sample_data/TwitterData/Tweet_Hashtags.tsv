@@ -1,6 +1,0 @@
-tweet_id	text	date	time	user_id	symbol	hashtag_id	hashtag
-123	some text about #AAPL	10/10/2019	1:03:00	1234	AAPL	1523	AAPL
-123	some text about #AAPL	10/11/2019	1:03:00	1234	AAPL	4039	Great
-123	some text about #AAPL	10/12/2019	1:03:00	1234	AAPL	4982	BuyMoreApple
-123	some text about #AAPL	10/13/2019	1:03:00	1234	AAPL	3748	Siri
-123	some text about #AAPL	10/14/2019	1:03:00	1234	AAPL	7362	WhyTimCookWhy

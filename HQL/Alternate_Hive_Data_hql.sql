@@ -1,5 +1,6 @@
 --set mapred.tasktracker.reduce|map.tasks.maximum;
 set mapred.job.queue.name=root.batch; --1st run this
+-- @@Map tutorial at: https://hadoop.apache.org/docs/r1.2.1/mapred_tutorial.html#Mapper
 set mapreduce.map.memory.mb=8096; --then run this
 set mapreduce.reduce.memory.mb=10020; --then run this
 set mapreduce.job.reduces=30; --then run this
@@ -98,19 +99,40 @@ insert into ds7330_term_project.daily( --this has been tested with data 11-2-201
 ----------------------------------------------------------------------------------------------
 insert into ds7330_term_project.intraday( --this has been tested with data 11-2-2019
 	Select
-	 regexp_replace(intra.times, '"', '') as report_dtm --primary key
-	, trim(substring(regexp_replace(intra.times, '"', ''), 1, 10)) as report_date
-    , trim(substring(regexp_replace(intra.times, '"', ''), (length(regexp_replace(intra.times, '"', ''))-1)-6, length(intra.times)))  as report_time -- foreign key
-	, regexp_replace(intra.symbol, '"', '') as symbol -- foreign key
-	, regexp_replace(intra.market, '"', '') as market
-	, intra.volume as trade_volume
-	, intra.open as open_price
-	, intra.close as close_price
-	, intra.high as high_price
-	, intra.low as low_price
-    , obb.lower_bband_open as open_bollinger_band_lower
-	, obb.middle_bband_open as open_bollinger_band_middle
-	, obb.upper_bband_open as open_bollinger_band_upper
+	 regexp_replace(times, '"', '') as report_dtm --primary key
+	, trim(substring(regexp_replace(times, '"', ''), 1, 10)) as report_date
+    , trim(substring(regexp_replace(times, '"', ''), (length(regexp_replace(times, '"', ''))-1)-6, length(times)))  as report_time -- foreign key
+	, regexp_replace(symbol, '"', '') as symbol -- foreign key
+	, regexp_replace(market, '"', '') as market
+	, volume as trade_volume
+	, open as open_price
+	, close as close_price
+	, high as high_price
+	, low as low_price
+	from ds7330_term_raw_data.intraday_prices_15_min
+	group by 
+	regexp_replace(times, '"', '')
+	, trim(substring(regexp_replace(times, '"', ''), 1, 10))
+	, trim(substring(regexp_replace(times, '"', ''), (length(regexp_replace(times, '"', ''))-1)-6, length(times)))
+	, regexp_replace(symbol, '"', '')
+	, regexp_replace(market, '"','')
+	, volume
+	, open
+	, close
+	, high
+	, low
+);
+
+insert into ds7330_term_project.bollinger_intraday(
+    Select
+    obb.times as report_dtm
+    , trim(substring(regexp_replace(obb.times, '"', ''), 1, 10)) as report_date
+    , trim(substring(regexp_replace(obb.times, '"', ''), (length(regexp_replace(obb.times, '"', ''))-1)-6, length(obb.times)))  as report_time -- foreign key
+	, regexp_replace(obb.symbol, '"', '') as symbol -- foreign key
+	, regexp_replace(obb.market, '"', '') as market
+    , obb.real_lower_band as open_bollinger_band_lower
+	, obb.real_middle_band as open_bollinger_band_middle
+	, obb.real_upper_band as open_bollinger_band_upper
 	, cbb.lower_bband_close as close_bollinger_band_lower
 	, cbb.middle_bband_close as close_bollinger_band_middle
 	, cbb.upper_bband_close as close_bollinger_band_upper
@@ -120,43 +142,7 @@ insert into ds7330_term_project.intraday( --this has been tested with data 11-2-
 	, lbb.lower_bband_low as low_bollinger_band_lower
 	, lbb.middle_bband_low as low_bollinger_band_middle
 	, lbb.upper_bband_low as low_bollinger_band_upper
-	, mcdo.macd_open as macd_open
-	, mcdo.macd_hist_open as macd_hist_open
-	, mcdo.mkacd_signal_open as mkacd_signal_open
-	, mcdc.macd_close as macd_close
-	, mcdc.macd_hist_close as macd_hist_close
-	, mcdc.mkacd_signal_close as mkacd_signal_close
-	, mcdh.macd_high as macd_high
-	, mcdh.macd_hist_high as macd_hist_high
-	, mcdh.mkacd_signal_high as mkacd_signal_high
-	, mcdl.macd_low as macd_low
-	, mcdl.macd_hist_low as macd_hist_low
-	, mcdl.mkacd_signal_low as mkacd_signal_low
-	, stoch.slowd as slowd_stochastic
-	, stoch.slowk as slowk_stochastic
-	, exp.exponential_ma_open as exponential_ma_open
-	, exp.exponential_ma_high as exponential_ma_high
-	, exp.exponential_ma_low as exponential_ma_low
-	, exp.exponential_ma_close as exponential_ma_close
-	from ds7330_term_raw_data.intraday_prices_15_min intra
-	join (
-		  select
-		  	times
-		  	, real_lower_band as lower_bband_open
-		  	, real_middle_band as middle_bband_open
-		  	, real_upper_band as upper_bband_open
-		  	, symbol
-		  	, market
-		  from ds7330_term_raw_data.bbands_open_15_min
-		  group by times
-		  	, real_lower_band
-		  	, real_middle_band
-		  	, real_upper_band
-		  	, symbol
-		  	, market
-		  ) obb
-	on intra.times = obb.times
-	and intra.symbol = obb.symbol
+	from ds7330_term_raw_data.bbands_open_15_min obb
 	join (
 		  select 
 		  	times
@@ -173,8 +159,8 @@ insert into ds7330_term_project.intraday( --this has been tested with data 11-2-
 		  	, symbol
 		  	, market
 		  ) cbb
-	on intra.times = cbb.times
-	and intra.symbol = cbb.symbol
+	on obb.times = cbb.times
+	and obb.symbol = cbb.symbol
 	join (
 		  select 
 		  	times
@@ -191,8 +177,8 @@ insert into ds7330_term_project.intraday( --this has been tested with data 11-2-
 		  	, symbol
 		  	, market
 		  ) hbb
-	on intra.times = hbb.times
-	and intra.symbol = hbb.symbol
+	on obb.times = hbb.times
+	and obb.symbol = hbb.symbol
 	join (
 		  select 
 		  	times
@@ -209,26 +195,48 @@ insert into ds7330_term_project.intraday( --this has been tested with data 11-2-
 		  	, symbol
 		  	, market
 		  ) lbb
-	on intra.times = lbb.times
-	and intra.symbol = lbb.symbol
-	join (
-		  select
-		  	times
-		  	, macd as macd_open
-		  	, macd_hist as macd_hist_open
-		  	, mkacd_signal as mkacd_signal_open
-		  	, symbol
-		  	, market
-		  from ds7330_term_raw_data.macd_open_15_min
-		  group by times
-		  	, macd
-		  	, macd_hist
-		  	, mkacd_signal
-		  	, symbol
-		  	, market
-		  ) mcdo
-	on intra.times = mcdo.times
-	and intra.symbol = mcdo.symbol
+	on obb.times = lbb.times
+	and obb.symbol = lbb.symbol
+	group by
+    obb.times
+    , trim(substring(regexp_replace(obb.times, '"', ''), 1, 10))
+    , trim(substring(regexp_replace(obb.times, '"', ''), (length(regexp_replace(obb.times, '"', ''))-1)-6, length(obb.times)))
+	, regexp_replace(obb.symbol, '"', '')
+	, regexp_replace(obb.market, '"', '')
+    , obb.real_lower_band
+	, obb.real_middle_band
+	, obb.real_upper_band
+	, cbb.lower_bband_close
+	, cbb.middle_bband_close
+	, cbb.upper_bband_close
+	, hbb.lower_bband_high
+	, hbb.middle_bband_high
+	, hbb.upper_bband_high
+	, lbb.lower_bband_low
+	, lbb.middle_bband_low
+	, lbb.upper_bband_low
+);
+
+insert into ds7330_term_project.moving_averages_intraday( --this has been tested with data 11-2-2019
+	Select  
+	 regexp_replace(mcdo.times, '"', '') as report_dtm --primary key
+	, trim(substring(regexp_replace(mcdo.times, '"', ''), 1, 10)) as report_date
+    , trim(substring(regexp_replace(mcdo.times, '"', ''), (length(regexp_replace(mcdo.times, '"', ''))-1)-6, length(mcdo.times)))  as report_time -- foreign key
+	, regexp_replace(mcdo.symbol, '"', '') as symbol -- foreign key
+	, regexp_replace(mcdo.market, '"', '') as market
+	, mcdo.macd as macd_open
+	, mcdo.macd_hist as macd_hist_open
+	, mcdo.mkacd_signal as mkacd_signal_open
+	, mcdc.macd_close as macd_close
+	, mcdc.macd_hist_close as macd_hist_close
+	, mcdc.mkacd_signal_close as mkacd_signal_close
+	, mcdh.macd_high as macd_high
+	, mcdh.macd_hist_high as macd_hist_high
+	, mcdh.mkacd_signal_high as mkacd_signal_high
+	, mcdl.macd_low as macd_low
+	, mcdl.macd_hist_low as macd_hist_low
+	, mcdl.mkacd_signal_low as mkacd_signal_low
+	from ds7330_term_raw_data.macd_open_15_min mcdo
 	join (
 		  select
 		  	times
@@ -245,8 +253,8 @@ insert into ds7330_term_project.intraday( --this has been tested with data 11-2-
 		  	, symbol
 		  	, market
 		  ) mcdc
-	on intra.times = mcdc.times
-	and intra.symbol = mcdc.symbol
+	on mcdo.times = mcdc.times
+	and mcdo.symbol = mcdc.symbol
 	join (
 		  select
 		  	times
@@ -263,8 +271,8 @@ insert into ds7330_term_project.intraday( --this has been tested with data 11-2-
 		  	, symbol
 		  	, market
 		  ) mcdh
-	on intra.times = mcdh.times
-	and intra.symbol = mcdh.symbol
+	on mcdo.times = mcdh.times
+	and mcdo.symbol = mcdh.symbol
 	join (
 		  select
 		  	times
@@ -282,72 +290,17 @@ insert into ds7330_term_project.intraday( --this has been tested with data 11-2-
 		  	, symbol
 		  	, market
 		  ) mcdl
-	on intra.times = mcdl.times
-	and intra.symbol = mcdl.symbol
-	join (
-		  select
-		  	times
-		  	, slowd
-		  	, slowk
-		  	, symbol
-		  	, market
-		  from ds7330_term_raw_data.stochastic_15_min
-		  group by
-		    times
-		  	, slowd
-		  	, slowk
-		  	, symbol
-		  	, market
-		  ) stoch
-	on intra.times = stoch.times
-	and intra.symbol = stoch.symbol
-	join (
-		  select
-		  	times
-		  	, exponential_ma_open
-		  	, exponential_ma_high
-		  	, exponential_ma_low
-		  	, exponential_ma_close
-		  	, symbol
-		  	, market
-		  from ds7330_term_raw_data.exp_moving_average_15_min
-		  group by
-		    times
-		  	, exponential_ma_open
-		  	, exponential_ma_high
-		  	, exponential_ma_low
-		  	, exponential_ma_close
-		  	, symbol
-		  	, market
-		  ) exp
-	on intra.times = exp.times
-	and intra.symbol = exp.symbol
+	on mcdo.times = mcdl.times
+	and mcdo.symbol = mcdl.symbol
 	group by 
-	regexp_replace(intra.times, '"', '')
-	, trim(substring(regexp_replace(intra.times, '"', ''), 1, 10))
-	, trim(substring(regexp_replace(intra.times, '"', ''), (length(regexp_replace(intra.times, '"', ''))-1)-6, length(intra.times)))
-	, regexp_replace(intra.symbol, '"', '')
-	, regexp_replace(intra.market, '"','')
-	, intra.volume
-	, intra.open
-	, intra.close
-	, intra.high
-	, intra.low
-	, obb.lower_bband_open
-	, obb.middle_bband_open
-	, obb.upper_bband_open
-	, cbb.lower_bband_close
-	, cbb.middle_bband_close
-	, cbb.upper_bband_close
-	, hbb.lower_bband_high
-	, hbb.middle_bband_high
-	, hbb.upper_bband_high
-	, lbb.lower_bband_low
-	, lbb.middle_bband_low
-	, lbb.upper_bband_low
-	, mcdo.macd_open
-	, mcdo.macd_hist_open
-	, mcdo.mkacd_signal_open
+	regexp_replace(mcdo.times, '"', '')
+	, trim(substring(regexp_replace(mcdo.times, '"', ''), 1, 10))
+	, trim(substring(regexp_replace(mcdo.times, '"', ''), (length(regexp_replace(mcdo.times, '"', ''))-1)-6, length(mcdo.times)))
+	, regexp_replace(mcdo.symbol, '"', '')
+	, regexp_replace(mcdo.market, '"','')
+	, mcdo.macd
+	, mcdo.macd_hist
+	, mcdo.mkacd_signal
 	, mcdc.macd_close
 	, mcdc.macd_hist_close
 	, mcdc.mkacd_signal_close
@@ -357,13 +310,52 @@ insert into ds7330_term_project.intraday( --this has been tested with data 11-2-
 	, mcdl.macd_low
 	, mcdl.macd_hist_low
 	, mcdl.mkacd_signal_low
-	, stoch.slowd
-	, stoch.slowk
-	, exp.exponential_ma_open
-	, exp.exponential_ma_high
-	, exp.exponential_ma_low
-	, exp.exponential_ma_close
 );
+
+insert into ds7330_term_project.stochastic_intraday( --this has been tested with data 11-2-2019
+	Select
+	 regexp_replace(times, '"', '') as report_dtm --primary key
+	, trim(substring(regexp_replace(times, '"', ''), 1, 10)) as report_date
+    , trim(substring(regexp_replace(times, '"', ''), (length(regexp_replace(times, '"', ''))-1)-6, length(times)))  as report_time -- foreign key
+	, regexp_replace(symbol, '"', '') as symbol -- foreign key
+	, regexp_replace(market, '"', '') as market
+	, slowd as slowd_stochastic
+	, slowk as slowk_stochastic
+	from ds7330_term_raw_data.stochastic_15_min
+	group by
+	regexp_replace(times, '"', '')
+	, trim(substring(regexp_replace(times, '"', ''), 1, 10))
+	, trim(substring(regexp_replace(times, '"', ''), (length(regexp_replace(times, '"', ''))-1)-6, length(times)))
+	, regexp_replace(symbol, '"', '')
+	, regexp_replace(market, '"','')
+	, slowd
+	, slowk
+);
+
+insert into ds7330_term_project.exp_ma_intraday( --this has been tested with data 11-2-2019
+	Select
+	 regexp_replace(times, '"', '') as report_dtm --primary key
+	, trim(substring(regexp_replace(times, '"', ''), 1, 10)) as report_date
+    , trim(substring(regexp_replace(times, '"', ''), (length(regexp_replace(times, '"', ''))-1)-6, length(times)))  as report_time -- foreign key
+	, regexp_replace(symbol, '"', '') as symbol -- foreign key
+	, regexp_replace(market, '"', '') as market
+	, exponential_ma_open as exponential_ma_open
+	, exponential_ma_high as exponential_ma_high
+	, exponential_ma_low as exponential_ma_low
+	, exponential_ma_close as exponential_ma_close
+	from ds7330_term_raw_data.exp_moving_average_15_min
+	group by
+	regexp_replace(times, '"', '')
+	, trim(substring(regexp_replace(times, '"', ''), 1, 10))
+	, trim(substring(regexp_replace(times, '"', ''), (length(regexp_replace(times, '"', ''))-1)-6, length(times)))
+	, regexp_replace(symbol, '"', '')
+	, regexp_replace(market, '"','')
+	, exponential_ma_open
+	, exponential_ma_high
+	, exponential_ma_low
+	, exponential_ma_close
+);
+
 
 ----------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------

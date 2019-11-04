@@ -1,8 +1,8 @@
 --set mapred.tasktracker.reduce|map.tasks.maximum;
 set mapred.job.queue.name=root.batch; --1st run this
-set mapreduce.map.memory.mb=8096; --then run this and the next 2 mapreduce queries before running the DDL
-set mapreduce.reduce.memory.mb=10020;
-set mapreduce.job.reduces=30;
+set mapreduce.map.memory.mb=8096; --then run this
+set mapreduce.reduce.memory.mb=10020; --then run this
+set mapreduce.job.reduces=30; --then this and after, run the DDL
 
 create database if not exists ds7330_term_project; -- this is the normalized schema; only the tables in the E-R diagram go here
 create database if not exists ds7330_term_raw_data; --this is the database for the data tables we need to create the project database
@@ -88,6 +88,16 @@ create table if not exists ds7330_term_project.intraday(
 	, close_price double
 	, high_price double
 	, low_price double
+	--, primary key (unique_intra_id)
+	--, constraint fk foreign key (report_date) references ds7330_term_project.daily(report_date)
+);
+
+create table if not exists ds7330_term_project.bollinger_intraday(
+	report_dtm string
+	, report_date string --foreign key
+	, report_time string
+	, symbol string --foreign key
+	, market string
 	, open_bollinger_band_low double
 	, open_bollinger_band_close double
 	, open_bollinger_band_high double
@@ -100,6 +110,14 @@ create table if not exists ds7330_term_project.intraday(
 	, low_bollinger_band_open double
 	, low_bollinger_band_close double
 	, low_bollinger_band_high double
+);
+
+create table if not exists ds7330_term_project.moving_averages_intraday(
+	report_dtm string
+	, report_date string --foreign key
+	, report_time string
+	, symbol string --foreign key
+	, market string
 	, macd_open double
 	, macd_hist_open double
 	, mkacd_signal_open double
@@ -112,12 +130,26 @@ create table if not exists ds7330_term_project.intraday(
 	, macd_low double
 	, macd_hist_low double
 	, mkacd_signal_low double
-	, slowd_stochastic double
-	, slowk_stochastic double
+);
+
+create table if not exists ds7330_term_project.exp_ma_intraday(
+	report_dtm string
+	, report_date string --foreign key
+	, report_time string
+	, symbol string --foreign key
+	, market string
 	, exponential_ma_open double
 	, exponential_ma_high double
 	, exponential_ma_low double
   	, exponential_ma_close double
-	--, primary key (unique_intra_id)
-	--, constraint fk foreign key (report_date) references ds7330_term_project.daily(report_date)
+);
+
+create table if not exists ds7330_term_project.stochastic_intraday(
+	report_dtm string
+	, report_date string --foreign key
+	, report_time string
+	, symbol string --foreign key
+	, market string
+	, slowd_stochastic double
+	, slowk_stochastic double
 );
