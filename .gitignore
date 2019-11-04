@@ -1,6 +1,9 @@
 # project specific ignores
 
 reports/support/schemas/*.bak
+reports/support/tex/*.log
+reports/support/tex/*.aux
+reports/support/tex/*.gz
 
 # python ignores
 
