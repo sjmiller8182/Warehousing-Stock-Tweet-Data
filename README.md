@@ -22,13 +22,22 @@ For this project, we will use the following types of data
 
 ## Data Warehouse Overview
 
-The dataware house will be created with Hive HQL in an AWS EMR cluster.
+Images of the data warehouses are shown below.
+Due to image formatting on this web page, it is recommended to view the full images by clicking on the image or by downloading the image.
+
+### Normalized Schema
 
 An effective schema of the normalized dataware house is shown below. 
 
 ![Normalized_Schema](https://github.com/sjmiller8182/DBMS_Proj/blob/master/reports/support/images/Warehouse_Schema_Normalized.png)
 
-This schema was created with MySQL WorkBench the schema design can be accessed [here](https://github.com/sjmiller8182/DBMS_Proj/tree/master/reports/support).
+### Opimized Schema
+
+An effective schema of the optimized dataware house is shown below. 
+
+![Optimized_Schema](https://github.com/sjmiller8182/DBMS_Proj/blob/master/reports/support/images/Warehouse_Schema_Optimized.png)
+
+This schema was created with MySQL WorkBench the schema design can be accessed [here](https://github.com/sjmiller8182/DBMS_Proj/tree/master/reports/support/schemas).
 
 ## Big Data Solution Implementation
 
