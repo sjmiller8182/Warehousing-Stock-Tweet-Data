@@ -88,18 +88,18 @@ create table if not exists ds7330_term_project.intraday(
 	, close_price double
 	, high_price double
 	, low_price double
-	, open_bollinger_band_low double
-	, open_bollinger_band_close double
-	, open_bollinger_band_high double
-	, close_bollinger_band_open double
-	, close_bollinger_band_close double
-	, close_bollinger_band_high double
-	, high_bollinger_band_low double
-	, high_bollinger_band_close double
-	, high_bollinger_band_high double
-	, low_bollinger_band_open double
-	, low_bollinger_band_close double
-	, low_bollinger_band_high double
+	, open_bollinger_band_lower double
+	, open_bollinger_band_middle double
+	, open_bollinger_band_upper double
+	, close_bollinger_band_lower double
+	, close_bollinger_band_middle double
+	, close_bollinger_band_upper double
+	, high_bollinger_band_lower double
+	, high_bollinger_band_middle double
+	, high_bollinger_band_upper double
+	, low_bollinger_band_lower double
+	, low_bollinger_band_middle double
+	, low_bollinger_band_upper double
 	, macd_open double
 	, macd_hist_open double
 	, mkacd_signal_open double
