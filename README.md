@@ -58,3 +58,14 @@ These reports were created during the course of this project.
 * [Project Proposal](https://github.com/sjmiller8182/DBMS_Proj/blob/master/reports/Proposal.pdf): Initial proposal regarding the problem and the proposed solution for investigation.
 * [Initial Project Presentation](https://github.com/sjmiller8182/DBMS_Proj/blob/master/reports/Initial_Presentation.pdf): A high level overview of the project idea and current status.
 
+## Repo Structure
+    .
+    ├── HQL              # HQL files for creating the data warehouses
+    ├── cli              # The cli for this project
+    ├── nifi             # NiFi control scripts
+    ├── reports          # Reports generated for the project
+    ├── sample_data      # Samples of data used in the project
+    ├── scrape_utils     # All code for scraping data
+    ├── LICENSE          # All code and analysis is licensed under the MIT license.
+    ├── Project_Outline  # General outline of the project and milestone status
+    └── README.md
