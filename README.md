@@ -1,5 +1,5 @@
 [![GitHub](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/sjmiller8182/DBMS_Proj/blob/master/LICENSE)
-[!Travis_CI](https://travis-ci.org/sjmiller8182/DBMS_Proj.svg?branch=master)
+![Travis_CI](https://travis-ci.org/sjmiller8182/DBMS_Proj.svg?branch=master)
 
 # Big Data Solution for Stock Prices and Tweet Collections
 
