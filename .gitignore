@@ -1,3 +1,7 @@
+# project specific ignores
+
+reports/support/schemas/*.bak
+
 # python ignores
 
 # Byte-compiled / optimized / DLL files
