@@ -27,20 +27,19 @@ For this project, we will use the following types of data
 
 ## Data Warehouse Overview
 
-Images of the data warehouses are shown below.
-Due to image formatting on this web page, it is recommended to view the full images by clicking on the image or by downloading the image.
+Conceptual schema of the data warehouses are shown below.
 
-### Normalized Schema
+### Snowflake Schema
 
-An effective schema of the normalized dataware house is shown below. 
+A diagram of the dataware house snowflake schema is shown below. 
 
-![Normalized_Schema](https://github.com/sjmiller8182/DBMS_Proj/blob/master/reports/support/images/Warehouse_Schema_Normalized.png)
+![Snowflake](https://github.com/sjmiller8182/DBMS_Proj/blob/master/reports/support/images/Snowflake_Conceptual_Schema.png)
 
-### Opimized Schema
+### Opimized Star Schema
 
-An effective schema of the optimized dataware house is shown below. 
+A diagram of the dataware house star schema is shown below. 
 
-![Optimized_Schema](https://github.com/sjmiller8182/DBMS_Proj/blob/master/reports/support/images/Warehouse_Schema_Optimized.png)
+![Optimized_Star_Schema](https://github.com/sjmiller8182/DBMS_Proj/blob/master/reports/support/images/Star_Conceptual_Schema.png)
 
 This schema was created with MySQL WorkBench the schema design can be accessed [here](https://github.com/sjmiller8182/DBMS_Proj/tree/master/reports/support/schemas).
 
