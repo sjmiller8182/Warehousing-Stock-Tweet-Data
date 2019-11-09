@@ -60,6 +60,8 @@
 \usepackage{amsmath}
 \usepackage{url}
 \usepackage{multirow}
+% don't use the borders around links
+\usepackage[hidelinks]{hyperref}
 
 % *** GRAPHICS RELATED PACKAGES ***
 %
@@ -137,24 +139,24 @@
 % Here we have the typical use of a "T" for an initial drop letter
 % and "HIS" in caps to complete the first word.
 \IEEEPARstart{D}{ata} ``starter file'' in the twenty-first century is exploding in volumes at an exponential rate; every additional source of data that can act as a medium for data communication can obtain useful information, which, with modern technology, can be structured and stored, accessible to any who have the skills and need to make use of it. This information is increasingly profitable. As such, the scalability of storing and accessing this data must increase with it.
-\\
+
 \subsection{Apache Hadoop Ecosystem}
 Motivated through the opportunity within ``big data'' and parallel computing, which enables massive amounts of data to be rapidly accessed for complex analysis and distributed across a scalable, cost-effective distribution of servers, we aligned our project with a modern database application, Hadoop, which provides a data lake ``ecosystem'' supporting both task- and data-parallelism across the many software applications within the Apache suite in addition to software that can be managed and accessed within a network of servers, called a cluster.
-\\
+
 \subsection{Hadoop MapReduce}
 The cluster of server nodes enables users to read data from the same source, simultaneously, as the data at that source is partitioned and processed across multiple servers – a master and at least one slave – through leveraging a processing framework called MapReduce to assign nodes for ``mapping'' and ``reducing'' by applying various configurations, such as related to memory allocation to and volumes of mappers and reducers. As data is mapped, it is reprocessed into a derivative data set, split into tuples that are then processed across the cluster of server nodes, in parallel, and reassembled in the reduce process from which it is delivered to the end-user, whether it be Enterprise Resource Planning (ERP) or a personal user running a SQL “SELECT” statement.
-\\
+
 \subsection{Application Integration and Data Ingestion}
 This ability of Hadoop is very important to our problem, which requires rapid storing and accessing of data. Our data, which is stock market data obtained via API from a market data vendor every 15 minutes (primarily New York Stock Exchange and NASDAQ data) in addition to Twitter feeds updated every 5 minutes requires the ability to both store and enable applications to both connect to the data source as well as operate within it. R will be used via ODBC to access and build proof-of-concept models using the data. Once developed, Python will be deployed within the data lake to process and derive data from machine learning decisions.
-\\
+
 \subsection{Big Data System Implementation}
 In order to do some things with this stuff, we need a place to put it. Not just any place, but a special place that scales well, is quick to give and slow to take, and appreciates large volumes of data and potentially large volumes of simultaneous users. Therefore, we must usher in a new era of discussion; the dawning of the dueling between HDFS and S3. To make the battle interesting, we will root HDFS to local storage and S3 to the ever-scalable cloud. Winner takes all, battle royale. HDFS, meet local personal computer. S3, meet the Amazon Web Services' Elastic MapReduce package.
-\\
+
 Furthermore, we need a data warehouse, so naturally, we opted for Apache Hive since it does a pretty good job with SQL-based HQL being easily communicated and stored within various applications and operated by traditional SQL users. This is all brought to you in part by Cloudera Hue. Cloudera Hue, thank you - without you we wouldn't actually be able to see any SQL at all. Not only are you a great face, but you're a great interface as well.
-\\
+
 \subsection{Database Schema and Selection}
 \textit{Flustered was the frivolous foe who quantified the schema not yet, ho.} Finally, close the introduction out with some more explaining about normalized vs. optimized data, why that matters, and how we'll analyze it.
-\\
+
 \subsection{Performance Metrics and Evaluation}
 Performance is based on speed taken to process our 3 gigabytes of data - once processed into their respective storage systems - into the Hive data warehouse, which includes table creation and loading. We will use a repeated measures analysis and a one-tailed hypothesis test to determine optimal performance among S3 and HDFS groups, which is then used to compare and assess benchmarks between the combinations of MapReduce settings and database schemas among the best-performing S3 and HDFS configuration. This bench will be illuminated across endless samples engulfed in the event horizon - a poorly managed lake - endless light, yet still, perilous darkness.
 
@@ -164,8 +166,9 @@ Performance is based on speed taken to process our 3 gigabytes of data - once pr
 \section{Data}
 
 This study investigates data warehouse models for housing stock price data and semi-structured alternative data. 
-The stock price data was.
-Twitter was chosen as the primary alternative data source because of ease-of-access the Twitter API and the large volume of available data.
+Both daily and intraday stock price data were collected for use in this analysis. 
+Twitter was chosen as the primary source of alternative data because of ease-of-access to the \href{https://developer.twitter.com/en/docs}{Twitter API} and the large volume of available data.
+The main features of the collected data are summarized in Table ~\ref{DataFeatures}.
 
 \begin{table}
 	\renewcommand{\arraystretch}{1.3}
@@ -197,35 +200,67 @@ Twitter was chosen as the primary alternative data source because of ease-of-acc
 
 \subsection{Stock Data}
 
-The stock price data was collected through an API provided by Alpha Vantage.
+The stock price data was collected through an API provided by \href{https://www.alphavantage.co/}{Alpha Vantage}.
 This API provided access intraday stock prices, intraday price features, and daily prices.
 Intraday stock data contained 35 features sampled at 15 minute intervals. 
 The intraday features were from the following categories Bollinger bands, stochastic oscillators, moving averages, and exponential moving averages.
-Approximately 1 millions rows of data were collected, which occurred from Oct. 04, 2019 to Oct. 24, 2019.
-During the collection process, the data were recorded in files organized by day and category.
-At the end of the collection process, the files for each category were combined and pushed to the HDFS datalake.
+
+Approximately 1 million rows of data were collected,
+which occurred from Oct. 04, 2019 to Oct. 24, 2019.
+During the collection process, the data were recorded in files
+ organized by day and category and stored in an S3 bucket.
+At the end of the collection process, the files for each
+ category were combined and pushed to the HDFS datalake.
 
 
 \subsection{Twitter Data}
 
-sssss
+Messages on Twitter (called Tweets) are mainly comprised of
+ tweet ID, timestamp, author (screen name), and text.
+Tweets can also contain many other features such as
+ URLs, hashtags, emojis,  and mentions.
+For this analysis, in addition to the main features,
+ URLs, hashtags, and mentions were also collected in the data warehouse.
+A mention is a reference to another Twitter user's screen name
+ in the text of a tweet.
+A hashtag is some collection of characters starting with
+ '\#' without white space.
+Generally, the character portion of a hashtag will be a word or set of words,
+ but this is not necessary.
+
+Approximately 300,000 tweets were collected from over 100 twitter users.
+The data from Twitter is returned in JavaScript Object Notation (JSON).
+The features of interest were extracted from the JSON files and
+ reformatted in tab separated files (TSV).
+After the tweets were extracted from Twitter,
+ mentions of company names or stock symbols were extracted by 
+ matching sections of tweet text to company names and company stock symbols.
+
 
 \section{Data Warehouse Development}
 
-This stock data is natively structured in a tabular form and naturally keyed by the combination of timestamp, stock symbol, and stock market.
+This stock data is natively structured in a tabular form and naturally keyed by the combination of timestamp and stock symbol.
+
 
 \subsection{Normalized Schema}
 
-%\begin{figure}
-%	\centering
-%	\includegraphics[width=2.5in]{NormalizedSchema.png}
-%	\caption{Normalized Data Warehouse Schema}
-%	\label{fig_sim}
-%\end{figure}
+\begin{figure}
+	\centering
+	\includegraphics[width=2.5in]{Snowflake_Conceptual_Schema.png}
+	\caption{Conceptual Diagram of the Data Warehouse Snowflake Schema}
+	\label{snowflake}
+\end{figure}
 
 Discuss normalizing the data - 3NF
 
 \subsection{Optimized Schema}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=2.5in]{Star_Conceptual_Schema.png}
+	\caption{Conceptual Diagram of the Data Warehouse Star Schema}
+	\label{star}
+\end{figure}
 
 Discuss the difference for optimization
 
