@@ -94,8 +94,8 @@
         and Stuart Miller, stuart@smu.edu}% <-this % stops a space
 
 % The paper headers
-\markboth{MSDS7330 Term Paper Rough Draft}
-{MSDS7330 Term Paper Rough Draft}
+\markboth{MSDS7330 Term Paper - First Draft}
+{MSDS7330 Term Paper - First Draft}
 % The only time the second header will appear is for the odd numbered pages
 % after the title page when using the twoside option.
 
@@ -104,24 +104,14 @@
 
 % This should be about 250 words
 \begin{abstract}
-\textbf{Purpose} - This research paper aims to discover an optimal solution for parallel management and processing of financial markets data into  warehousing and analysis engines used for buy-sell decision-making. Methods analyzed herein are components of the Hadoop ecosystem. Included is an in-depth analysis of parallel processing - using the Elastic MapReduce package on Amazon Web Services - and data warehousing with Apache Hive. Apache NiFi is used to direct workflow automation for data migration into the warehouse. Finally, a complete assessment of the combinations of levels of the various Hadoop ecosystem applications used is provided in the context of statistical inference.
 
-\textbf{Design, Methodology, and Approach} - One pertinent, underlying hypothesis within this study is to prove that there are differences in processing speeds between S3 and HDFS using normalized and optimized schema designs across multiple MapReduce configurations. This analysis is performed using 100 samples of the same volume of data in a repeated measures analysis using a Hotelling-T statistic. The two highest-performing configurations of S3 and HDFS are then assessed. (We need to get this information and report it) for the next section.
+Purpose - This research paper aims to discover an optimal solution for parallel management and processing of financial markets data into  warehousing and analysis engines used for buy-sell decision-making. Methods analyzed herein are components of the Hadoop ecosystem. Included is an in-depth analysis of parallel processing - using the Elastic MapReduce package on Amazon Web Services - and data warehousing with Apache Hive. Apache NiFi is used to direct workflow automation for data migration into the warehouse. Finally, a complete assessment of the combinations of levels of the various Hadoop ecosystem applications used is provided in the context of statistical inference.
 
-\textbf{Findings} - \textbf{EXAMPLE:} Applying S3 with an optimized schema using 10 reduces, map memory allocation of 2,048 mb and a reduce memory allocation of 4,096 mb is optimal for a more expensive S3 approach. Using HDFS from local storage with a configuration of 20 reduces, map memory allocation of 8,096 megabytes and reduce memory allocation of 10,020 megabytes is ideal for batch-level migrations and querying for large-volume processing. Across n repeated measures, using a one-tailed alpha, the resulting p-value is significant at `Pr > |t|` < x.xxxx (confidence interval (x1, x2)), indicating local storage from HDFS outperforms S3 when using the selected configurations. However, local data storage capacity does not scale well for HDFS compared to cloud-based S3.
+Design, Methodology, and Approach - One pertinent, underlying hypothesis within this study is to prove that there are differences in processing speeds between S3 and HDFS using normalized and optimized schema designs across multiple MapReduce configurations. This analysis is performed using 100 samples of the same volume of data in a repeated measures analysis using a Hotelling-T statistic. The two highest-performing configurations of S3 and HDFS are then assessed. (We need to get this information and report it) for the next section.
+
+Findings - EXAMPLE: Applying S3 with an optimized schema using 10 reduces, map memory allocation of 2,048 mb and a reduce memory allocation of 4,096 mb is optimal for a more expensive S3 approach. Using HDFS from local storage with a configuration of 20 reduces, map memory allocation of 8,096 megabytes and reduce memory allocation of 10,020 megabytes is ideal for batch-level migrations and querying for large-volume processing. Across n repeated measures, using a one-tailed alpha, the resulting p-value is significant at `Pr > |t|` < x.xxxx (confidence interval (x1, x2)), indicating local storage from HDFS outperforms S3 when using the selected configurations. However, local data storage capacity does not scale well for HDFS compared to cloud-based S3.
+
 \end{abstract}
-
-% For peer review papers, you can put extra information on the cover
-% page as needed:
-% \ifCLASSOPTIONpeerreview
-% \begin{center} \bfseries EDICS Category: 3-BBND \end{center}
-% \fi
-%
-% For peerreview papers, this IEEEtran command inserts a page break and
-% creates the second title. It will be ignored for other modes.
-\IEEEpeerreviewmaketitle
-
-
 
 \section{Introduction}
 
@@ -424,7 +414,53 @@ The schema resulting from this denomalization process is shown
 
 \section{Implementation}
 
-Rikel
+Before we delve into the details of dimensional modeling, it's helpful to focus on the technology, tool and technique that we will use to collect, process the data and conduct our analysis. Multiple vendors provide the platform and infrastructure for these technologies, for this project we will use Amazon Web Service (AWS)
+
+AWS is a set of cloud computing services provided by Amazon that are accessible over the internet, it’s pretty much consist of a collection of compute and storage system which operate at a high scale. AWS provides multiple services based on the user application. For our project going to use the Elastic MapReduce (EMR) service.
+
+AWS EMR is a set of pre-configured infrastructures with the latest software and tool required for Big Data analysis and processing. EMR is based on Apache Hadoop, Hadoop Mapreduce, Hadoop Elastic Computer Cloud(EC2) , Amazon Simple Storage Service (S3), HUE and Hive. Fig. \ref{EMR} shows the ecosystem of EMR ecosystem.
+
+Hadoop it’s open source software framework written in java for the distributed storage and distributed processing of a very large datasets.
+
+The core of Apache Hadoop consists of a storage part: Hadoop Distributed File System (HDFS) and a processing part (Hadoop MapReduce):
+
+\begin{figure}
+	\centering
+	\includegraphics[width=2.5in]{EMR_Ecosystem.png}
+	\caption{EMR Ecosystem}
+	\label{EMR}
+\end{figure}
+
+\subsection{Hadoop Distributed File System (HDFS)}
+
+Not like traditional file system, HDFS is a distributed file system designed to run on commodity hardware. One of the advantage of that is the highly fault tolerant and deployed on low cost hardware. HDFS it's a master (Namenode)/slave(Datanodes) architecture. Where the NameNode is the controller which consist storing data to the DataNode and also store metadata of the data which include Namespace or lookup table used to locate each file from the multiple DataNode (Servers). The Fig. \ref{HDFS} shows the Architecture of HDFS \cite{HDFS}.
+
+It’s a programming model for a large scale data processing. With the high demand of computing power, computer architecture evolved over the year from serial computing to parallel computing where tasks are distributed and executed simultaneously across multiple processors within the same computer. Now with the mapReduce instead of using one instance with multiple processing power, we will use multiple computers with multiple processing power, this is called distributed computing system. This is actually what enable us to manage and process
+
+vast amounts of data (multi-terabyte data-sets) in-parallel on large clusters (thousands of nodes) of commodity hardware in a reliable, fault-tolerant manner. A MapReduce framework consists of two workers: the Mapper and the Reducer, so how does it work? It's using the divide and conquer technique, where the input is divide into a set of small task, each task is identify by the key -value pair, where the key serve as task ID and the value the is the task output. Each task is then process and execute by the mapper and the outputs are process and merge by the reducer. The Fig. \ref{EMR} show the simplified MapReduce work flow.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=2.5in]{HDFS_Arch.png}
+	\caption{HDFS Architecture}
+	\label{HDFS}
+\end{figure}
+
+\subsection{Hadoop Elastic Computer Cloud (EC2)}
+
+From the above we may wonder how does the data are processed and the tasks executed, the EC2 is an entity of the cloud computer system which is used to for computing operation from each task.
+
+\subsection{Amazon Simple Storage Service (S3)}
+
+As the name imply, the S3 is a storage systems, which is used to store and retrieve any amount of data any time, from anywhere on the web. It's reliable, fast, and inexpensive.
+
+\subsection{Apache Hive}
+
+Apache Hive is a data warehouse infrastructure built on top of Hadoop. Hive enable us to structure, organize, model the data and query the data using SQL like language called HiveQL.
+
+\subsection{Cloudera Hue}
+
+Hadoop Hue is an open source web application that served as user interface for Hadoop components. The user access Hue right from within the browser and can interact and with the Hadoop ecosystem such as HDFS and MapReduce applications. Users do not have to use command line interface to use Hadoop ecosystem if he will use Hue.
 
 \section{Results}
 
@@ -486,6 +522,10 @@ A. Gorelik, "Historical Perspectives," in
 "Extract, Transform, and Load Big Data with Apache Hadoop," Intel, USA, 2013.
  Available:\\ https://software.intel.com/sites/default/files/article/402274/etl-big-data-with-hadoop.pdf
 
+\bibitem{HDFS}
+D. Borthakur, HDFS Architecture Guide, The Apache Software Foundation,
+ August 22 2019. Accessed on: Nov. 8, 2019. [Online] Available: \\
+ https://hadoop.apache.org/docs/r1.2.1/hdfs\_design.html
 
 \end{thebibliography}
 
