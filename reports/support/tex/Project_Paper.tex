@@ -286,7 +286,7 @@ However, the intraday data was normalized into five tables for the
  snowflake design: prices, Bollinger bands, moving averages, exponential
  moving averages, and stochastic indicators.
 The integration of the fact table and the normalized stock table is shown
- conceptually in Fig. \ref{snowflake} (left side of the schema).
+ conceptually in Fig. \ref{snowflake} (left side of the schema diagram).
 
 Unlike the stock data, the tweet data did not naturally join to the fact
  table of the schema.
@@ -309,10 +309,20 @@ Tables were created for each of these features to follow the snowflake design.
 These additional tables required join tables because there is a many-to-many
  cardinality between the tweets dimension and each of the three secondary members.
 The result of the tweet dimension normalization is shown conceptually
- in Fig. \ref{snowflake} (on the right).
+ in Fig. \ref{snowflake} (right side of schema diagram).
 
 \subsection{Optimized Star Schema}
 
+While the snowflake schema is suitable for general use cases.
+The number of tables should be limited to decrease query time to support
+ fast data transfer to a machine learning system.
+The number of intraday tables and tweet tables were reduced to support
+ fast query times.
+All intraday tables were combined into one table. 
+Each secondary member of the twitter dimension hierarchical structure was
+ subsumed into a copy of the main tweet table, reducing the number of tables
+ in the tweet dimension from seven to three.
+The result of this denomalization is shown conceptually in Fig 2.
 
 
 \begin{figure}
@@ -321,8 +331,6 @@ The result of the tweet dimension normalization is shown conceptually
 	\caption{Conceptual Diagram of the Data Warehouse Star Schema}
 	\label{star}
 \end{figure}
-
-Discuss the difference for optimization
 
 \section{Technologies}
 
