@@ -155,25 +155,23 @@ Through a combination of these systems and data storage within
 Motivated through the opportunity within big data and parallel computing,
  which enables massive amounts of data to be rapidly accessed for complex
  analysis and distributed across a scalable, cost-effective distribution of
- servers, we aligned our project with a modern database application, Hadoop,
- which provides a data lake ``ecosystem'' supporting both task- and
- data-parallelism across the many software applications within the Apache
- suite in addition to software that can be managed and accessed within
- a network of servers, called a cluster.
+ servers. To accomplish this, we aligned our project with a modern database
+ application called Hadoop. Hadoop provides a data lake ``ecosystem'' 
+ supporting both task- and data-parallelism across the many software
+ applications within the Apache suite in addition to software that can 
+ be managed and accessed within a network of servers, called a cluster.
 
 \subsection{Hadoop MapReduce}
 
-The cluster of server nodes enables users to read data from the same source,
+The server cluster enables users to read data from the same source,
  simultaneously, as the data at that source is partitioned and
- processed across multiple servers – a master and at least one slave 
- – through leveraging a processing framework called MapReduce to assign
- nodes for ``mapping'' and ``reducing'' by applying various configurations,
- such as related to memory allocation to and volumes of mappers and reducers. 
-As data is mapped, it is reprocessed into a derivative data set,
- split into tuples that are then processed across the cluster
- of server nodes, in parallel, and reassembled in the reduce process
- from which it is delivered to the end-user, whether it be Enterprise
- Resource Planning (ERP) or a personal user running a SQL “SELECT” statement.
+ processed across multiple servers – a master and at least one slave. 
+ The processing framework that enables this is called MapReduce, 
+ which assigns nodes for ``mapping'' and ``reducing'' by applying 
+ various configurations, such as related to memory allocation and numbers
+ of mappers and reducers. As data is mapped, it is reprocessed into a derivative 
+ data set, split into tuples that are then processed across the cluster, in parallel, and reassembled in the reduce process. Following the reduce process, data is delivered to 
+ the end-user.
 
 \subsection{Application Integration and Data Ingestion}
 
