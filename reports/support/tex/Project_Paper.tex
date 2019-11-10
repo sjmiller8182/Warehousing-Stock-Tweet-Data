@@ -86,7 +86,8 @@
 
 \begin{document}
 
-\title{Big Data Solution for\\ Stock Prices and Tweet Collections}
+\title{Big Data Lake Solution for\\ 
+	Warehousing Stock Data and Tweet Data}
 
 \author{Paul~Adams, paula@smu.edu,
         Rikel~Djoko, rdjoko@smu.edu,
@@ -103,9 +104,9 @@
 % This should be about 250 words
 \begin{abstract}
 \textbf{Purpose}-This dissertation aims to discover an optimal way to manage and process financial markets data to drive multiple algorithmic models for securities trading using the Hadoop ecosystem. This includes an applied, in-depth analysis of parallel processing using the Elastic MapReduce package on Amazon Web Services and the application of data warehousing using Apache Hive. Additionally, Apache NiFi is used to direct workflow automation scripting to migrate data into the warehouse. Finally, a complete assessment of the combinations of levels of the various Hadoop ecosystem applications used in this study will be provided in the context of statistical analysis for inference.
-\\
+
 \textbf{Design, Methodology, and Approach}-One pertinent, underlying hypothesis within this study is to prove that there are differences in processing speeds between S3 and HDFS using normalized and optimized schemas across multiple MapReduce configurations. This analysis is performed using 100 samples of the same volume of data in a repeated measures analysis using a Hotelling-T statistic. The two highest-performaning configurations of S3 and HDFS are then assessed. (We need to get this information and report it) for the next section.
-\\
+
 \textbf{Findings}-Applying S3 with an optimized schema using 10 reduces, map memory allocation of 2,048 megabytes and a reduce memory allocation of 4,096 megabytes is optimal for a more expensive S3 approach. Using HDFS from local storage with a configuration of 20 reduces, map memory allocation of 8,096 megabytes and reduce memory allocation of 10,020 megabytes is ideal for batch-level migrations and querying for large-volume processing. Across n repeated measures, using a one-tailed alpha, our p-value is significant at Pr < x.xxxx (confidence interval (x1, x2)), indicating local storage from HDFS outperforms S3 when using the selected configurations. However, local data storage capacity does not scale well for HDFS compared to cloud-based S3.
 \end{abstract}
 
@@ -212,7 +213,6 @@ During the collection process, the data were recorded in files
 At the end of the collection process, the files for each
  category were combined and pushed to the HDFS datalake.
 
-
 \subsection{Twitter Data}
 
 Messages on Twitter (called Tweets) are mainly comprised of
@@ -233,16 +233,35 @@ The data from Twitter is returned in JavaScript Object Notation (JSON).
 The features of interest were extracted from the JSON files and
  reformatted in tab separated files (TSV).
 After the tweets were extracted from Twitter,
- mentions of company names or stock symbols were extracted by 
+ mentions of company names or stock symbols were extracted from the tweet text by
  matching sections of tweet text to company names and company stock symbols.
+Once the data was collected an processed, it was pushed to the HDFS datalake.
 
 
 \section{Data Warehouse Development}
 
-This stock data is natively structured in a tabular form and naturally keyed by the combination of timestamp and stock symbol.
+Data warehouses are often conceptually designed with a \textit{star} schema 
+ \cite{BuildingtheDWCH11}.
+In the star design, there is a central table (called the fact table),
+ which contains the unifying features of the dataset and keys to other tables
+ \cite{BuildingtheDWCH11}.
+The tables surrounding the fact table (called dimension tables) 
+ contain information related to a category related to the unifying feature
+ of the dataset \cite{BuildingtheDWCH11}.
+In the dataset for this analysis, the unifying features are timestamp and
+ company stock symbol, thus the fact table contains these features
+ and several other descriptive features related to the companies.
+The natural dimensions of the fact table are intraday stock data,
+ daily stock data, and tweet data.
+In some cases, dimensions of the facts exhibit an
+ inherent hierarchical structure. 
+When the dimensions of a star schema are broken out into the tables
+ that make up the hierarchical structure of the dimensions, the schema
+ is in its \textit{snowflake} form \cite{BuildingtheDWCH11}.
+In this study, two schemas were designed: one in snowflake form and
+ the other in a more optimal form for query speed.
 
-
-\subsection{Normalized Schema}
+\subsection{Snowflake Schema}
 
 \begin{figure}
 	\centering
@@ -251,9 +270,50 @@ This stock data is natively structured in a tabular form and naturally keyed by 
 	\label{snowflake}
 \end{figure}
 
-Discuss normalizing the data - 3NF
+As noted previously, the fact table of this star design contained the
+ company information and timestamps.
+The primary key of the fact table is a composite key that includes
+ stock symbol and timestamp.
+There are three natural dimensions of fact table: daily stock data,
+ intraday stock data, and tweet data.
 
-\subsection{Optimized Schema}
+Both daily and intraday stock data are naturally keyed by the
+ combination of timestamp and stock symbol,
+ thus naturally keyed to the fact table.
+The stock data was spilt into two dimensions: daily data and intraday data.
+The daily data comes in a form suitable for the snowflake design.
+However, the intraday data was normalized into five tables for the 
+ snowflake design: prices, Bollinger bands, moving averages, exponential
+ moving averages, and stochastic indicators.
+The integration of the fact table and the normalized stock table is shown
+ conceptually in Fig. \ref{snowflake} (left side of the schema).
+
+Unlike the stock data, the tweet data did not naturally join to the fact
+ table of the schema.
+Like the stock data, the tweet data came with a timestamp, but stock symbol
+ is not nominal feature of tweets.
+The stock symbol feature was generated by extracting matching strings
+ during the data collection process; therefore, stock symbols are not
+ guaranteed to be non-null in the tweet dimension.
+Additionally, the combination of timestamp and stock symbol is not guaranteed
+ to be a primary key into the tweet table for tweets with non-null stock symbol
+ fields.
+However, Twitter assigns a tweet ID for each tweet, which is guaranteed to be
+ a primary key.
+Thus, the same features can still be used to join the tweets dimension to the 
+ fact table, but cannot serve as a primary key.
+As noted previously, three secondary features of tweets are used in this study.
+Each of these features, mentions, hashtags, and URLs, represents a hierarchical
+ member of the tweet dimension.
+Tables were created for each of these features to follow the snowflake design.
+These additional tables required join tables because there is a many-to-many
+ cardinality between the tweets dimension and each of the three secondary members.
+The result of the tweet dimension normalization is shown conceptually
+ in Fig. \ref{snowflake} (on the right).
+
+\subsection{Optimized Star Schema}
+
+
 
 \begin{figure}
 	\centering
