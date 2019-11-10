@@ -162,6 +162,9 @@ supporting both task- and data-parallelism across the many software
 applications within the Apache suite in addition to software that can 
 be managed and accessed within a network of servers, called a cluster \cite{Intel, BigDataComputing}.
 
+The parallelism in Hadoop is categorized into data-parallelism and task-parallelism.
+Data-parallelism is focused on processing data across multiple processors whereas task-parallelism is focused on distributing execution threads across multiple servers \cite{Parallelism}. Utilizing one or the other is dependent upon whether data is being provided into the system or being utilized for events such as machine learning.
+
 \subsection{Hadoop MapReduce}
 
 The server cluster enables users to read data from the same source,
@@ -484,6 +487,8 @@ A. Gorelik, "Historical Perspectives," in
 "Extract, Transform, and Load Big Data with Apache Hadoop," Intel, USA, 2013.
  Available:\\ https://software.intel.com/sites/default/files/article/402274/etl-big-data-with-hadoop.pdf
 
+\bibitem{Parallelism}
+D. Sitaram, G. Manjunath \textit{Moving To The Cloud}. Boston: Syngress, 2012, pp. 205–253.
 
 \end{thebibliography}
 
