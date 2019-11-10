@@ -107,7 +107,7 @@ class Tweet:
         tweet_id = tweet['id']
         text = tweet['full_text'].translate(str.maketrans('', '', string.punctuation)).replace('\n','')
         time = created_time.strftime("%H:%M:%S")
-        date = created_time.strftime("%y-%m-%d")
+        date = created_time.strftime("%Y-%m-%d")
         twitter_user = tweet['user']
         twitter_user = (twitter_user['id'],
                         twitter_user['screen_name'])
