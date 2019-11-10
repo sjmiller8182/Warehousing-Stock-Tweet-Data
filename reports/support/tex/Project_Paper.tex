@@ -129,7 +129,7 @@
  at exponential rates; every additional source of data that can act as a
  medium for data communication can obtain useful information, which,
  with modern technology, can be structured and stored, accessible to any
- who have the skills and need to make use of it. 
+ who have the skills and need to make use of it \cite{BigDataComputing}. 
 This information is increasingly profitable. 
 However, with the increasing ability to capture and store data from many
  disparate sources, the need to store larger volumes of the data is
@@ -144,7 +144,7 @@ Developing a database in an ecosystem - Hadoop - that supports tools of
  warehousing solution to structure and store the data based on both
  optimized and normalized schema designs, drafted from entity-relationship
  models designed with the intention of enabling rapid storing and accessing
- through the Hadoop MapReduce process. 
+ through the Hadoop MapReduce process \cite{BigDataComputing}. 
 Through a combination of these systems and data storage within
  Amazon Simple Storage Service (S3) and Apache Hadoop's native Hadoop
  Distributed File System (HDFS), we analyze performance between two
@@ -160,7 +160,7 @@ Motivated through the opportunity within big data and parallel computing,
  which provides a data lake ``ecosystem'' supporting both task- and
  data-parallelism across the many software applications within the Apache
  suite in addition to software that can be managed and accessed within
- a network of servers, called a cluster.
+ a network of servers, called a cluster \cite{Intel, BigDataComputing}.
 
 \subsection{Hadoop MapReduce}
 
@@ -227,7 +227,7 @@ This first schema was designed in a full normalized fashion,
  which is known as a snowflake schema.
 The second schema was based on the snowflake schema, 
  but denormalized to limit the number of tables, 
- limits number of joins required in queries.
+ which limits the number of joins required in queries.
 Query performance will be measured on these schemas to determine
  which design will be better for this use case. 
 
@@ -269,7 +269,7 @@ The main features of the collected data are summarized in Table ~\ref{DataFeatur
 		\hline
 		Stock Daily  & Prices: High, Low, Open, Close\\
 		\hline
-		\multirow{9}{*}{Stock Intraday} &  Prices: High, Low, Open, Close \\
+		\multirow{10}{*}{Stock Intraday} &  Prices: High, Low, Open, Close \\
 		&  High Bollinger bands\\
 		&  Mid Bollinger bands\\
 		&  Low Bollinger bands\\ 
@@ -289,8 +289,8 @@ The main features of the collected data are summarized in Table ~\ref{DataFeatur
 
 The stock price data was collected through an API provided by
  \href{https://www.alphavantage.co/}{Alpha Vantage}.
-This API provided access intraday stock prices, intraday price
- features, and daily prices.
+This API provided access to daily prices, intraday stock prices,
+ and intraday price features.
 Intraday stock data contained 35 features sampled at 15 minute intervals. 
 The intraday features were from the following categories Bollinger bands, 
  stochastic oscillators, moving averages, and exponential moving averages.
@@ -304,7 +304,7 @@ At the end of the collection process, the files for each
 
 \subsection{Twitter Data}
 
-Messages on Twitter (called Tweets) are mainly comprised of
+Messages on Twitter (called tweets) are mainly comprised of
  tweet ID, timestamp, author (screen name), and text.
 Tweets can also contain many other features such as
  URLs, hashtags, emojis,  and mentions.
@@ -317,14 +317,14 @@ A hashtag is some collection of characters starting with
 Generally, the character portion of a hashtag will be a word or set of words,
  but this is not necessary.
 
-Approximately 300,000 tweets were collected from over 100 twitter users.
+Approximately 300,000 tweets were collected from over 100 Twitter users.
 The data from Twitter is returned in JavaScript Object Notation (JSON).
 The features of interest were extracted from the JSON files and
  reformatted in tab separated files (TSV).
 After the tweets were extracted from Twitter,
  mentions of company names or stock symbols were extracted from the tweet text by
  matching sections of tweet text to company names and company stock symbols.
-Once the data was collected an processed, it was pushed to the HDFS datalake.
+Once the data was collected and processed, it was pushed to the HDFS datalake.
 
 
 \section{Data Warehouse Development}
@@ -335,8 +335,7 @@ In the star design, there is a central table (called the fact table),
  which contains the unifying features of the dataset and keys to other tables
  \cite{BuildingtheDWCH11}.
 The tables surrounding the fact table (called dimension tables) 
- contain information related to a category related to the unifying feature
- of the dataset \cite{Enterprise}.
+ contain information related to a category of the facts \cite{Enterprise}.
 In the dataset for this analysis, the unifying features are timestamp and
  company stock symbol, thus the fact table contains these features
  and several other descriptive features related to the companies.
@@ -380,7 +379,7 @@ The integration of the fact table and the normalized stock table is shown
 Unlike the stock data, the tweet data did not naturally join to the fact
  table of the schema.
 Like the stock data, the tweet data came with a timestamp, but stock symbol
- is not nominal feature of tweets.
+ is not a nominal feature of tweets.
 The stock symbol feature was generated by extracting matching strings
  during the data collection process; therefore, stock symbols are not
  guaranteed to be non-null in the tweet dimension.
@@ -389,14 +388,14 @@ Additionally, the combination of timestamp and stock symbol is not guaranteed
  fields.
 However, Twitter assigns a tweet ID for each tweet, which is guaranteed to be
  a primary key.
-Thus, the same features can still be used to join the tweets dimension to the 
+Thus, the same features can still be used to join the tweet dimension to the 
  fact table, but cannot serve as a primary key.
 As noted previously, three secondary features of tweets are used in this study.
 Each of these features, mentions, hashtags, and URLs, represents a hierarchical
  member of the tweet dimension.
 Tables were created for each of these features to follow the snowflake design.
 These additional tables required join tables because there is a many-to-many
- cardinality between the tweets dimension and each of the three secondary members.
+ cardinality between the tweet dimension and each of the three secondary members.
 The result of the tweet dimension normalization is shown conceptually
  in Fig. \ref{snowflake} (right side of schema diagram).
 
@@ -408,11 +407,11 @@ The number of tables should be limited to decrease query time to support
 The number of intraday tables and tweet tables were reduced to support
  fast query times.
 All intraday tables were combined into one table. 
-Each secondary member of the twitter dimension hierarchical structure was
+Each secondary member of the Twitter dimension hierarchical structure was
  subsumed into a copy of the main tweet table, reducing the number of tables
  in the tweet dimension from seven to three.
 The schema resulting from this denomalization process is shown
- conceptually in Fig 2.
+ conceptually in Fig. \ref{star}.
 
 
 \begin{figure}
@@ -423,7 +422,7 @@ The schema resulting from this denomalization process is shown
 	\label{star}
 \end{figure}
 
-\section{Technologies}
+\section{Implementation}
 
 Rikel
 
