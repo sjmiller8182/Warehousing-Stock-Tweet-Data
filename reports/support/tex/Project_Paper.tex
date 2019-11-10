@@ -152,6 +152,7 @@ Through a combination of these systems and data storage within
  the stock market.
 
 \subsection{Apache Hadoop Ecosystem}
+
 Motivated through the opportunity within big data and parallel computing,
  which enables massive amounts of data to be rapidly accessed for complex
  analysis and distributed across a scalable, cost-effective distribution of
@@ -335,7 +336,7 @@ In the star design, there is a central table (called the fact table),
  \cite{BuildingtheDWCH11}.
 The tables surrounding the fact table (called dimension tables) 
  contain information related to a category related to the unifying feature
- of the dataset \cite{BuildingtheDWCH11}.
+ of the dataset \cite{Enterprise}.
 In the dataset for this analysis, the unifying features are timestamp and
  company stock symbol, thus the fact table contains these features
  and several other descriptive features related to the companies.
@@ -345,7 +346,7 @@ In some cases, dimensions of the facts exhibit an
  inherent hierarchical structure. 
 When the dimensions of a star schema are broken out into the tables
  that make up the hierarchical structure of the dimensions, the schema
- is in its \textit{snowflake} form \cite{BuildingtheDWCH11}.
+ is in its \textit{snowflake} form \cite{WarehouseDesignApproaches}.
 In this study, two schemas were designed: one in snowflake form and
  the other in a more optimal form for query speed.
 
@@ -410,13 +411,15 @@ All intraday tables were combined into one table.
 Each secondary member of the twitter dimension hierarchical structure was
  subsumed into a copy of the main tweet table, reducing the number of tables
  in the tweet dimension from seven to three.
-The result of this denomalization is shown conceptually in Fig 2.
+The schema resulting from this denomalization process is shown
+ conceptually in Fig 2.
 
 
 \begin{figure}
 	\centering
 	\includegraphics[width=2.5in]{Star_Conceptual_Schema.png}
-	\caption{Conceptual Diagram of the Data Warehouse Star Schema}
+	\caption{Conceptual Diagram of the Data Warehouse 
+		Denormalized Star Schema}
 	\label{star}
 \end{figure}
 
@@ -426,19 +429,22 @@ Rikel
 
 \section{Results}
 
-
-
 Maybe a table comparing read times for the different options
 
 \begin{itemize}
-	\item S3
-	\item HDFS
+	\item Snowflake vs Denormalized Star
+	\item S3 vs HDFS
 	\item HDFS mapreduce settings?
 \end{itemize}
 
 \section{Analysis}
 
-Analysis of the results
+A statistical analysis of the results
+
+\begin{itemize}
+	\item Discuss sample size of measures
+	\item Looks like a repeated measures analysis
+\end{itemize}
 
 
 \section{Conclusion}
@@ -453,10 +459,15 @@ The scalability of large sets of data is of ever-increasing importance in the da
 
 \begin{thebibliography}{1}
 
+\bibitem{BigDataComputing}
+R. Kune, P. Konugurthi, A. Agarwal, R. Chillarige, R. Buyya,
+ "The Anatomy of Big Data Computing," Software: Practice and Experience,
+ Vol. 46 no. 1, pp.79-105, Jan. 2016. 
+
 \bibitem{BuildingtheDWCH11}
 W. H. Inmon, "Unstructured Data and the Data Warehouse," in 
   \emph{Building the Data Warehouse},
-  4th ed. Hoboken: Wiley, 2005, ch. x, sec. x.
+  4th ed. Hoboken: Wiley, 2005, ch. 11.
   Accessed on Nov. 6, 2019 [Online]. 
   Available: \\ https://learning.oreilly.com/library/view/building-the-data/9780764599446
 
@@ -464,7 +475,18 @@ W. H. Inmon, "Unstructured Data and the Data Warehouse," in
 I. Moalla, A. Nabli, L. Bouzguendam and M. Hammami,
  "Data warehouse design approaches from social media: review and comparison,"
  Social Network Analysis and Mining., Vol. 7, no. 1, pp. 1-14, Jan. 2017.
- Accessed on: Nov. 6, 2019 [Online]. Available doi: 10.1007/s13278-017-0423-8
+ Accessed on: Nov. 6, 2019 [Online]. 
+ Available doi: 10.1007/s13278-017-0423-8
+
+\bibitem{Enterprise}
+A. Gorelik, "Historical Perspectives," in 
+ \emph{The Enterprise Big Data Lake},
+ 1st ed. Sebastopol, CA: Wiley, 2019, ch. 2, pp. 25-47.
+
+\bibitem{Intel}
+"Extract, Transform, and Load Big Data with Apache Hadoop," Intel, USA, 2013.
+ Available:\\ https://software.intel.com/sites/default/files/article/402274/etl-big-data-with-hadoop.pdf
+
 
 \end{thebibliography}
 
