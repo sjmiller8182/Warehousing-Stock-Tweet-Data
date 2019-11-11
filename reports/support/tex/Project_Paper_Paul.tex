@@ -421,16 +421,16 @@
 	
 	\subsubsection{Hadoop MapReduce}
 	
-	Hadoop MapReduce is a programming model for large-scale data processing. With the high demand of computing power, computer architecture has evolved over the years from serial computing to parallel computing where tasks are distributed and executed simultaneously across multiple processors within the same computer. Now with MapReduce, instead of using one server instance with multi-processing power, we will use multiple server instances with multi-processing power - this is called a distributed computing system.
+	\textbf{Hadoop MapReduce is} a programming model for large-scale data processing. With the high demand of computing power, computer architecture \textbf{has} evolved over the years from serial computing to parallel computing where tasks are distributed and executed simultaneously across multiple processors within the same computer. Now with MapReduce\textbf{,} instead of using one \textbf{server} instance with \textbf{multi-}processing power, we will use multiple \textbf{server instances} with \textbf{multi-}processing power - this is called a distributed computing system.
 	
 	The parallelism in Hadoop is categorized into data-parallelism and task-parallelism.
 	Data-parallelism is focused on processing data across multiple processors whereas
 	task-parallelism is focused on distributing execution threads across multiple servers
 	\cite{Parallelism}. The configuration for these are built into Hadoop, but can be modified through tools, such as MapReduce. This is what enables us to manage and process vast
-	amounts of data (multi-terabyte data-sets) in parallel on large clusters (thousands of nodes) of
+	amounts of data (multi-terabyte data-sets) \textbf{in parallel} on large clusters (thousands of nodes) of 
 	commodity hardware in a	reliable, fault-tolerant manner.
 	
-	A MapReduce framework consists of two workers: the Mapper and the Reducer. MapReduce uses the divide-and-conquer \cite{Divide-and-Conquer} technique where the input is divided into a set of small tasks and each task is identified by a key-value pair. The key serves as a task ID and the value as the task output. Each task is then processed and executed by the mapper and the outputs are processed and merged by the reducer \cite{MapReduce}.
+	A MapReduce framework consists of two workers: the Mapper and the Reducer. MapReduce uses the divide and conquer \cite{Divide-and-Conquer} technique where the input is divide\textbf{d} into a set of small task\textbf{s and} each \textbf{task} is identif\textbf{ied} by a key\textbf{-}value pair. The key serve\textbf{s} as a task ID and the value \textbf{as} the task output. Each task is then process\textbf{ed} and execut\textbf{ed} by the mapper and the outputs are process\textbf{ed} and merge\textbf{d} by the reducer \cite{MapReduce}.
 	
 	\begin{figure}
 		\centering
