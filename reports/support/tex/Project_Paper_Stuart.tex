@@ -148,22 +148,16 @@ applications within the Apache suite in addition to software that can
 be managed and accessed within a network of servers (a compute cluster)
  \cite{Intel, BigDataComputing}.
 
-
-
-\textbf{*The paragraph below needs citation*}
-
-
-
 The server cluster enables users to read data from the same source,
  simultaneously, as the data at that source is partitioned and
  processed across multiple servers \textemdash a master and at least one slave. 
 The processing framework that enables this is called MapReduce, 
 which assigns nodes for ``mapping'' and ``reducing'' processes by applying  
 various configurations, such as related to memory allocation and numbers
-of mappers and reducers. 
+of mappers and reducers \cite{MappingReducing}. 
 As data is mapped, it is reprocessed into a derivative data set,
  split into tuples that are then processed across the cluster, in parallel,
- and reassembled in the reduce process. 
+ and reassembled in the reduce process \cite{MappingReducing}. 
 Following the reduce process, data is delivered to the end-user.
 
 The parallelizability of Hadoop is central to this study as the primary
