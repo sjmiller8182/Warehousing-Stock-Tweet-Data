@@ -155,7 +155,7 @@ The processing framework that enables this is called MapReduce,
 which assigns nodes for ``mapping'' and ``reducing'' by applying 
 various configurations, such as related to memory allocation and numbers
 of mappers and reducers. As data is mapped, it is reprocessed into a derivative 
-data set, split into tuples that are then processed across the cluster, in parallel, and reassembled in the reduce process. Following the reduce process, data is delivered to 
+data set, split into tuples that are then processed across the cluster, in parallel, and reassembled in the reduce process \cite{MappingReducing}. Following the reduce process, data is delivered to 
 the end-user.
 
 The parallelizability of Hadoop is central to this study as the primary
@@ -421,7 +421,15 @@ Not like traditional file system, HDFS is a distributed file system designed to 
 
 \subsubsection{Hadoop MapReduce}
 
-It’s a programming model for a large scale data processing. With the high demand of computing power, computer architecture evolved over the year from serial computing to parallel computing where tasks are distributed and executed simultaneously across multiple processors within the same computer. Now with the MapReduce instead of using one instance with multiple processing power, we will use multiple computers with multiple processing power, this is called distributed computing system. The parallelism in Hadoop is categorized into data-parallelism and task-parallelism. Data-parallelism is focused on processing data across multiple processors whereas task-parallelism is focused on distributing execution threads across multiple servers \cite{Parallelism}. Utilizing one or the other is dependent upon whether data is being provided into the system or being utilized for events such as machine learning. This is actually what enables us to manage and process vast amounts of data (multi-terabyte data-sets) in-parallel on large clusters (thousands of nodes) of commodity hardware in a reliable, fault-tolerant manner. A MapReduce framework consists of two workers: the Mapper and the Reducer, so how does it work? It's using the divide and conquer technique, where the input is divide into a set of small task, each task is identify by the key -value pair, where the key serve as task ID and the value the is the task output. Each task is then process and execute by the mapper and the outputs are process and merge by the reducer.
+\textbf{Hadoop MapReduce is} a programming model for large-scale data processing. With the high demand of computing power, computer architecture \textbf{has} evolved over the years from serial computing to parallel computing where tasks are distributed and executed simultaneously across multiple processors within the same computer. Now with MapReduce\textbf{,} instead of using one \textbf{server} instance with \textbf{multi-}processing power, we will use multiple \textbf{server instances} with \textbf{multi-}processing power - this is called a distributed computing system.
+
+The parallelism in Hadoop is categorized into data-parallelism and task-parallelism.
+Data-parallelism is focused on processing data across multiple processors whereas
+task-parallelism is focused on distributing execution threads across multiple servers
+\cite{Parallelism}. The configuration for these are built into Hadoop, but can be modified through tools, such as MapReduce. This is what enables us to manage and process vast
+amounts of data (multi-terabyte data-sets) \textbf{in parallel} on large clusters (thousands of nodes) of commodity hardware in a	reliable, fault-tolerant manner.
+
+A MapReduce framework consists of two workers: the Mapper and the Reducer. MapReduce uses the divide and conquer \cite{Divide-and-Conquer} technique where the input is divide\textbf{d} into a set of small task\textbf{s and} each \textbf{task} is identif\textbf{ied} by a key\textbf{-}value pair. The key serve\textbf{s} as a task ID and the value \textbf{as} the task output. Each task is then process\textbf{ed} and execut\textbf{ed} by the mapper and the outputs are process\textbf{ed} and merge\textbf{d} by the reducer \cite{MapReduce}.
 
 \begin{figure}
 	\centering
@@ -515,6 +523,16 @@ D. Borthakur, HDFS Architecture Guide, The Apache Software Foundation,
 \bibitem{Parallelism}
 D. Sitaram, G. Manjunath \textit{Moving To The Cloud}. Boston: Syngress, 2012, pp. 205–253.
 
+\bibitem{Divide-and-Conquer} 
+S. Zhao, R. Li, W. Tian, W. Xiao, X. Dong, D. Liao, S. U. Khan, L. Keqin, “Divide-and-conquer approach for solving singular value decomposition based on MapReduce,” Abbrev. Title of Journal, vol. 28, no. 2, pp. 331–350, Nov. 2016. Accessed on: Nov. 10, 2019. [Online]. Available: site/path/file (doi:10.1002/cpe.3436, https://onlinelibrary.wiley.com/doi/abs/10.1002/cpe.3436)
+
+\bibitem{MapReduce}
+D. Miner, A. Shook, MapReduce Design Patterns, 1st ed. Sebastopol, CA: O'Reilly Media, 2012,
+pp. 5–6.
+
+\bibitem{MappingReducing}
+D. Miner, A. Shook, Hadoop MapReduce v2 Cookbook, 2nd ed. Sebastopol, CA: O'Reilly Media,
+2015, pp. 1.
 
 \end{thebibliography}
 
