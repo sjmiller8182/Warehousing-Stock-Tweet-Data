@@ -10,8 +10,8 @@ The following table shows milestone identified to complete the project.
 | Design Normalized Schema                    | Oct. 27, 2019      | Oct. 27, 2019      | Complete |
 | Design Optimized Schema                     | Oct. 27, 2019      | Nov. 3, 2019       | Complete |
 | Integrate All Tools (full system)           | Nov. 3, 2019       |  | In Progress |
-| Verify Data WareHouse Builds (both schemas) | Nov. 3, 2019       | Nov. 3, 2019       | Complete  |
-| Rough Draft of Paper                        | Nov. 10, 2019      |  | In Progress |
+| Verify Data WareHouse Builds (both schemas) | Nov. 3, 2019       | Nov. 3, 2019       | Complete |
+| Rough Draft of Paper                        | Nov. 10, 2019      | Nov. 10, 2019      | Complete |
 | Test Performance                            | Nov. 17, 2019      |  |  |
 | Complete Final Presentation                 | Dec. 1, 2019       |  |  |
 | Complete Final Paper                        | Dec. 3, 2019       |  |  |
