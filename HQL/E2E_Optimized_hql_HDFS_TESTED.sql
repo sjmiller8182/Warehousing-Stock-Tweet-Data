@@ -1,57 +1,56 @@
 set mapred.job.queue.name=root.batch;
-set mapreduce.map.memory.mb=8096;
-set mapreduce.reduce.memory.mb=10020;
-set mapreduce.job.reduces=30;
+set mapreduce.map.memory.mb=2048;
+set mapreduce.reduce.memory.mb=4096;
+set mapreduce.job.reduces=10;
 
 create database if not exists ds7330_term_project;
 create database if not exists ds7330_term_raw_data;
 
 create table if not exists ds7330_term_project.dates(
-	report_date string
+	report_date string 
 );
 
 create table if not exists ds7330_term_project.times(
 	report_time string
 );
 
-create table if not exists ds7330_term_project.twitter_tweet(
-	tweet_id string
-	, tweet_text string
-	, tweet_date string
-	, tweet_time string
-	, user_id string
-	, symbol string
-	, tweet_symbol_id string
+create table if not exists ds7330_term_project.tweet_mentions(
+tweet_id string
+, `text` string
+, `time` string
+, `date` string
+, user_id string
+, `user` string
+, symbol string
+, mention_id string
+, mention string
+, tweet_symbol_id string
 );
 
-create table if not exists ds7330_term_project.twitter_user(
-	user_id string
-	, `user` string
+create table if not exists ds7330_term_project.tweet_hashtags(
+tweet_id string
+, `text` string
+, `time` string
+, `date` string
+, user_id string
+, `user` string
+, symbol string
+, hashtag_id string
+, hashtag string
+, tweet_symbol_id string
 );
 
-create table if not exists ds7330_term_project.twitter_tweet_mention(
-	tweet_id string
-	, user_id string
-);
-
-create table if not exists ds7330_term_project.twitter_hashtag(
-	hashtag_id string
-	, hashtag string
-);
-
-create table if not exists ds7330_term_project.twitter_tweet_hashtag(
-	tweet_id string
-	, hashtag_id string
-);
-
-create table if not exists ds7330_term_project.twitter_url(
-	url_id string
-	, url string
-);
-
-create table if not exists ds7330_term_project.twitter_tweet_url(
-	tweet_id string
-	, url_id string
+create table if not exists ds7330_term_project.tweet_urls(
+tweet_id string
+, `text` string
+, `time` string
+, `date` string
+, user_id string
+, `user` string
+, symbol string
+, url_id string
+, url string
+, tweet_symbol_id string
 );
 
 create table if not exists ds7330_term_project.companies(
@@ -82,14 +81,6 @@ create table if not exists ds7330_term_project.intraday(
 	, close_price double
 	, high_price double
 	, low_price double
-);
-
-create table if not exists ds7330_term_project.bollinger_intraday(
-	report_dtm string
-	, report_date string
-	, report_time string
-	, symbol string
-	, market string
 	, open_bollinger_band_lower double
 	, open_bollinger_band_middle double
 	, open_bollinger_band_upper double
@@ -102,14 +93,6 @@ create table if not exists ds7330_term_project.bollinger_intraday(
 	, low_bollinger_band_lower double
 	, low_bollinger_band_middle double
 	, low_bollinger_band_upper double
-);
-
-create table if not exists ds7330_term_project.moving_averages_intraday(
-	report_dtm string
-	, report_date string
-	, report_time string
-	, symbol string
-	, market string
 	, macd_open double
 	, macd_hist_open double
 	, mkacd_signal_open double
@@ -122,37 +105,13 @@ create table if not exists ds7330_term_project.moving_averages_intraday(
 	, macd_low double
 	, macd_hist_low double
 	, mkacd_signal_low double
-);
-
-create table if not exists ds7330_term_project.exp_ma_intraday(
-	report_dtm string
-	, report_date string
-	, report_time string
-	, symbol string
-	, market string
+	, slowd_stochastic double
+	, slowk_stochastic double
 	, exponential_ma_open double
 	, exponential_ma_high double
 	, exponential_ma_low double
   	, exponential_ma_close double
 );
-
-create table if not exists ds7330_term_project.stochastic_intraday(
-	report_dtm string
-	, report_date string
-	, report_time string
-	, symbol string
-	, market string
-	, slowd_stochastic double
-	, slowk_stochastic double
-);
-
-set mapred.job.queue.name=root.batch;
-set mapreduce.map.memory.mb=8096;
-set mapreduce.reduce.memory.mb=10020;
-set mapreduce.job.reduces=30;
-
-create database if not exists ds7330_term_project;
-create database if not exists ds7330_term_raw_data;
 
 create table if not exists ds7330_term_raw_data.bbands_close_15_min(
 times string
@@ -164,7 +123,7 @@ times string
 )
 ROW FORMAT DELIMITED FIELDS TERMINATED BY "," ESCAPED BY '\\'
 tblproperties ("skip.header.line.count"="1");
-LOAD DATA INPATH '/user/hue_username/bbands_close_15_min.csv'
+LOAD DATA INPATH '/user/hadoop/bbands_close_15_min.csv'
 INTO TABLE ds7330_term_raw_data.bbands_close_15_min;
 
 create table if not exists ds7330_term_raw_data.bbands_high_15_min(
@@ -177,7 +136,7 @@ times string
 )
 ROW FORMAT DELIMITED FIELDS TERMINATED BY "," ESCAPED BY '\\'
 tblproperties ("skip.header.line.count"="1");
-LOAD DATA INPATH '/user/hue_username/bbands_high_15_min.csv' 
+LOAD DATA INPATH '/user/hadoop/bbands_high_15_min.csv'
 INTO TABLE ds7330_term_raw_data.bbands_high_15_min;
 
 create table if not exists ds7330_term_raw_data.bbands_low_15_min(
@@ -190,7 +149,7 @@ times string
 )
 ROW FORMAT DELIMITED FIELDS TERMINATED BY "," ESCAPED BY '\\'
 tblproperties ("skip.header.line.count"="1");
-LOAD DATA INPATH '/user/hue_username/bbands_low_15_min.csv'
+LOAD DATA INPATH '/user/hadoop/bbands_low_15_min.csv'
 INTO TABLE ds7330_term_raw_data.bbands_low_15_min;
 
 create table if not exists ds7330_term_raw_data.bbands_open_15_min(
@@ -203,7 +162,7 @@ times string
 )
 ROW FORMAT DELIMITED FIELDS TERMINATED BY "," ESCAPED BY '\\'
 tblproperties ("skip.header.line.count"="1");
-LOAD DATA INPATH '/user/hue_username/bbands_open_15_min.csv'
+LOAD DATA INPATH '/user/hadoop/bbands_open_15_min.csv'
 INTO TABLE ds7330_term_raw_data.bbands_open_15_min;
 
 create table if not exists ds7330_term_raw_data.daily_prices_20_years(
@@ -218,7 +177,7 @@ times string
 )
 ROW FORMAT DELIMITED FIELDS TERMINATED BY "," ESCAPED BY '\\'
 tblproperties ("skip.header.line.count"="1");
-LOAD DATA INPATH '/user/hue_username/daily_prices_20_years.csv'
+LOAD DATA INPATH '/user/hadoop/daily_prices_20_years.csv'
 INTO TABLE ds7330_term_raw_data.daily_prices_20_years;
 
 create table if not exists ds7330_term_raw_data.exp_moving_average_15_min(
@@ -232,7 +191,7 @@ times string
 )
 ROW FORMAT DELIMITED FIELDS TERMINATED BY "," ESCAPED BY '\\'
 tblproperties ("skip.header.line.count"="1");
-LOAD DATA INPATH '/user/hue_username/exp_moving_average_15_min.csv'
+LOAD DATA INPATH '/user/hadoop/exp_moving_average_15_min.csv'
 INTO TABLE ds7330_term_raw_data.exp_moving_average_15_min;
 
 create table if not exists ds7330_term_raw_data.intraday_prices_15_min(
@@ -247,7 +206,7 @@ times string
 )
 ROW FORMAT DELIMITED FIELDS TERMINATED BY "," ESCAPED BY '\\'
 tblproperties ("skip.header.line.count"="1");
-LOAD DATA INPATH '/user/hue_username/intraday_prices_15_min.csv'
+LOAD DATA INPATH '/user/hadoop/intraday_prices_15_min.csv'
 INTO TABLE ds7330_term_raw_data.intraday_prices_15_min;
 
 create table if not exists ds7330_term_raw_data.macd_close_15_min(
@@ -260,7 +219,7 @@ times string
 )
 ROW FORMAT DELIMITED FIELDS TERMINATED BY "," ESCAPED BY '\\'
 tblproperties ("skip.header.line.count"="1");
-LOAD DATA INPATH '/user/hue_username/macd_close_15_min.csv'
+LOAD DATA INPATH '/user/hadoop/macd_close_15_min.csv'
 INTO TABLE ds7330_term_raw_data.macd_close_15_min;
 
 create table if not exists ds7330_term_raw_data.macd_high_15_min(
@@ -273,7 +232,7 @@ times string
 )
 ROW FORMAT DELIMITED FIELDS TERMINATED BY "," ESCAPED BY '\\'
 tblproperties ("skip.header.line.count"="1");
-LOAD DATA INPATH '/user/hue_username/macd_high_15_min.csv'
+LOAD DATA INPATH '/user/hadoop/macd_high_15_min.csv'
 INTO TABLE ds7330_term_raw_data.macd_high_15_min;
 
 create table if not exists ds7330_term_raw_data.macd_low_15_min(
@@ -286,7 +245,7 @@ times string
 )
 ROW FORMAT DELIMITED FIELDS TERMINATED BY "," ESCAPED BY '\\'
 tblproperties ("skip.header.line.count"="1");
-LOAD DATA INPATH '/user/hue_username/macd_low_15_min.csv'
+LOAD DATA INPATH '/user/hadoop/macd_low_15_min.csv'
 INTO TABLE ds7330_term_raw_data.macd_low_15_min;
 
 create table if not exists ds7330_term_raw_data.macd_open_15_min(
@@ -299,7 +258,7 @@ times string
 )
 ROW FORMAT DELIMITED FIELDS TERMINATED BY "," ESCAPED BY '\\'
 tblproperties ("skip.header.line.count"="1");
-LOAD DATA INPATH '/user/hue_username/macd_open_15_min.csv'
+LOAD DATA INPATH '/user/hadoop/macd_open_15_min.csv'
 INTO TABLE ds7330_term_raw_data.macd_open_15_min;
 
 create table if not exists ds7330_term_raw_data.stochastic_15_min(
@@ -311,7 +270,7 @@ times string
 )
 ROW FORMAT DELIMITED FIELDS TERMINATED BY "," ESCAPED BY '\\'
 tblproperties ("skip.header.line.count"="1");
-LOAD DATA INPATH '/user/hue_username/stochastic_15_min.csv'
+LOAD DATA INPATH '/user/hadoop/stochastic_15_min.csv'
 INTO TABLE ds7330_term_raw_data.stochastic_15_min;
 
 create table if not exists ds7330_term_raw_data.nyse_symbols(
@@ -320,7 +279,7 @@ symbol string
 )
 ROW FORMAT DELIMITED FIELDS TERMINATED BY "\t" ESCAPED BY '\\'
 tblproperties ("skip.header.line.count"="1");
-LOAD DATA INPATH '/user/hue_username/NYSE_Symbols.txt'
+LOAD DATA INPATH '/user/hadoop/NYSE_Symbols.txt'
 INTO TABLE ds7330_term_raw_data.nyse_symbols;
 
 create table if not exists ds7330_term_raw_data.nasdaq_symbols(
@@ -329,7 +288,7 @@ symbol string
 )
 ROW FORMAT DELIMITED FIELDS TERMINATED BY "\t" ESCAPED BY '\\'
 tblproperties ("skip.header.line.count"="1");
-LOAD DATA INPATH '/user/hue_username/NASDAQ_Symbols.txt'
+LOAD DATA INPATH '/user/hadoop/NASDAQ_Symbols.txt'
 INTO TABLE ds7330_term_raw_data.nasdaq_symbols;
 
 create table if not exists ds7330_term_raw_data.tweet_hashtags(
@@ -346,7 +305,7 @@ tweet_id string
 )
 ROW FORMAT DELIMITED FIELDS TERMINATED BY "," ESCAPED BY '\\'
 tblproperties ("skip.header.line.count"="1");
-LOAD DATA INPATH '/user/hue_username/hashtags.csv'
+LOAD DATA INPATH '/user/hadoop/hashtags.csv'
 INTO TABLE ds7330_term_raw_data.tweet_hashtags;
 
 create table if not exists ds7330_term_raw_data.tweet_mentions(
@@ -363,7 +322,7 @@ tweet_id string
 )
 ROW FORMAT DELIMITED FIELDS TERMINATED BY "," ESCAPED BY '\\'
 tblproperties ("skip.header.line.count"="1");
-LOAD DATA INPATH '/user/hue_username/mentions.csv'
+LOAD DATA INPATH '/user/hadoop/mentions.csv'
 INTO TABLE ds7330_term_raw_data.tweet_mentions;
 
 create table if not exists ds7330_term_raw_data.tweet_urls(
@@ -380,14 +339,11 @@ tweet_id string
 )
 ROW FORMAT DELIMITED FIELDS TERMINATED BY "," ESCAPED BY '\\'
 tblproperties ("skip.header.line.count"="1");
-LOAD DATA INPATH '/user/hue_username/urls.csv'
+LOAD DATA INPATH '/user/hadoop/urls.csv'
 INTO TABLE ds7330_term_raw_data.tweet_urls;
 
-set mapred.job.queue.name=root.batch;
-set mapreduce.map.memory.mb=8096;
-set mapreduce.reduce.memory.mb=10020;
-set mapreduce.job.reduces=30;
 set hive.exec.dynamic.partition.mode=nonstrict;
+
 
 insert into ds7330_term_project.dates(
 	select trim(substring(regexp_replace(times, '"', ''), 1, 10)) as report_date
@@ -445,40 +401,19 @@ insert into ds7330_term_project.daily(
 
 insert into ds7330_term_project.intraday(
 	Select
-	 regexp_replace(times, '"', '') as report_dtm
-	, trim(substring(regexp_replace(times, '"', ''), 1, 10)) as report_date
-    , trim(substring(regexp_replace(times, '"', ''), (length(regexp_replace(times, '"', ''))-1)-6, length(times)))  as report_time
-	, regexp_replace(symbol, '"', '') as symbol
-	, regexp_replace(market, '"', '') as market
-	, volume as trade_volume
-	, open as open_price
-	, close as close_price
-	, high as high_price
-	, low as low_price
-	from ds7330_term_raw_data.intraday_prices_15_min
-	group by 
-	regexp_replace(times, '"', '')
-	, trim(substring(regexp_replace(times, '"', ''), 1, 10))
-	, trim(substring(regexp_replace(times, '"', ''), (length(regexp_replace(times, '"', ''))-1)-6, length(times)))
-	, regexp_replace(symbol, '"', '')
-	, regexp_replace(market, '"','')
-	, volume
-	, open
-	, close
-	, high
-	, low
-);
-
-insert into ds7330_term_project.bollinger_intraday(
-    Select
-    obb.times as report_dtm
-    , trim(substring(regexp_replace(obb.times, '"', ''), 1, 10)) as report_date
-    , trim(substring(regexp_replace(obb.times, '"', ''), (length(regexp_replace(obb.times, '"', ''))-1)-6, length(obb.times)))  as report_time
-	, regexp_replace(obb.symbol, '"', '') as symbol
-	, regexp_replace(obb.market, '"', '') as market
-    , obb.real_lower_band as open_bollinger_band_lower
-	, obb.real_middle_band as open_bollinger_band_middle
-	, obb.real_upper_band as open_bollinger_band_upper
+	 regexp_replace(intra.times, '"', '') as report_dtm
+	, trim(substring(regexp_replace(intra.times, '"', ''), 1, 10)) as report_date
+    , trim(substring(regexp_replace(intra.times, '"', ''), (length(regexp_replace(intra.times, '"', ''))-1)-6, length(intra.times)))  as report_time -- foreign key
+	, regexp_replace(intra.symbol, '"', '') as symbol
+	, regexp_replace(intra.market, '"', '') as market
+	, intra.volume as trade_volume
+	, intra.open as open_price
+	, intra.close as close_price
+	, intra.high as high_price
+	, intra.low as low_price
+    , obb.lower_bband_open as open_bollinger_band_lower
+	, obb.middle_bband_open as open_bollinger_band_middle
+	, obb.upper_bband_open as open_bollinger_band_upper
 	, cbb.lower_bband_close as close_bollinger_band_lower
 	, cbb.middle_bband_close as close_bollinger_band_middle
 	, cbb.upper_bband_close as close_bollinger_band_upper
@@ -488,7 +423,43 @@ insert into ds7330_term_project.bollinger_intraday(
 	, lbb.lower_bband_low as low_bollinger_band_lower
 	, lbb.middle_bband_low as low_bollinger_band_middle
 	, lbb.upper_bband_low as low_bollinger_band_upper
-	from ds7330_term_raw_data.bbands_open_15_min obb
+	, mcdo.macd_open as macd_open
+	, mcdo.macd_hist_open as macd_hist_open
+	, mcdo.mkacd_signal_open as mkacd_signal_open
+	, mcdc.macd_close as macd_close
+	, mcdc.macd_hist_close as macd_hist_close
+	, mcdc.mkacd_signal_close as mkacd_signal_close
+	, mcdh.macd_high as macd_high
+	, mcdh.macd_hist_high as macd_hist_high
+	, mcdh.mkacd_signal_high as mkacd_signal_high
+	, mcdl.macd_low as macd_low
+	, mcdl.macd_hist_low as macd_hist_low
+	, mcdl.mkacd_signal_low as mkacd_signal_low
+	, stoch.slowd as slowd_stochastic
+	, stoch.slowk as slowk_stochastic
+	, exp.exponential_ma_open as exponential_ma_open
+	, exp.exponential_ma_high as exponential_ma_high
+	, exp.exponential_ma_low as exponential_ma_low
+	, exp.exponential_ma_close as exponential_ma_close
+	from ds7330_term_raw_data.intraday_prices_15_min intra
+	join (
+		  select
+		  	times
+		  	, real_lower_band as lower_bband_open
+		  	, real_middle_band as middle_bband_open
+		  	, real_upper_band as upper_bband_open
+		  	, symbol
+		  	, market
+		  from ds7330_term_raw_data.bbands_open_15_min
+		  group by times
+		  	, real_lower_band
+		  	, real_middle_band
+		  	, real_upper_band
+		  	, symbol
+		  	, market
+		  ) obb
+	on intra.times = obb.times
+	and intra.symbol = obb.symbol
 	join (
 		  select 
 		  	times
@@ -505,8 +476,8 @@ insert into ds7330_term_project.bollinger_intraday(
 		  	, symbol
 		  	, market
 		  ) cbb
-	on obb.times = cbb.times
-	and obb.symbol = cbb.symbol
+	on intra.times = cbb.times
+	and intra.symbol = cbb.symbol
 	join (
 		  select 
 		  	times
@@ -523,8 +494,8 @@ insert into ds7330_term_project.bollinger_intraday(
 		  	, symbol
 		  	, market
 		  ) hbb
-	on obb.times = hbb.times
-	and obb.symbol = hbb.symbol
+	on intra.times = hbb.times
+	and intra.symbol = hbb.symbol
 	join (
 		  select 
 		  	times
@@ -541,48 +512,26 @@ insert into ds7330_term_project.bollinger_intraday(
 		  	, symbol
 		  	, market
 		  ) lbb
-	on obb.times = lbb.times
-	and obb.symbol = lbb.symbol
-	group by
-    obb.times
-    , trim(substring(regexp_replace(obb.times, '"', ''), 1, 10))
-    , trim(substring(regexp_replace(obb.times, '"', ''), (length(regexp_replace(obb.times, '"', ''))-1)-6, length(obb.times)))
-	, regexp_replace(obb.symbol, '"', '')
-	, regexp_replace(obb.market, '"', '')
-    , obb.real_lower_band
-	, obb.real_middle_band
-	, obb.real_upper_band
-	, cbb.lower_bband_close
-	, cbb.middle_bband_close
-	, cbb.upper_bband_close
-	, hbb.lower_bband_high
-	, hbb.middle_bband_high
-	, hbb.upper_bband_high
-	, lbb.lower_bband_low
-	, lbb.middle_bband_low
-	, lbb.upper_bband_low
-);
-
-insert into ds7330_term_project.moving_averages_intraday(
-	Select  
-	 regexp_replace(mcdo.times, '"', '') as report_dtm
-	, trim(substring(regexp_replace(mcdo.times, '"', ''), 1, 10)) as report_date
-    , trim(substring(regexp_replace(mcdo.times, '"', ''), (length(regexp_replace(mcdo.times, '"', ''))-1)-6, length(mcdo.times)))  as report_time
-	, regexp_replace(mcdo.symbol, '"', '') as symbol
-	, regexp_replace(mcdo.market, '"', '') as market
-	, mcdo.macd as macd_open
-	, mcdo.macd_hist as macd_hist_open
-	, mcdo.mkacd_signal as mkacd_signal_open
-	, mcdc.macd_close as macd_close
-	, mcdc.macd_hist_close as macd_hist_close
-	, mcdc.mkacd_signal_close as mkacd_signal_close
-	, mcdh.macd_high as macd_high
-	, mcdh.macd_hist_high as macd_hist_high
-	, mcdh.mkacd_signal_high as mkacd_signal_high
-	, mcdl.macd_low as macd_low
-	, mcdl.macd_hist_low as macd_hist_low
-	, mcdl.mkacd_signal_low as mkacd_signal_low
-	from ds7330_term_raw_data.macd_open_15_min mcdo
+	on intra.times = lbb.times
+	and intra.symbol = lbb.symbol
+	join (
+		  select
+		  	times
+		  	, macd as macd_open
+		  	, macd_hist as macd_hist_open
+		  	, mkacd_signal as mkacd_signal_open
+		  	, symbol
+		  	, market
+		  from ds7330_term_raw_data.macd_open_15_min
+		  group by times
+		  	, macd
+		  	, macd_hist
+		  	, mkacd_signal
+		  	, symbol
+		  	, market
+		  ) mcdo
+	on intra.times = mcdo.times
+	and intra.symbol = mcdo.symbol
 	join (
 		  select
 		  	times
@@ -599,8 +548,8 @@ insert into ds7330_term_project.moving_averages_intraday(
 		  	, symbol
 		  	, market
 		  ) mcdc
-	on mcdo.times = mcdc.times
-	and mcdo.symbol = mcdc.symbol
+	on intra.times = mcdc.times
+	and intra.symbol = mcdc.symbol
 	join (
 		  select
 		  	times
@@ -617,8 +566,8 @@ insert into ds7330_term_project.moving_averages_intraday(
 		  	, symbol
 		  	, market
 		  ) mcdh
-	on mcdo.times = mcdh.times
-	and mcdo.symbol = mcdh.symbol
+	on intra.times = mcdh.times
+	and intra.symbol = mcdh.symbol
 	join (
 		  select
 		  	times
@@ -636,17 +585,72 @@ insert into ds7330_term_project.moving_averages_intraday(
 		  	, symbol
 		  	, market
 		  ) mcdl
-	on mcdo.times = mcdl.times
-	and mcdo.symbol = mcdl.symbol
+	on intra.times = mcdl.times
+	and intra.symbol = mcdl.symbol
+	join (
+		  select
+		  	times
+		  	, slowd
+		  	, slowk
+		  	, symbol
+		  	, market
+		  from ds7330_term_raw_data.stochastic_15_min
+		  group by
+		    times
+		  	, slowd
+		  	, slowk
+		  	, symbol
+		  	, market
+		  ) stoch
+	on intra.times = stoch.times
+	and intra.symbol = stoch.symbol
+	join (
+		  select
+		  	times
+		  	, exponential_ma_open
+		  	, exponential_ma_high
+		  	, exponential_ma_low
+		  	, exponential_ma_close
+		  	, symbol
+		  	, market
+		  from ds7330_term_raw_data.exp_moving_average_15_min
+		  group by
+		    times
+		  	, exponential_ma_open
+		  	, exponential_ma_high
+		  	, exponential_ma_low
+		  	, exponential_ma_close
+		  	, symbol
+		  	, market
+		  ) exp
+	on intra.times = exp.times
+	and intra.symbol = exp.symbol
 	group by 
-	regexp_replace(mcdo.times, '"', '')
-	, trim(substring(regexp_replace(mcdo.times, '"', ''), 1, 10))
-	, trim(substring(regexp_replace(mcdo.times, '"', ''), (length(regexp_replace(mcdo.times, '"', ''))-1)-6, length(mcdo.times)))
-	, regexp_replace(mcdo.symbol, '"', '')
-	, regexp_replace(mcdo.market, '"','')
-	, mcdo.macd
-	, mcdo.macd_hist
-	, mcdo.mkacd_signal
+	regexp_replace(intra.times, '"', '')
+	, trim(substring(regexp_replace(intra.times, '"', ''), 1, 10))
+	, trim(substring(regexp_replace(intra.times, '"', ''), (length(regexp_replace(intra.times, '"', ''))-1)-6, length(intra.times)))
+	, regexp_replace(intra.symbol, '"', '')
+	, regexp_replace(intra.market, '"','')
+	, intra.volume
+	, intra.open
+	, intra.close
+	, intra.high
+	, intra.low
+	, obb.lower_bband_open
+	, obb.middle_bband_open
+	, obb.upper_bband_open
+	, cbb.lower_bband_close
+	, cbb.middle_bband_close
+	, cbb.upper_bband_close
+	, hbb.lower_bband_high
+	, hbb.middle_bband_high
+	, hbb.upper_bband_high
+	, lbb.lower_bband_low
+	, lbb.middle_bband_low
+	, lbb.upper_bband_low
+	, mcdo.macd_open
+	, mcdo.macd_hist_open
+	, mcdo.mkacd_signal_open
 	, mcdc.macd_close
 	, mcdc.macd_hist_close
 	, mcdc.mkacd_signal_close
@@ -656,129 +660,88 @@ insert into ds7330_term_project.moving_averages_intraday(
 	, mcdl.macd_low
 	, mcdl.macd_hist_low
 	, mcdl.mkacd_signal_low
+	, stoch.slowd
+	, stoch.slowk
+	, exp.exponential_ma_open
+	, exp.exponential_ma_high
+	, exp.exponential_ma_low
+	, exp.exponential_ma_close
 );
 
-insert into ds7330_term_project.stochastic_intraday(
-	Select
-	 regexp_replace(times, '"', '') as report_dtm
-	, trim(substring(regexp_replace(times, '"', ''), 1, 10)) as report_date
-    , trim(substring(regexp_replace(times, '"', ''), (length(regexp_replace(times, '"', ''))-1)-6, length(times)))  as report_time
-	, regexp_replace(symbol, '"', '') as symbol
-	, regexp_replace(market, '"', '') as market
-	, slowd as slowd_stochastic
-	, slowk as slowk_stochastic
-	from ds7330_term_raw_data.stochastic_15_min
-	group by
-	regexp_replace(times, '"', '')
-	, trim(substring(regexp_replace(times, '"', ''), 1, 10))
-	, trim(substring(regexp_replace(times, '"', ''), (length(regexp_replace(times, '"', ''))-1)-6, length(times)))
-	, regexp_replace(symbol, '"', '')
-	, regexp_replace(market, '"','')
-	, slowd
-	, slowk
+insert into ds7330_term_project.tweet_hashtags( 
+select
+	tweet_id as tweet_id
+	, `text` as `text`
+	, `time` as `time`
+	, `date` as `date`
+	, user_id as `user_id`
+	, `user` as `user`
+	, symbol as `symbol`
+	, hashtag_id as `hashtag_id`
+	, hashtag
+	, tweet_symbol_id
+from ds7330_term_raw_data.tweet_hashtags
+group by
+	tweet_id
+	, `text`
+	, `time`
+	, `date`
+	, user_id
+	, `user`
+	, symbol
+	, hashtag_id
+	, hashtag
+	, tweet_symbol_id
 );
 
-insert into ds7330_term_project.exp_ma_intraday(
-	Select
-	 regexp_replace(times, '"', '') as report_dtm
-	, trim(substring(regexp_replace(times, '"', ''), 1, 10)) as report_date
-    , trim(substring(regexp_replace(times, '"', ''), (length(regexp_replace(times, '"', ''))-1)-6, length(times)))  as report_time
-	, regexp_replace(symbol, '"', '') as symbol
-	, regexp_replace(market, '"', '') as market
-	, exponential_ma_open as exponential_ma_open
-	, exponential_ma_high as exponential_ma_high
-	, exponential_ma_low as exponential_ma_low
-	, exponential_ma_close as exponential_ma_close
-	from ds7330_term_raw_data.exp_moving_average_15_min
-	group by
-	regexp_replace(times, '"', '')
-	, trim(substring(regexp_replace(times, '"', ''), 1, 10))
-	, trim(substring(regexp_replace(times, '"', ''), (length(regexp_replace(times, '"', ''))-1)-6, length(times)))
-	, regexp_replace(symbol, '"', '')
-	, regexp_replace(market, '"','')
-	, exponential_ma_open
-	, exponential_ma_high
-	, exponential_ma_low
-	, exponential_ma_close
+insert into ds7330_term_project.tweet_mentions(
+select
+	tweet_id
+	, `text`
+	, `time`
+	, `date`
+	, user_id
+	, `user`
+	, symbol
+	, mention_id
+	, mention
+	, tweet_symbol_id
+from ds7330_term_raw_data.tweet_mentions
+group by
+	tweet_id
+	, `text`
+	, `time`
+	, `date`
+	, user_id
+	, `user`
+	, symbol
+	, mention_id
+	, mention
+	, tweet_symbol_id
 );
 
-insert into ds7330_term_project.twitter_tweet(
-  Select
-    tweet_id
-    , text
-    , `date` as report_date
-    , `time`  as report_time
-    , user_id
-    , regexp_replace(symbol, '"','') as symbol
-    , tweet_symbol_id as tweet_symbol_id
-  from ds7330_term_raw_data.tweet_urls
-  group by
-    tweet_id
-    , text
-    , `date`
-    , `time`
-    , user_id
-    , regexp_replace(symbol, '"','')
-    , tweet_symbol_id
+insert into ds7330_term_project.tweet_urls(
+select
+	tweet_id
+	, `text`
+	, `time`
+	, `date`
+	, user_id
+	, `user`
+	, symbol
+	, url_id
+	, url
+	, tweet_symbol_id
+from ds7330_term_raw_data.tweet_urls
+group by
+	tweet_id
+	, `text`
+	, `time`
+	, `date`
+	, user_id
+	, `user`
+	, symbol
+	, url_id
+	, url
+	, tweet_symbol_id
 );
-
-insert into ds7330_term_project.twitter_user(
-  Select
-    user_id
-    , `user`
-  from ds7330_term_raw_data.tweet_mentions
-  group by
-    user_id
-    , `user`
-);
-
-insert into ds7330_term_project.twitter_tweet_mention(
-  Select
-    tweet_id
-    , user_id
-  from ds7330_term_raw_data.tweet_mentions
-  group by
-    tweet_id
-    , user_id
-);
-
-insert into ds7330_term_project.twitter_tweet_url(
-  Select
-    tweet_id
-    , url_id
-  from ds7330_term_raw_data.tweet_urls
-  group by
-    tweet_id
-    , url_id
-);
-
-insert into ds7330_term_project.twitter_tweet_hashtag(
-  Select
-    tweet_id
-    , hashtag_id
-  from ds7330_term_raw_data.tweet_hashtags
-  group by
-    tweet_id
-    , hashtag_id
-);
-
-insert into ds7330_term_project.twitter_hashtag(
-  Select
-    hashtag_id
-    , hashtag
-  from ds7330_term_raw_data.tweet_hashtags
-  group by
-    hashtag_id
-    , hashtag
-);
-
-insert into ds7330_term_project.twitter_url(
-  Select
-    url_id
-    , url
-  from ds7330_term_raw_data.tweet_urls
-  group by
-    url_id
-    , url
-);
-
