@@ -8,3 +8,4 @@ Other files used in generation of these reports are contained in `support/`.
 
 * `Proposal`: Initial proposal defining the scope and plans for the project
 * `Initial Presentation`: First presentation describing the current status of the project
+* `Project Paper`: A paper describing the project
