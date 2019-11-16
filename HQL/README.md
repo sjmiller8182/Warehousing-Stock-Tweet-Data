@@ -1,9 +1,16 @@
 # HQL
 
+## Database Creation
+
 These scripts are used to create and populate the data warehouse.
 
-* `Hive_Schema_Structure_hql.sql`: This file contains the table creation queries as outlined in our Entity-Relationship model.
-* `Hive_Data_hql.sql`: This file contains the queries used to populate the tables created by Hive_Schema_Structure_hql.sql file. **However, this file is currently under development.**
-* `HDFS_to_Hive_ds7330_term_raw_data_hql.sql`: This file contains the queries used to load data from the HDFS directory into tables in the raw data Hive database used as staging for the db7330_term_project database. **Twitter tables prending.**
+* `E2E_Optimized_hql_HDFS_TESTED.sql`: This script loads the data and creates the denormalized data warehouse.
+* `E2E_Normalized_hql_HDFS_TESTED.sql`: This script loads the data and creates the normalized data warehouse.
 
-**NOTE**: The schema creates two databases; one for the raw data in put from which the schema tables are built and another in which the schema tables reside.
+## Test Queries
+
+These scripts are used to query results from the databases.
+
+* `'Normalized, Optimized Test HQL.sql'`: Contains the test queries for each type of schema.
+
+
