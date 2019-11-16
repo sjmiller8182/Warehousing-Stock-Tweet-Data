@@ -30,7 +30,11 @@ For this project, we will use the following types of data
 
 ## Data Warehouse Overview
 
-Conceptual schema of the data warehouses are shown below.
+Two star schemas were designed for this data warehouse: a fully normalized schema and a denormalized schema.
+We will investigate the performance of the two schemes in the context of this problem.
+Conceptual diagrams of the data warehouse schemas are shown below.
+
+More detailed schema diagrams were created with MySQL WorkBench the schema design can be accessed [here](https://github.com/sjmiller8182/DBMS_Proj/tree/master/reports/support/schemas).
 
 ### Snowflake Schema
 
@@ -38,13 +42,11 @@ A diagram of the dataware house snowflake schema is shown below.
 
 ![Snowflake](https://github.com/sjmiller8182/DBMS_Proj/blob/master/reports/support/images/Snowflake_Conceptual_Schema.png)
 
-### Opimized Star Schema
+### Denormalized Star Schema
 
 A diagram of the dataware house star schema is shown below. 
 
 ![Optimized_Star_Schema](https://github.com/sjmiller8182/DBMS_Proj/blob/master/reports/support/images/Star_Conceptual_Schema.png)
-
-This schema was created with MySQL WorkBench the schema design can be accessed [here](https://github.com/sjmiller8182/DBMS_Proj/tree/master/reports/support/schemas).
 
 ## Big Data Solution Implementation
 
