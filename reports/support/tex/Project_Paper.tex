@@ -169,7 +169,7 @@ qualitative Twitter data related to the quantitative data.
 
 Quantitative data was gathered from a stock market data vendor through an
 Application Programming Interface (API) on 15-minute intervals using the R
-programming language. 
+programming language \cite{R}. 
 Qualitative data was gathered and processed through a Twitter API
 using the Python programming language. 
 The data was structured and stored in a Hive data warehouse, 
@@ -419,26 +419,37 @@ Fig. \ref{EMR} shows the ecosystem of EMR ecosystem.
 
 \subsection{Apache Hadoop}
 
-Hadoop is an open source software framework for the distributed storage and distributed processing of a very large datasets. 
-The core of Apache Hadoop consists of a storage part: Hadoop Distributed File System (HDFS) and a processing part MapReduce.
+Hadoop is an open source software framework for the distributed storage and
+ distributed processing of a very large datasets. 
+The core of Apache Hadoop consists of a storage part: Hadoop Distributed File System
+ (HDFS) and a processing part MapReduce.
 
 \subsubsection{Hadoop Distributed File System}
 
 Unlike traditional file system, HDFS is a distributed file system designed to run on commodity hardware. 
 HDFS the architecture consists of a master (NameNode) and at least one slave (DataNodes)\cite{HDFSarchitecture}.
-The NameNode is the controller which consist storing data and metadata of the data no the DataNodes. The metadata includes a Namespace lookup table used to locate each file from the DataNodes. 
+The NameNode is the controller which consist storing data and metadata of the data no the DataNodes.
+ The metadata includes a Namespace lookup table used to locate each file from the DataNodes. 
 The Fig. \ref{HDFS} shows the Architecture of HDFS \cite{HDFS}.
 
 \subsubsection{Hadoop MapReduce}
 
 Hadoop MapReduce is a programming model for large scale data processing. 
-With the high demand of computing power, computer architecture has evolved over the years from serial computing to parallel computing where tasks are distributed and executed simultaneously across multiple processors within the same computer. 
-With MapReduce, instead of using one server instance with multiple processors, multiple servers with multiple processors are used for computation.
+With the high demand of computing power,
+ computer architecture has evolved over the years from serial computing to parallel computing
+ where tasks are distributed and executed simultaneously across multiple processors within the same computer. 
+With MapReduce,
+ instead of using one server instance with multiple processors, 
+ multiple servers with multiple processors are used for computation.
 This is called distributed computing system. 
 The parallelism in Hadoop is categorized into data-parallelism and task-parallelism.
-Data-parallelism is focused on processing data across multiple processors whereas task-parallelism is focused on distributing execution threads across multiple servers \cite{Parallelism}. 
-Utilizing one or the other is dependent upon whether data is being provided into the system or being utilized for events such as machine learning. 
-This is what enables management and processing of "Big Data" (multi-terabyte datasets) in parallel on large clusters (thousands of nodes) of commodity hardware in a reliable, fault-tolerant manner. 
+Data-parallelism is focused on processing data across multiple processors whereas
+ task-parallelism is focused on distributing execution threads across multiple servers \cite{Parallelism}. 
+Utilizing one or the other is dependent upon whether data is being provided into
+ the system or being utilized for events such as machine learning. 
+This is what enables management and processing of "Big Data" (multi-terabyte datasets)
+ in parallel on large clusters (thousands of nodes) of commodity hardware in a reliable,
+ fault-tolerant manner. 
 A MapReduce framework consists of two types of workers: mappers and the reducers.
 
 MapReduce uses the divide and conquer technique where the input is divided into a set
@@ -596,8 +607,12 @@ D. Miner, A. Shook, Hadoop MapReduce v2 Cookbook, 2nd ed. Sebastopol, CA: O'Reil
  2015, pp. 1.
  
 \bibitem{HDFSarchitecture}
- T. White, Hadoop: The Definitive Guide, 1st ed. Sebastopol,
+T. White, Hadoop: The Definitive Guide, 1st ed. Sebastopol,
  CA: O'Reilly Media, 2009, pp. 44.
+
+\bibitem{R}
+R Core Team, R: A language and environment for Statistical Computing, Vienna, Austria: 2018.
+ Available: https://www.R-project.org/
 
 \end{thebibliography}
 
