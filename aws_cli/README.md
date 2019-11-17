@@ -53,11 +53,15 @@ $ ./terminate
 
 These scripts are used to work with S3 bucket for this project
 
-* `push_to_bucket.sh`: Recursely and quietly copies files to S3 bucket for this project
+* `push_to_bucket.sh`: Recursively and quietly copies files to S3 bucket for this project
+* `pull_from_bucket.sh`: Recursively copy directory from the S3 bucket for this project
+* `ls_bucket.sh`: List the contents of the S3 bucket for the project.
 
 ```bash
 # push a path to S3
-$ sudo push_to_bucket.sh /path/to/push
+$ sudo ./push_to_bucket.sh /path/to/push
+
+$ sudo ./pull_from_bucket.sh /local/path/to/receive/files
 ```
 
 ### EC2
