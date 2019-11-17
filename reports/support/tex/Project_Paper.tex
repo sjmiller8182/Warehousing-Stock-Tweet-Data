@@ -498,7 +498,6 @@ Results may be contained in something like Table \ref{ResultsTable}.
 
 \begin{itemize}
 	\item Snowflake vs Denormalized Star
-	\item S3 vs HDFS
 	\item HDFS mapreduce settings?
 \end{itemize}
 
@@ -533,23 +532,23 @@ The scalability of large sets of data is of ever-increasing importance in the da
 	\begin{tabular}{c|c|c}
 		\hline
 		\hline
-		Storage Method      &  Schema                     & MapReduce Settings\\
+		Schema               & MapReduce Settings                   & Test Query Time\\
 		\hline
-		\multirow{4}{*}{S3} & \multirow{2}{*}{Normalized} & MapConfig1 / ReduceConfig1 \\
-		\cline{3-3}
-				            &                             & MapConfig1 / ReduceConfig2 \\
+		\multirow{4}{*}{Snowflake}  & MapConfig1 / ReduceConfig1    &  \\
 		\cline{2-3}
-				            & \multirow{2}{*}{Denormalized} & MapConfig2 / ReduceConfig1 \\
-		\cline{3-3}
-							&		  		                & MapConfig2 / ReduceConfig2 \\
+				             & MapConfig1 / ReduceConfig2           &  \\
+		\cline{2-3}
+				             & MapConfig2 / ReduceConfig1           &  \\
+		\cline{2-3}
+					         & MapConfig2 / ReduceConfig2           &  \\
 		\hline
-		\multirow{4}{*}{HDFS} & \multirow{2}{*}{Normalized} & MapConfig1 / ReduceConfig1 \\
-		\cline{3-3}
-		                      &                             & MapConfig1 / ReduceConfig2 \\
+		\multirow{4}{*}{Denormalized Star}  & MapConfig1 / ReduceConfig1 &  \\
 		\cline{2-3}
-		                      & \multirow{2}{*}{Denormalized} & MapConfig2 / ReduceConfig1 \\
-		\cline{3-3}
-		                      &                               & MapConfig2 / ReduceConfig2 \\
+		                     & MapConfig1 / ReduceConfig2           &  \\
+		\cline{2-3}
+		                     & MapConfig2 / ReduceConfig1           &  \\
+		\cline{2-3}
+		                     & MapConfig2 / ReduceConfig2           &  \\
 		\hline
 		\hline
 	\end{tabular}
@@ -615,6 +614,11 @@ T. White, Hadoop: The Definitive Guide, 1st ed. Sebastopol,
 \bibitem{R}
 R Core Team, R: A language and environment for Statistical Computing, Vienna, Austria: 2018.
  Available: https://www.R-project.org/
+ 
+\bibitem{RepeatMeasures}
+M. Crawley, "Analysis of Variance," in \textit{The R Book},
+ 1st ed. Chichester, West Sussex, United Kingdom :Wiley, 2013,
+ ch. 11, pp. 470-478.
 
 \end{thebibliography}
 
