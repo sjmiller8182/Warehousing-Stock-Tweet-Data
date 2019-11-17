@@ -87,7 +87,7 @@
 \begin{document}
 
 \title{Big Data Lake Solution for\\ 
-	Warehousing Stock Data and Tweet Data}
+    Warehousing Stock Data and Tweet Data}
 
 \author{Paul~Adams, paula@smu.edu,
         Rikel~Djoko, rdjoko@smu.edu,
@@ -229,41 +229,41 @@ Twitter was chosen as the primary source of alternative data because of
 The main features of the collected data are summarized in Table ~\ref{DataFeatures}.
 
 \begin{table}
-	\renewcommand{\arraystretch}{1.3}
-	\caption{Data Features}
-	\label{DataFeatures}
-	\centering
-	\begin{tabular}{c|l}
-		\hline
-		\hline
-		Source       & Features\\
-		\hline
-		Stock Daily  & Prices: High, Low, Open, Close\\
-		\hline
-		\multirow{10}{*}{Stock Intraday} &  Prices: High, Low, Open, Close \\
-		\cline{2-2}
-		&  High Bollinger bands\\
-		\cline{2-2}
-		&  Mid Bollinger bands\\
-		\cline{2-2}
-		&  Low Bollinger bands\\ 
-		\cline{2-2}
-		&  Nominal moving average\\
-		\cline{2-2}
-		&  Historical moving average\\
-		\cline{2-2}
-		&  Signal moving average\\ 
-		\cline{2-2}
-		&  Exponential moving average\\
-		\cline{2-2}
-		&  Stochastic 5-day indicator (Slow K)\\
-		\cline{2-2}
-		&  Stochastic 3-day indicator (Slow D)\\
-		\hline
-		Tweets       & Text, URLs, Hashtags, Mentions, Users\\
-		\hline
-		\hline
-	\end{tabular}
+    \renewcommand{\arraystretch}{1.3}
+    \caption{Data Features}
+    \label{DataFeatures}
+    \centering
+    \begin{tabular}{c|l}
+        \hline
+        \hline
+        Source       & Features\\
+        \hline
+        Stock Daily  & Prices: High, Low, Open, Close\\
+        \hline
+        \multirow{10}{*}{Stock Intraday} &  Prices: High, Low, Open, Close \\
+        \cline{2-2}
+        &  High Bollinger bands\\
+        \cline{2-2}
+        &  Mid Bollinger bands\\
+        \cline{2-2}
+        &  Low Bollinger bands\\ 
+        \cline{2-2}
+        &  Nominal moving average\\
+        \cline{2-2}
+        &  Historical moving average\\
+        \cline{2-2}
+        &  Signal moving average\\ 
+        \cline{2-2}
+        &  Exponential moving average\\
+        \cline{2-2}
+        &  Stochastic 5-day indicator (Slow K)\\
+        \cline{2-2}
+        &  Stochastic 3-day indicator (Slow D)\\
+        \hline
+        Tweets       & Text, URLs, Hashtags, Mentions, Users\\
+        \hline
+        \hline
+    \end{tabular}
 \end{table}
 
 \subsection{Stock Data}
@@ -333,10 +333,10 @@ In this study, two schemas were designed: one in snowflake form and
 \subsection{Snowflake Schema}
 
 \begin{figure}
-	\centering
-	\includegraphics[width=2.5in]{Snowflake_Conceptual_Schema.png}
-	\caption{Conceptual Diagram of the Data Warehouse Snowflake Schema}
-	\label{snowflake}
+    \centering
+    \includegraphics[width=2.5in]{Snowflake_Conceptual_Schema.png}
+    \caption{Conceptual Diagram of the Data Warehouse Snowflake Schema}
+    \label{snowflake}
 \end{figure}
 
 As noted previously, the fact table of this star design contained the
@@ -396,11 +396,11 @@ The schema resulting from this denormalization process is shown
 
 
 \begin{figure}
-	\centering
-	\includegraphics[width=2.5in]{Star_Conceptual_Schema.png}
-	\caption{Conceptual Diagram of the Data Warehouse 
-		Denormalized Star Schema}
-	\label{star}
+    \centering
+    \includegraphics[width=2.5in]{Star_Conceptual_Schema.png}
+    \caption{Conceptual Diagram of the Data Warehouse 
+        Denormalized Star Schema}
+    \label{star}
 \end{figure}
 
 \section{Implementation}
@@ -459,10 +459,10 @@ Each task is then processed and executed by the mapper and
 the outputs are processed and merged by the reducer \cite{MapReduce}.
 
 \begin{figure}
-	\centering
-	\includegraphics[width=2.5in]{EMR_Ecosystem.png}
-	\caption{Elastic MapReduce Ecosystem}
-	\label{EMR}
+    \centering
+    \includegraphics[width=2.5in]{EMR_Ecosystem.png}
+    \caption{Elastic MapReduce Ecosystem}
+    \label{EMR}
 \end{figure}
 
 \subsection{AWS Simple Storage Service}
@@ -484,10 +484,10 @@ Hue is an alternative to accessing the Hadoop ecosystem applications from the co
 Hue was used to interact with the EMR cluster and run Hive scripts.
 
 \begin{figure}
-	\centering
-	\includegraphics[width=2.5in]{HDFS_Arch.png}
-	\caption{HDFS Architecture}
-	\label{HDFS}
+    \centering
+    \includegraphics[width=2.5in]{HDFS_Arch.png}
+    \caption{HDFS Architecture}
+    \label{HDFS}
 \end{figure}
 
 \section{Results}
@@ -497,8 +497,8 @@ Performance testing needs more research.
 Results may be contained in something like Table \ref{ResultsTable}.
 
 \begin{itemize}
-	\item Snowflake vs Denormalized Star
-	\item HDFS mapreduce settings?
+    \item Snowflake vs Denormalized Star
+    \item HDFS mapreduce settings?
 \end{itemize}
 
 \section{Analysis}
@@ -508,8 +508,8 @@ Results may be contained in something like Table \ref{ResultsTable}.
 
 
 \begin{itemize}
-	\item Discuss sample size of measures
-	\item Looks like a repeated measures analysis
+    \item Discuss sample size of measures
+    \item Looks like a repeated measures analysis
 \end{itemize}
 
 
@@ -525,33 +525,33 @@ The scalability of large sets of data is of ever-increasing importance in the da
 \fi
 
 \begin{table}
-	\renewcommand{\arraystretch}{1.3}
-	\caption{Results or Analysis Table}
-	\label{ResultsTable}
-	\centering
-	\begin{tabular}{c|c|c}
-		\hline
-		\hline
-		Schema               & MapReduce Settings                   & Test Query Time\\
-		\hline
-		\multirow{4}{*}{Snowflake}  & MapConfig1 / ReduceConfig1    &  \\
-		\cline{2-3}
-				             & MapConfig1 / ReduceConfig2           &  \\
-		\cline{2-3}
-				             & MapConfig2 / ReduceConfig1           &  \\
-		\cline{2-3}
-					         & MapConfig2 / ReduceConfig2           &  \\
-		\hline
-		\multirow{4}{*}{Denormalized Star}  & MapConfig1 / ReduceConfig1 &  \\
-		\cline{2-3}
-		                     & MapConfig1 / ReduceConfig2           &  \\
-		\cline{2-3}
-		                     & MapConfig2 / ReduceConfig1           &  \\
-		\cline{2-3}
-		                     & MapConfig2 / ReduceConfig2           &  \\
-		\hline
-		\hline
-	\end{tabular}
+    \renewcommand{\arraystretch}{1.3}
+    \caption{Results or Analysis Table}
+    \label{ResultsTable}
+    \centering
+    \begin{tabular}{c|c|c}
+        \hline
+        \hline
+        Schema               & MapReduce Settings                   & Test Query Time\\
+        \hline
+        \multirow{4}{*}{Snowflake}  & MapConfig1 / ReduceConfig1    &  \\
+        \cline{2-3}
+                             & MapConfig1 / ReduceConfig2           &  \\
+        \cline{2-3}
+                             & MapConfig2 / ReduceConfig1           &  \\
+        \cline{2-3}
+                             & MapConfig2 / ReduceConfig2           &  \\
+        \hline
+        \multirow{4}{*}{Denormalized Star}  & MapConfig1 / ReduceConfig1 &  \\
+        \cline{2-3}
+                             & MapConfig1 / ReduceConfig2           &  \\
+        \cline{2-3}
+                             & MapConfig2 / ReduceConfig1           &  \\
+        \cline{2-3}
+                             & MapConfig2 / ReduceConfig2           &  \\
+        \hline
+        \hline
+    \end{tabular}
 \end{table}
 
 
