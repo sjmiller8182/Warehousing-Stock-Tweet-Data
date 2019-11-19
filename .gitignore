@@ -8,6 +8,8 @@ reports/support/tex/*.log
 reports/support/tex/*.aux
 reports/support/tex/*.gz
 reports/support/tex/*.out
+# temp build of tex file
+reports/support/tex/*.pdf
 
 # temp from vscode IDE
 .vscode/
