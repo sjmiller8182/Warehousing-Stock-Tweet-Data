@@ -1,0 +1,35 @@
+---
+title: "Analysis"
+author: "Stuart Miller, Paul Adams, Rikel Djoko"
+output: gihub_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, setup, echo=FALSE}
+library(pwr2)
+```
+
+# Power Analysis
+
+The power analysis for this project was done using R package (pwr2).
+
+https://cran.r-project.org/web/packages/pwr2/pwr2.pdf
+
+
+
+```{r, power_analysis}
+
+pwr.2way(a=2, b=2, alpha=0.05, size.A=30, size.B=30, f.A=NULL, f.B=NULL,
+delta.A=4, delta.B=2, sigma.A=2, sigma.B=2)
+```
+
+
+# Results of Study
+
+```{r}
+
+```
+
