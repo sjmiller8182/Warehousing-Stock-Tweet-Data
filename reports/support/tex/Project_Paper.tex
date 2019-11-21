@@ -490,16 +490,28 @@ Hue was used to interact with the EMR cluster and run Hive scripts.
     \label{HDFS}
 \end{figure}
 
+\section{Study Design}
+
+Compare the map reduce settings
+
+\begin{itemize}
+	\item The default block size for Hadoop is 64MBs \cite{OptimizeHadoop}
+	\item For large input files consider using larger block sizes (e.g. 256MB) for smaller input files consider using smaller block sizes (e.g. 64MB) \cite{OptimizeHadoop}
+\end{itemize}
+
+Compare the schemas
+
+\begin{itemize}
+	\item Snowflake vs Denormalized Star
+	\item HDFS mapreduce settings?
+\end{itemize}
+
+
 \section{Results}
 
 Maybe a table comparing read times for the different options.
 Performance testing needs more research.
 Results may be contained in something like Table \ref{ResultsTable}.
-
-\begin{itemize}
-    \item Snowflake vs Denormalized Star
-    \item HDFS mapreduce settings?
-\end{itemize}
 
 \section{Analysis}
 
@@ -590,7 +602,7 @@ D. Sitaram, G. Manjunath \textit{Moving To The Cloud}. Boston: Syngress, 2012, p
 \bibitem{Divide-and-Conquer} 
 S. Zhao, R. Li, W. Tian, W. Xiao, X. Dong, D. Liao, S. U. Khan, L. Keqin, 
  “Divide-and-conquer approach for solving singular value decomposition based on MapReduce,” Abbrev. Title of Journal, vol. 28, no. 2, pp. 331–350, Nov. 2016. 
- Accessed on: Nov. 10, 2019. [Online]. Available: doi:10.1002/cpe.3436, 
+ Accessed on: Nov. 10, 2019 [Online]. Available: doi:10.1002/cpe.3436, 
 
 \bibitem{MapReduce}
 D. Miner, A. Shook, MapReduce Design Patterns, 1st ed. Sebastopol, CA: O'Reilly Media, 2012,
@@ -610,8 +622,14 @@ R Core Team, R: A language and environment for Statistical Computing, Vienna, Au
  
 \bibitem{RepeatMeasures}
 M. Crawley, "Analysis of Variance," in \textit{The R Book},
- 1st ed. Chichester, West Sussex, United Kingdom :Wiley, 2013,
+ 1st ed. Chichester, West Sussex, United Kingdom: Wiley, 2013,
  ch. 11, pp. 470-478.
+
+\bibitem{OptimizeHadoop}
+K. Tannir, "Enhancing Map and Reduce Tasks," in 
+ \textit{Optimizing Hadoop for MapReduce},
+ 1st ed. Birmingham, England: Packt Publishing Ltd, 2014,
+ ch. 5. Accessed on: Nov. 20, 2019 [Online]. 
 
 \end{thebibliography}
 
