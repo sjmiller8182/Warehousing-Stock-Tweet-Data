@@ -19,7 +19,6 @@ The power analysis for this project was done using R package (pwr2).
 https://cran.r-project.org/web/packages/pwr2/pwr2.pdf
 
 
-
 ```{r, power_analysis}
 
 pwr.2way(a=2, b=2, alpha=0.05, size.A=30, size.B=30, f.A=NULL, f.B=NULL,
@@ -29,7 +28,88 @@ delta.A=4, delta.B=2, sigma.A=2, sigma.B=2)
 
 # Results of Study
 
-```{r}
-
+```{r, load_data}
+data <- read.csv('./results_sample.csv')
 ```
+
+## Summary Stats for the Levels
+
+This is assuming that schema is the main driving factor of variation.
+
+```{r, summary_stats}
+data %>% 
+  group_by(schema, settings) %>% 
+  summarise(mean_time = mean(time),
+            median_time = median(time),
+            IQR_time = IQR(time))
+```
+
+## 2-Way ANOVA Profile Plot
+
+Profile plot is colored by schema.
+
+```{r, profile_plot}
+mysummary<-function(x){
+  result<-c(length(x),mean(x),sd(x),sd(x)/length(x),min(x),max(x),IQR(x))
+  names(result)<-c("N","Mean","SD","SE","Min","Max","IQR")
+  return(result)
+}
+
+sumstats<-aggregate(time ~ schema:settings, data=data, mysummary)
+sumstats<-cbind(sumstats[,1:2],sumstats[,-(1:2)])
+
+ggplot(sumstats,aes(x=settings,y=Mean,group=schema,color=schema)) +
+  ylab("Query Time") +
+  xlab("MapReduce Settings") +
+  ggtitle('Query Time for Schemas and MapReduce Settings') +
+  geom_line() +
+  geom_point() +
+  geom_errorbar(aes(ymin=Mean-SD,ymax=Mean+SD),width=.1)
+```
+
+
+## Fit the ANOVA on the Data
+
+This assumes data replication with schema as the primary source of variation.
+
+```{r, anova}
+analysis.aov <- data %>% 
+  aov(time ~ schema + Error(schema/settings), data = .)
+
+aov.summ <- summary(analysis.aov)
+aov.summ
+```
+
+## Calculcate the Fstat and p-value
+
+```{r, F_p}
+F.stat <- 
+  aov.summ$`Error: schema`[[1]]['Mean Sq'][[1]] / aov.summ$`Error: schema:settings`[[1]]['Mean Sq'][[1]]
+
+df1 <- 
+  aov.summ$`Error: schema`[[1]]['Df'][[1]]
+df2 <- 
+  aov.summ$`Error: schema:settings`[[1]]['Df'][[1]]
+
+p.val <-
+  pf(F.stat, df1, df2, lower.tail = FALSE)
+
+data.frame(f_stat = F.stat, p_value = p.val)
+```
+
+## Plot Multiple Comparisons
+
+This doesn't correct for mutliple comparisons?
+
+```{r, mult_compare}
+analysis.aov <- data %>% 
+  aov(time ~ schema:settings, data = .)
+
+plot(TukeyHSD(analysis.aov))
+```
+
+
+
+
+
 
