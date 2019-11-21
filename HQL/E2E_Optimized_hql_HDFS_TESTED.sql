@@ -1,7 +1,9 @@
 set mapred.job.queue.name=root.batch;
-set mapreduce.map.memory.mb=2048;
-set mapreduce.reduce.memory.mb=4096;
+--set mapreduce.map.memory.mb=2048; --this applies an upper limit to what Hadoop allows, node count depends on this
+--set mapreduce.reduce.memory.mb=4096; --this applies an upper limit to what Hadoop allows, node count depends on this
 set mapreduce.job.reduces=10;
+set mapreduce.job.maps=10;
+--set dfs.block.size=328;
 
 create database if not exists ds7330_term_project;
 create database if not exists ds7330_term_raw_data;
