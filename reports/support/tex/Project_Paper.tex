@@ -492,18 +492,17 @@ Hue was used to interact with the EMR cluster and run Hive scripts.
 
 \section{Study Design}
 
-Compare the map reduce settings
+This study is designed as a two-way ANOVA with repeated measures \cite{Sleuth}.
+The response variable is query execution time.
+A query was designed for each schema with each query returning the same set of data.
+The two factors of the study are schema with levels of snowflake and denormalized star and
+ MapReduce block size with levels of 64 MB and 256 MB.
+The queries were executed for each combination of schema and block size
+ on the same EMR cluster 30 times.
 
 \begin{itemize}
 	\item The default block size for Hadoop is 64MBs \cite{OptimizeHadoop}
 	\item For large input files consider using larger block sizes (e.g. 256MB) for smaller input files consider using smaller block sizes (e.g. 64MB) \cite{OptimizeHadoop}
-\end{itemize}
-
-Compare the schemas
-
-\begin{itemize}
-	\item Snowflake vs Denormalized Star
-	\item HDFS mapreduce settings?
 \end{itemize}
 
 
@@ -620,6 +619,11 @@ T. White, Hadoop: The Definitive Guide, 1st ed. Sebastopol,
 R Core Team, R: A language and environment for Statistical Computing, Vienna, Austria: 2018.
  Available: https://www.R-project.org/
  
+\bibitem{Sleuth}
+F. Ramsey and D. Schafer, "Repeated Measures and Other Multivariate Responses," 
+ in \textit{The Statistical Sleuth}, 3rd ed. Boston: Brooks/Cole, 2013,
+ ch. 16, pp. 479-485.  
+
 \bibitem{RepeatMeasures}
 M. Crawley, "Analysis of Variance," in \textit{The R Book},
  1st ed. Chichester, West Sussex, United Kingdom: Wiley, 2013,
