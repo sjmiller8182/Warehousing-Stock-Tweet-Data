@@ -540,19 +540,21 @@ The scalability of large sets of data is of ever-increasing importance in the da
     \caption{Results or Analysis Table}
     \label{ResultsTable}
     \centering
-    \begin{tabular}{c|c|c}
+    \begin{tabular}{c|c|c|c|c}
         \hline
         \hline
-        Schema               & MapReduce Settings                   & Test Query Time\\
+        \multirow{2}{*}{Schema} & \multirow{2}{*}{Block Size} &  \multicolumn{3}{c}{Query Time (seconds)}   \\
+        \cline{3-5}
+        & & Average  & Median & Variance\\
         \hline
-        \multirow{2}{*}{Snowflake}  & MapConfig1 / ReduceConfig1    &  \\
-        \cline{2-3}
-                             & MapConfig2 / ReduceConfig2           &  \\
+        \multirow{2}{*}{Snowflake}         & 64 MB    & & & \\
+        \cline{2-5}
+                                           & 256 MB   & & & \\
         \hline
-        \multirow{2}{*}{Denormalized Star}  & MapConfig1 / ReduceConfig1 &  \\
-        \cline{2-3}
+        \multirow{2}{*}{Denormalized Star} & 64 MB    & & & \\
+        \cline{2-5}
 
-                             & MapConfig2 / ReduceConfig2           &  \\
+                                           & 256 MB   & & & \\
         \hline
         \hline
     \end{tabular}
