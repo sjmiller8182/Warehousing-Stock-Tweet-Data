@@ -309,6 +309,7 @@ Once the data was collected and processed, it was pushed to the HDFS datalake.
 
 
 \section{Data Warehouse Development}
+\label{DataWarehouseDevelopment}
 
 Data warehouses are often conceptually designed with a \textit{star} schema 
  \cite{BuildingtheDWCH11}.
@@ -405,17 +406,22 @@ The schema resulting from this denormalization process is shown
 
 \section{Implementation}
 
-Multiple vendors provide platforms and infrastructure for data warehousing technologies, the project was implemented using Amazon Web Service (AWS).
-AWS is a set of cloud computing services provided by Amazon.com that are accessible over the internet.
+Multiple vendors provide platforms and infrastructure for data warehousing technologies, 
+ this project was implemented using Amazon Web Services (AWS).
+AWS is a set of cloud computing services provided by Amazon.com\footnote{https://aws.amazon.com/}
+ that are accessible over the internet.
 AWS provides multiple services for many different applications. 
-Elastic MapReduce (EMR) was used for the Hadoop implementation in this project.
+Elastic MapReduce (EMR) was used for the implementation of Hadoop in this project.
 
 \subsection{AWS Elastic MapReduce}
 
-AWS EMR is a pre-configured Hadoop compute cluster.
+AWS EMR is a pre-configured compute cluster for Big Data.
 The cluster can be provisioned and terminated on demand as needed.
 It comes with a configurable set of the Hadoop ecosystem elements pre-installed and ready to use.
 Fig. \ref{EMR} shows the ecosystem of EMR ecosystem.
+The EMR cluster used in this study was provisioned with three
+ m5.xlarge\footnote{https://aws.amazon.com/ec2/instance-types/m5/}
+ elastic compute instances.
 
 \subsection{Apache Hadoop}
 
@@ -450,7 +456,7 @@ Utilizing one or the other is dependent upon whether data is being provided into
 This is what enables management and processing of "Big Data" (multi-terabyte datasets)
  in parallel on large clusters (thousands of nodes) of commodity hardware in a reliable,
  fault-tolerant manner. 
-A MapReduce framework consists of two types of workers: mappers and the reducers.
+A MapReduce framework consists of two types of workers: mappers and reducers.
 
 MapReduce uses the divide and conquer technique where the input is divided into a set
  of small tasks and each task is identified by a key-value pair \cite{Divide-and-Conquer}.
@@ -492,20 +498,22 @@ Hue was used to interact with the EMR cluster and run Hive scripts.
 
 \section{Study Design}
 
-Something about what is being tested
+In this study, the impact of data warehouse normalization and
+ tuning the HDFS configuration on query execution time will be investigated.
+Both schemas presented in Section \ref{DataWarehouseDevelopment} were used in this study.
+The HDFS configuration was tuned by changing the HDFS block size.
+
+Add the equation from \cite{OptimizeHadoop} here?
 
 This study is designed as a two-way ANOVA with repeated measures \cite{Sleuth}.
 The response variable is query execution time.
-A query was designed for each schema with each query returning the same set of data.
 The two factors of the study are schema with levels of snowflake and denormalized star and
- MapReduce block size with levels of 64 MB and 256 MB.
+ MapReduce block size with levels of 64 MB, 128 MB, and 256 MB.
+The default block size on AWS EMR is 128
+ MB\footnote{https://docs.aws.amazon.com/emr/latest/ReleaseGuide/emr-hdfs-config.html}.
+A query was designed for each schema with each query returning the same set of data.
 The queries were executed for each combination of schema and block size
  on the same EMR cluster 30 times.
-
-\begin{itemize}
-	\item The default block size for Hadoop is 64MBs \cite{OptimizeHadoop}
-	\item For large input files consider using larger block sizes (e.g. 256MB) for smaller input files consider using smaller block sizes (e.g. 64MB) \cite{OptimizeHadoop}
-\end{itemize}
 
 
 \section{Results}
