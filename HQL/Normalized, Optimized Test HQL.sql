@@ -49,6 +49,7 @@ select count(*)
 from ds7330_term_project.intraday i
 left join ds7330_term_project.companies c
 on i.symbol = c.symbol
+and i.market = c.market_exchange
 left join ds7330_term_project.daily d
 on i.report_date = d.report_date
 and i.symbol = d.symbol
