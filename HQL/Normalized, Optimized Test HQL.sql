@@ -1,4 +1,8 @@
 ############################################################# Normalized below
+set dfs.block.size=268435456; --this is for the 256MB blocks
+set dfs.block.size=134217728; --this is for the 128MB blocks
+set dfs.block.size=67108864; --this is for the 64MB blocks
+
 select count(*)
 from ds7330_term_project.intraday i
 join ds7330_term_project.twitter_tweet t
@@ -45,6 +49,10 @@ left join ds7330_term_project.times tm
 on i.report_time = tm.report_time
 
 ############################################################# Optimized below
+set dfs.block.size=268435456; --this is for the 256MB blocks
+set dfs.block.size=134217728; --this is for the 128MB blocks
+set dfs.block.size=67108864; --this is for the 64MB blocks
+
 select count(*)
 from ds7330_term_project.intraday i
 left join ds7330_term_project.companies c
