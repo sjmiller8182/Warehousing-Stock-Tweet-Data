@@ -1,14 +1,14 @@
 ---
 title: "Analysis"
 author: "Stuart Miller, Paul Adams, Rikel Djoko"
-output: gihub_document
+output: github_document
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r, setup, echo=FALSE}
+```{r, setup_, echo=FALSE, message=FALSE}
 library(pwr2)
 library(tidyverse)
 ```
@@ -109,7 +109,12 @@ This doesn't correct for mutliple comparisons?
 analysis.aov <- data %>% 
   aov(time ~ schema:block_size, data = .)
 
-plot(TukeyHSD(analysis.aov))
+with(par(mai=c(1,2.5,1,1)),
+     {plot(TukeyHSD(analysis.aov),
+           las=1,
+           cex.axis=0.4)
+       }
+     )
 ```
 
 
