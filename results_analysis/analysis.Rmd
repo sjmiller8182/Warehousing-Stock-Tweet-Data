@@ -10,6 +10,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r, setup, echo=FALSE}
 library(pwr2)
+library(tidyverse)
 ```
 
 # Power Analysis
@@ -21,7 +22,7 @@ https://cran.r-project.org/web/packages/pwr2/pwr2.pdf
 
 ```{r, power_analysis}
 
-pwr.2way(a=2, b=2, alpha=0.05, size.A=30, size.B=30, f.A=NULL, f.B=NULL,
+pwr.2way(a=2, b=3, alpha=0.05, size.A=30, size.B=30, f.A=NULL, f.B=NULL,
 delta.A=4, delta.B=2, sigma.A=2, sigma.B=2)
 ```
 
@@ -29,7 +30,13 @@ delta.A=4, delta.B=2, sigma.A=2, sigma.B=2)
 # Results of Study
 
 ```{r, load_data}
-data <- read.csv('./results_sample.csv')
+data <- read_csv('./results_sample.csv',
+                 col_types = cols(
+                   schema = col_factor(levels = c('normal','Non-normal')),
+                   block_size = col_factor(levels = c('64','128','256')),
+                   time = col_double()
+                 )
+        )
 ```
 
 ## Summary Stats for the Levels
@@ -38,7 +45,7 @@ This is assuming that schema is the main driving factor of variation.
 
 ```{r, summary_stats}
 data %>% 
-  group_by(schema, settings) %>% 
+  group_by(schema, block_size) %>% 
   summarise(mean_time = mean(time),
             median_time = median(time),
             IQR_time = IQR(time))
@@ -55,12 +62,12 @@ mysummary<-function(x){
   return(result)
 }
 
-sumstats<-aggregate(time ~ schema:settings, data=data, mysummary)
+sumstats<-aggregate(time ~ schema:block_size, data=data, mysummary)
 sumstats<-cbind(sumstats[,1:2],sumstats[,-(1:2)])
 
-ggplot(sumstats,aes(x=settings,y=Mean,group=schema,color=schema)) +
-  ylab("Query Time") +
-  xlab("MapReduce Settings") +
+ggplot(sumstats,aes(x=block_size,y=Mean,group=schema,color=schema)) +
+  ylab("Query Time (seconds)") +
+  xlab("MapReduce Block Size (MB)") +
   ggtitle('Query Time for Schemas and MapReduce Settings') +
   geom_line() +
   geom_point() +
@@ -74,7 +81,7 @@ This assumes data replication with schema as the primary source of variation.
 
 ```{r, anova}
 analysis.aov <- data %>% 
-  aov(time ~ schema + Error(schema/settings), data = .)
+  aov(time ~ schema + Error(schema/block_size), data = .)
 
 aov.summ <- summary(analysis.aov)
 aov.summ
@@ -84,15 +91,12 @@ aov.summ
 
 ```{r, F_p}
 F.stat <- 
-  aov.summ$`Error: schema`[[1]]['Mean Sq'][[1]] / aov.summ$`Error: schema:settings`[[1]]['Mean Sq'][[1]]
+  aov.summ$`Error: schema`[[1]]['Mean Sq'][[1]] / aov.summ$`Error: schema:block_size`[[1]]['Mean Sq'][[1]]
 
-df1 <- 
-  aov.summ$`Error: schema`[[1]]['Df'][[1]]
-df2 <- 
-  aov.summ$`Error: schema:settings`[[1]]['Df'][[1]]
+df1 <- aov.summ$`Error: schema`[[1]]['Df'][[1]]
+df2 <- aov.summ$`Error: schema:block_size`[[1]]['Df'][[1]]
 
-p.val <-
-  pf(F.stat, df1, df2, lower.tail = FALSE)
+p.val <- pf(F.stat, df1, df2, lower.tail = FALSE)
 
 data.frame(f_stat = F.stat, p_value = p.val)
 ```
@@ -103,7 +107,7 @@ This doesn't correct for mutliple comparisons?
 
 ```{r, mult_compare}
 analysis.aov <- data %>% 
-  aov(time ~ schema:settings, data = .)
+  aov(time ~ schema:block_size, data = .)
 
 plot(TukeyHSD(analysis.aov))
 ```
