@@ -56,6 +56,19 @@ The big data solution is build on AWS.
 
 ## Results
 
+Queries were run on the two schemas with different HDFS block sizes to see the impact of normalization on query time.
+The collected data is located [here](https://github.com/sjmiller8182/DBMS_Proj/blob/master/results_analysis/results.csv).
+A table summarizing the results is shown below.
+
+|     Schema    | Block Size | Average | Median | Variance |
+|:-------------:|:---------:|:--------:|:------:|:--------:|
+| Normalized    |   64 MB   |          |        |          |
+| Normalized    |   128 MB  |          |        |          |
+| Normalized    |   256 MB  |          |        |          |
+| Denormalized  |   64 MB   |          |        |          |
+| Denormalized  |   128 MB  |          |        |          |
+| Denormalized  |   256 MB  |          |        |          |
+
 ## Analysis
 
 ## Conclusion
