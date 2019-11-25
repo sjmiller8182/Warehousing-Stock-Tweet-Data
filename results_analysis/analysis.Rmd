@@ -81,24 +81,10 @@ This assumes data replication with schema as the primary source of variation.
 
 ```{r, anova}
 analysis.aov <- data %>% 
-  aov(time ~ schema + Error(schema/block_size), data = .)
+  aov(time ~ schema + Error(block_size/schema), data = .)
 
 aov.summ <- summary(analysis.aov)
 aov.summ
-```
-
-## Calculcate the Fstat and p-value
-
-```{r, F_p}
-F.stat <- 
-  aov.summ$`Error: schema`[[1]]['Mean Sq'][[1]] / aov.summ$`Error: schema:block_size`[[1]]['Mean Sq'][[1]]
-
-df1 <- aov.summ$`Error: schema`[[1]]['Df'][[1]]
-df2 <- aov.summ$`Error: schema:block_size`[[1]]['Df'][[1]]
-
-p.val <- pf(F.stat, df1, df2, lower.tail = FALSE)
-
-data.frame(f_stat = F.stat, p_value = p.val)
 ```
 
 ## Plot Multiple Comparisons
