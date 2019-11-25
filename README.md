@@ -62,12 +62,12 @@ A table summarizing the results is shown below.
 
 |     Schema    | Block Size | Average | Median | Variance |
 |:-------------:|:---------:|:--------:|:------:|:--------:|
-| Normalized    |   64 MB   |          |        |          |
-| Normalized    |   128 MB  |          |        |          |
-| Normalized    |   256 MB  |          |        |          |
-| Denormalized  |   64 MB   |          |        |          |
-| Denormalized  |   128 MB  |          |        |          |
-| Denormalized  |   256 MB  |          |        |          |
+| Normalized    |   64 MB   | 124.00   | 124.38 |  14.08   |
+| Normalized    |   128 MB  | 120.29   | 119.43 |  16.85   |
+| Normalized    |   256 MB  | 118.85   | 118.22 |  6.49    |
+| Denormalized  |   64 MB   | 105.19   | 105.35 |  3.50    |
+| Denormalized  |   128 MB  | 100.98   | 100.91 |  3.60    |
+| Denormalized  |   256 MB  | 105.14   | 105.14 |  8.13    |
 
 ## Analysis
 
