@@ -29,8 +29,8 @@ delta.A=4, delta.B=2, sigma.A=2, sigma.B=2)
 
 # Results of Study
 
-```{r, load_data}
-data <- read_csv('./results_sample.csv',
+```{r, load_data, echo=FALSE}
+data <- read_csv('./results.csv',
                  col_types = cols(
                    schema = col_factor(levels = c('normal','Non-normal')),
                    block_size = col_factor(levels = c('64','128','256')),
@@ -43,19 +43,20 @@ data <- read_csv('./results_sample.csv',
 
 This is assuming that schema is the main driving factor of variation.
 
-```{r, summary_stats}
+```{r, summary_stats, echo=FALSE}
 data %>% 
   group_by(schema, block_size) %>% 
   summarise(mean_time = mean(time),
             median_time = median(time),
-            IQR_time = IQR(time))
+            IQR_time = IQR(time),
+            variance = var(time))
 ```
 
 ## 2-Way ANOVA Profile Plot
 
 Profile plot is colored by schema.
 
-```{r, profile_plot}
+```{r, profile_plot, echo=FALSE}
 mysummary<-function(x){
   result<-c(length(x),mean(x),sd(x),sd(x)/length(x),min(x),max(x),IQR(x))
   names(result)<-c("N","Mean","SD","SE","Min","Max","IQR")
@@ -68,7 +69,7 @@ sumstats<-cbind(sumstats[,1:2],sumstats[,-(1:2)])
 ggplot(sumstats,aes(x=block_size,y=Mean,group=schema,color=schema)) +
   ylab("Query Time (seconds)") +
   xlab("MapReduce Block Size (MB)") +
-  ggtitle('Query Time for Schemas and MapReduce Settings') +
+  ggtitle('Query Time for Schemas and MapReduce Block Size') +
   geom_line() +
   geom_point() +
   geom_errorbar(aes(ymin=Mean-SD,ymax=Mean+SD),width=.1)
@@ -79,7 +80,7 @@ ggplot(sumstats,aes(x=block_size,y=Mean,group=schema,color=schema)) +
 
 This assumes data replication with schema as the primary source of variation.
 
-```{r, anova}
+```{r, anova, echo=FALSE}
 analysis.aov <- data %>% 
   aov(time ~ schema + Error(block_size/schema), data = .)
 
@@ -89,9 +90,9 @@ aov.summ
 
 ## Plot Multiple Comparisons
 
-This doesn't correct for mutliple comparisons?
 
-```{r, mult_compare}
+
+```{r, mult_compare, echo=FALSE}
 analysis.aov <- data %>% 
   aov(time ~ schema:block_size, data = .)
 
