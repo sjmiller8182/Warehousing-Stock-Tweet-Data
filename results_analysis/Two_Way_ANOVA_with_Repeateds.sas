@@ -1,5 +1,5 @@
 title "Two-Way ANOVA for with MapReduce Schema Data as Repeated Measure Design";
-FILENAME REFFILE 'C:/Users/Pablo/Desktop/DB7330/results_analysis/results.csv';
+FILENAME REFFILE './results.csv';
 PROC IMPORT DATAFILE=REFFILE
 	DBMS=CSV
 	OUT=df;
