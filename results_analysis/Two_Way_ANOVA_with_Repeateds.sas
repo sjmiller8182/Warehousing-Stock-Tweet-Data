@@ -12,3 +12,9 @@ proc glm data = df plots=all;
   model time = schema|block_size;
   repeated block_size 3/printe;
 run;
+/* one-way ANOVA */
+proc glm data = hsb;
+class female;
+model write = race;
+means write / bon cldiff;
+run;

@@ -1,0 +1,2 @@
+Schema 1 = Normalized
+Schema 2 = Denormalized

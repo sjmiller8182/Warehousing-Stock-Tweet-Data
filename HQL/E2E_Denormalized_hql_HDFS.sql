@@ -404,6 +404,7 @@ insert into ds7330_term_project_denormalized.daily(
   , low_price
 );
 
+
 insert into ds7330_term_project_denormalized.intraday(
 	Select
 	 regexp_replace(intra.times, '"', '') as report_dtm
@@ -672,7 +673,6 @@ insert into ds7330_term_project_denormalized.intraday(
 	, exp.exponential_ma_low
 	, exp.exponential_ma_close
 );
-
 insert into ds7330_term_project_denormalized.tweet_hashtags( 
 select
 	tweet_id as tweet_id
