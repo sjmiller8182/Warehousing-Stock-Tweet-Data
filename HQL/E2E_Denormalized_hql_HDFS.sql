@@ -1,24 +1,25 @@
-set mapred.job.queue.name=root.batch;
 --set mapreduce.map.memory.mb=2048; --this applies an upper limit to what Hadoop allows, node count depends on this
 --set mapreduce.reduce.memory.mb=4096; --this applies an upper limit to what Hadoop allows, node count depends on this
 --set mapreduce.job.reduces=10;
 --set mapreduce.job.maps=10;
-set dfs.block.size=268435456; --this is for the 256MB blocks
-set dfs.block.size=134217728; --this is for the 128MB blocks
+--set dfs.block.size=268435456; --this is for the 256MB blocks
+--set dfs.block.size=134217728; --this is for the 128MB blocks
 set dfs.block.size=67108864; --this is for the 64MB blocks
 
-create database if not exists ds7330_term_project;
+set mapred.job.queue.name=root.batch;
+
+create database if not exists ds7330_term_project_denormalized;
 create database if not exists ds7330_term_raw_data;
 
-create table if not exists ds7330_term_project.dates(
+create table if not exists ds7330_term_project_denormalized.dates(
 	report_date string 
 );
 
-create table if not exists ds7330_term_project.times(
+create table if not exists ds7330_term_project_denormalized.times(
 	report_time string
 );
 
-create table if not exists ds7330_term_project.tweet_mentions(
+create table if not exists ds7330_term_project_denormalized.tweet_mentions(
 tweet_id string
 , `text` string
 , `time` string
@@ -31,7 +32,7 @@ tweet_id string
 , tweet_symbol_id string
 );
 
-create table if not exists ds7330_term_project.tweet_hashtags(
+create table if not exists ds7330_term_project_denormalized.tweet_hashtags(
 tweet_id string
 , `text` string
 , `time` string
@@ -44,7 +45,7 @@ tweet_id string
 , tweet_symbol_id string
 );
 
-create table if not exists ds7330_term_project.tweet_urls(
+create table if not exists ds7330_term_project_denormalized.tweet_urls(
 tweet_id string
 , `text` string
 , `time` string
@@ -57,13 +58,13 @@ tweet_id string
 , tweet_symbol_id string
 );
 
-create table if not exists ds7330_term_project.companies(
+create table if not exists ds7330_term_project_denormalized.companies(
 	symbol string
 	, company_name string
 	, market_exchange string
 );
 
-create table if not exists ds7330_term_project.daily(
+create table if not exists ds7330_term_project_denormalized.daily(
    report_date string
   , symbol string
   , trade_volume bigint
@@ -74,7 +75,7 @@ create table if not exists ds7330_term_project.daily(
   , low_price double
 );
 
-create table if not exists ds7330_term_project.intraday(
+create table if not exists ds7330_term_project_denormalized.intraday(
 	report_dtm string
 	, report_date string
 	, report_time string
@@ -349,19 +350,19 @@ INTO TABLE ds7330_term_raw_data.tweet_urls;
 set hive.exec.dynamic.partition.mode=nonstrict;
 
 
-insert into ds7330_term_project.dates(
+insert into ds7330_term_project_denormalized.dates(
 	select trim(substring(regexp_replace(times, '"', ''), 1, 10)) as report_date
 	from ds7330_term_raw_data.intraday_prices_15_min
 	group by trim(substring(regexp_replace(times, '"', ''), 1, 10))
 );
 
-insert into ds7330_term_project.times(
+insert into ds7330_term_project_denormalized.times(
 	select trim(substring(regexp_replace(times, '"', ''), (length(regexp_replace(times, '"', ''))-1)-6, length(times))) as report_time
 	from ds7330_term_raw_data.intraday_prices_15_min
 	group by trim(substring(regexp_replace(times, '"', ''), (length(regexp_replace(times, '"', ''))-1)-6, length(times)))
 );
 
-insert into ds7330_term_project.companies(
+insert into ds7330_term_project_denormalized.companies(
 	select nyse.symbol as symbol
 	    , nyse.company as company_name
 	    , "NYSE" as market_exchange
@@ -381,7 +382,7 @@ insert into ds7330_term_project.companies(
 	        , "NASDAQ"
 );
 
-insert into ds7330_term_project.daily(
+insert into ds7330_term_project_denormalized.daily(
   Select
   cast(substring(from_unixtime(unix_timestamp(regexp_replace(times, '"',''), 'dd-MMM-yyyy')),0,10) as string) as report_date
   , regexp_replace(symbol, '"','') as symbol
@@ -403,7 +404,7 @@ insert into ds7330_term_project.daily(
   , low_price
 );
 
-insert into ds7330_term_project.intraday(
+insert into ds7330_term_project_denormalized.intraday(
 	Select
 	 regexp_replace(intra.times, '"', '') as report_dtm
 	, trim(substring(regexp_replace(intra.times, '"', ''), 1, 10)) as report_date
@@ -672,7 +673,7 @@ insert into ds7330_term_project.intraday(
 	, exp.exponential_ma_close
 );
 
-insert into ds7330_term_project.tweet_hashtags( 
+insert into ds7330_term_project_denormalized.tweet_hashtags( 
 select
 	tweet_id as tweet_id
 	, `text` as `text`
@@ -698,7 +699,7 @@ group by
 	, tweet_symbol_id
 );
 
-insert into ds7330_term_project.tweet_mentions(
+insert into ds7330_term_project_denormalized.tweet_mentions(
 select
 	tweet_id
 	, `text`
@@ -724,7 +725,7 @@ group by
 	, tweet_symbol_id
 );
 
-insert into ds7330_term_project.tweet_urls(
+insert into ds7330_term_project_denormalized.tweet_urls(
 select
 	tweet_id
 	, `text`
