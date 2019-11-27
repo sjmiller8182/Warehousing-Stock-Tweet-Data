@@ -8,9 +8,9 @@ select i.report_dtm, i.report_date, i.report_time, i.symbol, i.market, c.company
 , bi.close_bollinger_band_middle, bi.close_bollinger_band_upper, bi.high_bollinger_band_lower, bi.high_bollinger_band_middle, bi.high_bollinger_band_upper, bi.low_bollinger_band_lower, bi.low_bollinger_band_middle, bi.low_bollinger_band_upper
 , ei.exponential_ma_low, ei.exponential_ma_open, ei.exponential_ma_high, ei.exponential_ma_close, mi.macd_open, mi.macd_hist_open, mi.mkacd_signal_open, mi.macd_close, mi.macd_hist_close, mi.mkacd_signal_close, mi.macd_high, mi.macd_hist_high
 , mi.mkacd_signal_high, mi.macd_low, mi.macd_hist_low, mi.mkacd_signal_low, si.slowd_stochastic, si.slowk_stochastic
-from ds7330_term_project_normalized.intraday i
-join ds7330_term_project_normalized.twitter_tweet t
-	on i.symbol = t.symbol
+from ds7330_term_project_normalized.intraday i      -- ****************************************************************************************
+join ds7330_term_project_normalized.twitter_tweet t -- $$$$$$$######@@@@@@ could make these cross joins to get more samples @@@@@@######$$$$$$$
+	on i.symbol = t.tweet_symbol_id                 -- ****************************************************************************************
 	and substring(i.report_date, 3, 8) = t.tweet_date
 left join ds7330_term_project_normalized.twitter_tweet_hashtag tht
 	on t.tweet_id = tht.tweet_id
