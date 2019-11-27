@@ -8,10 +8,10 @@ set dfs.block.size=67108864; --this is for the 64MB blocks
 
 set mapred.job.queue.name=root.batch;
 
-create database if not exists ds7330_term_project_normalized_normalized;
+create database if not exists ds7330_term_project_normalized;
 create database if not exists ds7330_term_raw_data;
 
-create table if not exists ds7330_term_project_normalized_normalized.dates(
+create table if not exists ds7330_term_project_normalized.dates(
 	report_date string
 );
 
