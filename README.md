@@ -60,14 +60,14 @@ Queries were run on the two schemas with different HDFS block sizes to see the i
 The collected data is located [here](https://github.com/sjmiller8182/DBMS_Proj/blob/master/results_analysis/results.csv).
 A table summarizing the results is shown below.
 
-|     Schema    | Block Size | Average | Median | Variance |
-|:-------------:|:---------:|:--------:|:------:|:--------:|
-| Normalized    |   64 MB   | 124.00   | 124.38 |  14.08   |
-| Normalized    |   128 MB  | 120.29   | 119.43 |  16.85   |
-| Normalized    |   256 MB  | 118.85   | 118.22 |  6.49    |
-| Denormalized  |   64 MB   | 105.19   | 105.35 |  3.50    |
-| Denormalized  |   128 MB  | 100.98   | 100.91 |  3.60    |
-| Denormalized  |   256 MB  | 105.14   | 105.14 |  8.13    |
+| EMR Cluster Size |     Schema    | Block Size | Average | Median | Variance |
+|:----------------:|:-------------:|:---------:|:--------:|:------:|:--------:|
+| 3                 | Normalized    |   64 MB   | 124.00   | 124.38 |  14.08   |
+| 3                 | Normalized    |   128 MB  | 120.29   | 119.43 |  16.85   |
+| 3                 | Normalized    |   256 MB  | 118.85   | 118.22 |  6.49    |
+| 3                 | Denormalized  |   64 MB   | 105.19   | 105.35 |  3.50    |
+| 3                 | Denormalized  |   128 MB  | 100.98   | 100.91 |  3.60    |
+| 3                 | Denormalized  |   256 MB  | 105.14   | 105.14 |  8.13    |
 
 ## Analysis
 
