@@ -17,6 +17,9 @@ reports/support/tex/*.pdf
 # scraped data files
 scrape_utils/python/data/
 
+# temp files from officelibre
+.~lock.*.csv*
+
 # python ignores
 
 # Byte-compiled / optimized / DLL files

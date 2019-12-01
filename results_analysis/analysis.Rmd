@@ -32,11 +32,15 @@ delta.A=4, delta.B=2, sigma.A=2, sigma.B=2)
 ```{r, load_data, echo=FALSE}
 data <- read_csv('./results.csv',
                  col_types = cols(
-                   schema = col_factor(levels = c('normal','Non-normal')),
+                   schema = col_factor(levels = c('1','0')),
                    block_size = col_factor(levels = c('64','128','256')),
+                   server_num = col_factor(levels = c('3','5')),
                    time = col_double()
                  )
         )
+
+data$server_num <- recode(data$server_num, '3' = 'three_nodes', '5' = 'five_nodes')
+data$schema <- recode(data$schema, '1' = 'normalized', '0' = 'denormalized')
 ```
 
 ## Summary Stats for the Levels
@@ -44,13 +48,32 @@ data <- read_csv('./results.csv',
 This is assuming that schema is the main driving factor of variation.
 
 ```{r, summary_stats, echo=FALSE}
-data %>% 
-  group_by(schema, block_size) %>% 
+grouped <- data %>% 
+  group_by(server_num,schema, block_size) %>% 
   summarise(mean_time = mean(time),
             median_time = median(time),
             IQR_time = IQR(time),
             variance = var(time))
+grouped
 ```
+
+## 2-Way ANOVA Profile Plot
+
+```{r}
+ggplot(data = grouped, aes(y = mean_time, x = block_size, color = schema:server_num)) +
+  geom_point() +
+  geom_errorbar(aes(ymin = mean_time - sqrt(variance), ymax = mean_time + sqrt(variance)), width = .1) +
+  facet_grid( ~ server_num) + 
+  xlab('HDFS Block Size (MB)') +
+  ylab('Query Time (seconds)') +
+  ggtitle('Query Time for Schemas and MapReduce Block Size Faceted by Cluster Size')
+```
+
+
+
+
+
+
 
 ## 2-Way ANOVA Profile Plot
 
@@ -63,17 +86,21 @@ mysummary<-function(x){
   return(result)
 }
 
-sumstats<-aggregate(time ~ schema:block_size, data=data, mysummary)
+sumstats<-aggregate(time ~ schema:block_size, data = data, mysummary)
 sumstats<-cbind(sumstats[,1:2],sumstats[,-(1:2)])
 
-ggplot(sumstats,aes(x=block_size,y=Mean,group=schema,color=schema)) +
+ggplot(sumstats, aes(x = block_size, y = Mean, group = schema, color = schema)) +
   ylab("Query Time (seconds)") +
   xlab("MapReduce Block Size (MB)") +
   ggtitle('Query Time for Schemas and MapReduce Block Size') +
   geom_line() +
   geom_point() +
-  geom_errorbar(aes(ymin=Mean-SD,ymax=Mean+SD),width=.1)
+  geom_errorbar(aes(ymin = Mean - SD, ymax = Mean + SD), width = .1) +
+  facet_grid( ~ schema)
+
+sumstats
 ```
+
 
 
 ## Fit the ANOVA on the Data
