@@ -66,7 +66,7 @@ ggplot(data = grouped, aes(y = mean_time, x = block_size, color = schema:server_
   facet_grid( ~ server_num) + 
   xlab('HDFS Block Size (MB)') +
   ylab('Query Time (seconds)') +
-  ggtitle('Query Time for Schemas and MapReduce Block Size Faceted by Cluster Size')
+  ggtitle('Query Time for Schemas, MapReduce Block Size, and Cluster Size')
 ```
 
 
