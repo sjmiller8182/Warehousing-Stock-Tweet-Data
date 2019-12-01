@@ -60,7 +60,7 @@ grouped
 ## 2-Way ANOVA Profile Plot
 
 ```{r}
-ggplot(data = grouped, aes(y = mean_time, x = block_size, color = schema:server_num)) +
+ggplot(data = grouped, aes(y = mean_time, x = block_size, color = schema)) +
   geom_point() +
   geom_errorbar(aes(ymin = mean_time - sqrt(variance), ymax = mean_time + sqrt(variance)), width = .1) +
   facet_grid( ~ server_num) + 

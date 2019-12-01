@@ -26,7 +26,7 @@ plot(pred, residuals)
 
 # accounting for server size
 
-fit <- lmer(time ~ schema + block_size + schema*block_size*server_num  + (1|block_size), data=df)
+fit <- lmer(time ~  schema*block_size*server_num  + (1|block_size), data=df)
 anova(fit)
 summary(fit)
 
@@ -36,4 +36,4 @@ pred <- predict(fit, df)
 hist(residuals)
 plot(pred, residuals)
 
-summary(glht(fit, linfct=mcp(server_num="Tukey")))
+summary(glht(fit, linfct=mcp(schema="Tukey")))
