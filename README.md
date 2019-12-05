@@ -4,7 +4,7 @@
 ![GitHub repo size](https://img.shields.io/github/repo-size/sjmiller8182/DBMS_Proj)
 
 
-# Big Data Solution for Stock Prices and Tweet Collections
+# Big Data Lake Solution for Warehousing Stock Data and Tweet Data
 
 Created by [Stuart Miller](https://github.com/sjmiller8182), [Paul Adams](https://github.com/PaulAdams4361), and [Rikel Djoko](https://github.com/leriky).
 
