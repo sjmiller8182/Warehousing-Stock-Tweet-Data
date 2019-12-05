@@ -79,6 +79,7 @@ These reports were created during the course of this project.
 
 * [Project Proposal](https://github.com/sjmiller8182/DBMS_Proj/blob/master/reports/Proposal.pdf): Initial proposal regarding the problem and the proposed solution for investigation.
 * [Initial Project Presentation](https://github.com/sjmiller8182/DBMS_Proj/blob/master/reports/Initial_Presentation.pdf): A high level overview of the project idea and current status.
+* [Final Project Presentation](https://github.com/sjmiller8182/DBMS_Proj/blob/master/reports/Final_Presentation.pdf): A presentation describing the project goals, findings, and conclusions.
 * [Project Paper](https://github.com/sjmiller8182/DBMS_Proj/blob/master/reports/Project_Paper.pdf): **Draft in Work** - A paper describing the project.
 
 ## Repo Structure
