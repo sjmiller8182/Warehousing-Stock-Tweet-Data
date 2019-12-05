@@ -62,6 +62,7 @@
 \usepackage{multirow}
 % don't use the borders around links
 \usepackage[hidelinks]{hyperref}
+\usepackage{listings}
 
 % *** GRAPHICS RELATED PACKAGES ***
 %
@@ -219,48 +220,45 @@ best-performing S3 and HDFS configuration.
 
 \section{Data}
 
-This study investigates data warehouse models for housing stock
- price data and semi-structured alternative data. 
+We collected stock data and Twitter data for this study.
 Both daily and intraday stock price data were collected
  for use in this analysis. 
-Twitter was chosen as the primary source of alternative data because of
- ease-of-access to the \href{https://developer.twitter.com/en/docs}{Twitter API} 
+Twitter\footnote{https://www.twitter.com/}
+ was chosen as the primary source of alternative data because of
+ ease-of-access to the 
+ \href{https://developer.twitter.com/en/docs}{Twitter API}\footnote{https://developer.twitter.com/en/docs}
  and the large volume of available data.
-The main features of the collected data are summarized in Table ~\ref{DataFeatures}.
+Categories of data are summarized in Table \ref{DataCategories} and a full
+ list of features is given in Appendix \ref{DataFeatures}.
 
 \begin{table}
     \renewcommand{\arraystretch}{1.3}
-    \caption{Data Features}
-    \label{DataFeatures}
+    \caption{Data Categories}
+    \label{DataCategories}
     \centering
-    \begin{tabular}{c|l}
+    \begin{tabular}{c l}
         \hline
         \hline
-        Source       & Features\\
+        \textbf{Source}       & \textbf{Features}\\
         \hline
-        Stock Daily  & Prices: High, Low, Open, Close\\
+        \multirow{3}{*}{Stock Daily} &  Symbol \\
+        &  Time Stamp \\
+        &  Prices \\
         \hline
-        \multirow{10}{*}{Stock Intraday} &  Prices: High, Low, Open, Close \\
-        \cline{2-2}
-        &  High Bollinger bands\\
-        \cline{2-2}
-        &  Mid Bollinger bands\\
-        \cline{2-2}
-        &  Low Bollinger bands\\ 
-        \cline{2-2}
-        &  Nominal moving average\\
-        \cline{2-2}
-        &  Historical moving average\\
-        \cline{2-2}
-        &  Signal moving average\\ 
-        \cline{2-2}
-        &  Exponential moving average\\
-        \cline{2-2}
-        &  Stochastic 5-day indicator (Slow K)\\
-        \cline{2-2}
-        &  Stochastic 3-day indicator (Slow D)\\
+        \multirow{6}{*}{Stock Intraday} &  Symbol \\
+        &  Time Stamp \\
+        &  Prices \\
+        &  Bollinger Bands \\
+        &  Moving Averages \\
+        &  Stochastic Indicators \\
         \hline
-        Tweets       & Text, URLs, Hashtags, Mentions, Users\\
+        \multirow{7}{*}{Twitter} &  Symbol \\
+        &  Time Stamp \\
+        &  User \\
+        &  Text \\
+        &  URLs \\
+        &  Hashtags \\
+        &  Mentions \\
         \hline
         \hline
     \end{tabular}
@@ -271,17 +269,16 @@ The main features of the collected data are summarized in Table ~\ref{DataFeatur
 The stock price data was collected through an API provided by
  \href{https://www.alphavantage.co/}{Alpha Vantage}\footnote{https://www.alphavantage.co/}.
 This API provided access to daily prices, intraday stock prices,
- and intraday price features.
-Intraday stock data contained 35 features sampled at 15 minute intervals. 
-The intraday features were from the following categories Bollinger bands, 
- stochastic oscillators, moving averages, and exponential moving averages.
+ and intraday price features from the following categories Bollinger bands, 
+ stochastic oscillators, moving averages, and exponential moving averages. 
 
-Approximately 1 million rows of data were collected,
- which occurred from Oct. 04, 2019 to Oct. 24, 2019.
-During the collection process, the data were recorded in files
- organized by day and category and stored in an S3 bucket.
-At the end of the collection process, the files for each
- category were combined and pushed to the HDFS datalake.
+The stock data was collected from Oct. 04, 2019 to Oct. 24, 2019 on
+ all 2520 symbols traded on the NYSE and all 3213 symbols traded on the NASDAQ.
+A single value was stored for each feature of the daily prices.
+The intraday values were sampled at 15 minute intervals from market open
+ to market close.
+This resulted in a total of 49, 093, 917 stock data points.
+
 
 \subsection{Twitter Data}
 
@@ -297,16 +294,47 @@ A hashtag is some collection of characters starting with
  '\#' without white space.
 Generally, the character portion of a hashtag will be a word or set of words,
  but this is not necessary.
+An example of a tweet containing one hashtag (\texttt{\#FF}) and one 
+mention (\texttt{@everett}) is given in Listing \ref{SampleTweet} (the value of
+ '\texttt{full\_text}').
 
-Approximately 300,000 tweets were collected from over 100 Twitter users.
-The data from Twitter is returned in JavaScript Object Notation (JSON).
-The features of interest were extracted from the JSON files and
- reformatted in tab separated files (TSV).
+\lstset{
+	breaklines=true
+}
+
+% example tweet json; this is a fake
+\begin{lstlisting}[frame=single,
+ caption={Sample Tweet JSON},
+ label={SampleTweet}]
+{'created_at': 'Fri Oct 25 07:44:38 +0000 2019',
+ 'id': 1187636067505188864,
+ 'id_str': '1187636067505188864',
+ 'full_text': '@everett where do I start with this company? #FF!!!!',
+ 'truncated': False,
+ 'display_text_range': [0, 52],
+ 'entities': {
+   'hashtags': [
+            {'text': 'FF',
+             'indices': [45, 48]}],
+   'symbols': [],
+   'user_mentions': [
+          {'screen_name': 'even_everett',
+           'name': 'Even Everett',
+           'id': 21841004,
+           'id_str': '21841004',
+           'indices': [0, 10]}],
+   'urls': []}
+}
+\end{lstlisting}
+
+We collected 423, 802 tweets from 108 Twitter users, using the python module
+ Twython\footnote{https://pypi.org/project/twython/3.6.0/}.
+The data from Twitter is returned in JavaScript Object Notation (JSON); 
+ an example is shown in Listing \ref{SampleTweet}.
+The features of interest were extracted from the JSON files and reformatted in tab separated files (TSV) using python and the built-in JSON and CSV modules.
 After the tweets were extracted from Twitter,
- mentions of company names or stock symbols were extracted from the tweet text by
- matching sections of tweet text to company names and company stock symbols.
-Once the data was collected and processed, it was pushed to the HDFS datalake.
-
+mentions of company names or stock symbols were extracted from the tweet text by
+matching sections of tweet text to company names and company stock symbols.
 
 \section{Data Warehouse Development}
 \label{DataWarehouseDevelopment}
@@ -582,9 +610,110 @@ The scalability of large sets of data is of ever-increasing importance in the da
 \begin{figure}
 	\centering
 	\includegraphics[width=2.5in]{profile_plot-1.png}
-	\caption{Average of Query Time of by Schema and Block Size with Standard Deviation Bars}
+	\caption{Average of Query Time by Schema and Block Size with Standard Deviation Bars}
 	\label{HDFS}
 \end{figure}
+
+\appendices
+
+\section{Data Features}
+\label{DataFeatures}
+
+This section contains a full listing of all the features collected for this
+ study. The features are listed by general category as shown in 
+ Table \ref{DataCategories}.
+
+\subsection{Intraday Stock Features}
+
+The intraday stock features are described below and are organized in the 
+ following categories: Key, Prices, Bollenger Bands, Moving Averages, and Stochastic 
+ Indicators.
+
+\subsubsection{Key}
+
+\begin{itemize}
+	\item Symbol
+	\item Time
+	\item Date
+\end{itemize}
+
+\subsubsection{Prices}
+
+\begin{itemize}
+	\item Open
+	\item Close
+	\item High
+	\item Low
+\end{itemize}
+
+\subsubsection{Bollenger Bands}
+
+\begin{itemize}
+	\item Open
+	\begin{itemize}
+		\item Lower Band
+		\item Middle Band
+		\item Upper Band
+	\end{itemize}
+	\item Close
+	\begin{itemize}
+		\item Lower Band
+		\item Middle Band
+		\item Upper Band
+	\end{itemize}
+	\item High
+	\begin{itemize}
+		\item Lower Band
+		\item Middle Band
+		\item Upper Band
+	\end{itemize}
+	\item Low
+	\begin{itemize}
+		\item Lower Band
+		\item Middle Band
+		\item Upper Band
+	\end{itemize}
+\end{itemize}
+
+\subsubsection{Moving Averages}
+
+\begin{itemize}
+	\item Open
+	\begin{itemize}
+		\item Convergence Divergence
+		\item Convergence Divergence Signal
+		\item Convergence Divergence Historical
+		\item Exponential
+	\end{itemize}
+	\item Close
+	\begin{itemize}
+		\item Convergence Divergence
+		\item Convergence Divergence Signal
+		\item Convergence Divergence Historical
+		\item Exponential
+	\end{itemize}
+	\item High
+	\begin{itemize}
+		\item Convergence Divergence
+		\item Convergence Divergence Signal
+		\item Convergence Divergence Historical
+		\item Exponential
+	\end{itemize}
+	\item Low
+	\begin{itemize}
+		\item Convergence Divergence
+		\item Convergence Divergence Signal
+		\item Convergence Divergence Historical
+		\item Exponential
+	\end{itemize}
+\end{itemize}
+
+\subsubsection{Stochastic Indicators}
+
+\begin{itemize}
+	\item 5-day indicator
+	\item 3-day indicator
+\end{itemize}
 
 \begin{thebibliography}{1}
 
@@ -662,6 +791,7 @@ K. Tannir, "Enhancing Map and Reduce Tasks," in
  ch. 5. Accessed on: Nov. 20, 2019 [Online]. 
 
 \end{thebibliography}
+
 
 
 % that's all folks
