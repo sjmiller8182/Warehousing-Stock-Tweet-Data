@@ -13,8 +13,8 @@ The following table shows milestone identified to complete the project.
 | Verify Data WareHouse Builds (both schemas) | Nov. 3, 2019       | Nov. 3, 2019       | Complete |
 | Rough Draft of Paper                        | Nov. 10, 2019      | Nov. 10, 2019      | Complete |
 | Test Performance                            | Nov. 17, 2019      | Nov. 24, 2019      | Complete |
-| Complete Final Presentation                 | Dec. 1, 2019       |  | In Progress |
-| Complete Final Paper                        | Dec. 3, 2019       |  | In Progress |
+| Complete Final Presentation                 | Dec. 1, 2019       | Dec. 1, 2019       | Complete |
+| Complete Final Paper                        | Dec. 8, 2019       | Dec. 8, 2019       | Complete |
 
 # Detailed Steps
 
