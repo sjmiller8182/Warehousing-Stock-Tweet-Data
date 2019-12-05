@@ -11,6 +11,19 @@ Created by [Stuart Miller](https://github.com/sjmiller8182), [Paul Adams](https:
 This project is currently in progress.
 The [project outline](https://github.com/sjmiller8182/DBMS_Proj/blob/master/Project_Outline.md) provides a list of [projected milestones](https://github.com/sjmiller8182/DBMS_Proj/blob/master/Project_Outline.md#milestones-and-status) for completion of the project.
 
+**Table of Contents**
+
+* [Problem Statement](https://github.com/sjmiller8182/DBMS_Proj#problem-statement)
+* [Overview of the Big Data Solution](https://github.com/sjmiller8182/DBMS_Proj#overview-of-the-big-data-solution)
+* [Data Warehouse Overview](https://github.com/sjmiller8182/DBMS_Proj#data-warehouse-overview)
+  * [Snowflake Schema](https://github.com/sjmiller8182/DBMS_Proj#snowflake-schema)
+  * [Denormalized Star Schema](https://github.com/sjmiller8182/DBMS_Proj#denormalized-star-schema)
+* [Big Data Solution Implementation](https://github.com/sjmiller8182/DBMS_Proj#big-data-solution-implementation)
+* [Results](https://github.com/sjmiller8182/DBMS_Proj#results)
+* [Analysis](https://github.com/sjmiller8182/DBMS_Proj#analysis)
+* [Conclusion](https://github.com/sjmiller8182/DBMS_Proj#conclusion)
+* [Reports](https://github.com/sjmiller8182/DBMS_Proj#reports)
+
 ## Problem Statement
 
 We want to build a large-scale data framework that will enable us to store and analyze financial market data and drive future predictions for inverstment.
