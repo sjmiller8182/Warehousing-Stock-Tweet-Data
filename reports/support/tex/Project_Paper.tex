@@ -613,26 +613,23 @@ The scalability of large sets of data is of ever-increasing importance in the da
     \caption{Results Table}
     \label{ResultsTable}
     \centering
-    \begin{tabular}{c|c|c|c|c}
+    \begin{tabular}{c c c c}
         \hline
         \hline
-        \multirow{2}{*}{Schema} & \multirow{2}{*}{Cluster Nodes} &  \multicolumn{3}{c}{Query Time (seconds)}   \\
-        \cline{3-5}
-        & & Mean  & 95\% CI & Variance\\
+        \multirow{2}{*}{Schema} & \multirow{2}{*}{Cluster Nodes} &
+        \multicolumn{2}{c}{Query Time (seconds)}   \\
+        \cline{3-4}
+                                           &     & Mean & Standard Deviation\\
         \hline
-        \multirow{3}{*}{Snowflake}         & 64 MB    & 124.00 & 124.38 & 14.08 \\
-        \cline{2-5}
-                                           & 128 MB   & 120.29 & 119.43 & 16.85 \\
-        \cline{2-5}
-                                           & 256 MB   & 118.85 & 118.22 & 6.49 \\
+        \multirow{2}{*}{Snowflake}         & 3   & 121.05 & 4.12 \\
+        
+                                           & 5   & 94.49 & 4.01  \\
 
         \hline
-        \multirow{3}{*}{Denormalized Star} & 64 MB    & 105.19 & 105.35 & 3.50 \\
-        \cline{2-5}
-                                           & 128 MB   & 100.98 & 100.91 & 3.60 \\
-        \cline{2-5}
+        \multirow{2}{*}{Denormalized Star} & 3   & 103.77 & 2.99 \\
+        
+                                           & 5   & 79.68 & 5.86  \\
 
-                                           & 256 MB   & 105.14 & 105.14 & 8.13 \\
         \hline
         \hline
     \end{tabular}
