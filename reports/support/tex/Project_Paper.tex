@@ -268,6 +268,9 @@ Categories of data are summarized in Table \ref{DataCategories} and a full
 
 The stock price data was collected through an API provided by
  \href{https://www.alphavantage.co/}{Alpha Vantage}\footnote{https://www.alphavantage.co/}.
+The R\footnote{Version 3.6.0}
+ programming language was used to collect data from the Alpha Vantage API
+\cite{R}.
 This API provided access to daily prices, intraday stock prices,
  and intraday price features from the following categories Bollinger bands, 
  stochastic oscillators, moving averages, and exponential moving averages. 
@@ -298,6 +301,36 @@ An example of a tweet containing one hashtag (\texttt{\#FF}) and one
 mention (\texttt{@everett}) is given in Listing \ref{SampleTweet} (the value of
  '\texttt{full\_text}').
 
+We collected 423, 802 tweets from 108 Twitter users, using the
+ python\footnote{Version 3.6.8}
+ module Twython\footnote{https://pypi.org/project/twython/3.6.0/}.
+The data from Twitter is returned in JavaScript Object Notation (JSON); 
+ an example is shown in Listing \ref{SampleTweet}.
+The features of interest were extracted from the JSON files and reformatted in tab
+ separated files (TSV) using python and the built-in JSON and CSV modules.
+After the tweets were extracted from Twitter,
+ mentions of company names or stock symbols were extracted from the tweet text by
+ matching sections of tweet text to company names and company stock symbols.
+All other featured were extracted from the JSON by key.
+
+As shown in Listing \ref{SampleTweet}, the timestamp and text
+ can be accessed at the top level of the JSON object with \texttt{created\_at} and
+ \texttt{full\_text}, respectively. 
+The user information can be accessed from the key \texttt{user}, 
+ which accesses another set of objects. 
+The values for \texttt{screen\_name} and \texttt{id\_str} were extracted for the user.
+The hashtags, mentions, and URLs are located under the key \texttt{entities} as
+ \texttt{hashtags}, \texttt{user\_mentions}, and \texttt{urls}, respectively.
+Each of these keys under \texttt{entities}, return an array of objects,
+ containing the features of interest. 
+The value for \texttt{text} under \texttt{hashtags} was the only value collected
+ for the hashtags (\texttt{\#FF} in the example).
+The values for \texttt{screen\_name} and \texttt{id\_str} under 
+ \texttt{user\_mentions} were collected for mentions (\texttt{even\_everett} and
+ \texttt{21841004}, respectively, in the example).
+Only the value of \texttt{expanded\_url} was collected user \texttt{urls}
+ (\texttt{http://www.you.com/watch?v=TZR} in the example).
+
 \lstset{
 	breaklines=true
 }
@@ -323,18 +356,25 @@ mention (\texttt{@everett}) is given in Listing \ref{SampleTweet} (the value of
            'id': 21841004,
            'id_str': '21841004',
            'indices': [0, 10]}],
-   'urls': []}
+   'urls': [
+     "indices": [32, 52],
+     "url": "http://t.co/TZR",
+     "display_url": "you.com/watch?v=oHg…",
+     "expanded_url": "http://www.you.com/watch?v=TZR"]}
+ 'user': {'id': 14216123,
+   'id_str': '14216123',
+   'name': 'Jim Jim',
+   'screen_name': 'jimjim',
+   ...}
 }
 \end{lstlisting}
 
-We collected 423, 802 tweets from 108 Twitter users, using the python module
- Twython\footnote{https://pypi.org/project/twython/3.6.0/}.
-The data from Twitter is returned in JavaScript Object Notation (JSON); 
- an example is shown in Listing \ref{SampleTweet}.
-The features of interest were extracted from the JSON files and reformatted in tab separated files (TSV) using python and the built-in JSON and CSV modules.
-After the tweets were extracted from Twitter,
-mentions of company names or stock symbols were extracted from the tweet text by
-matching sections of tweet text to company names and company stock symbols.
+\begin{figure}
+	\centering
+	\includegraphics[width=2.5in]{SnowFlake_Schema_Simple.png}
+	\caption{Conceptual Diagram of the Data Warehouse Snowflake Schema}
+	\label{snowflake}
+\end{figure}
 
 \section{Data Warehouse Development}
 \label{DataWarehouseDevelopment}
@@ -359,14 +399,15 @@ When the dimensions of a star schema are broken out into the tables
 In this study, two schemas were designed: one in snowflake form and
  the other in a more optimal form for query speed.
 
-\subsection{Snowflake Schema}
-
 \begin{figure}
-    \centering
-    \includegraphics[width=2.5in]{SnowFlake_Schema_Simple.png}
-    \caption{Conceptual Diagram of the Data Warehouse Snowflake Schema}
-    \label{snowflake}
+	\centering
+	\includegraphics[width=2.5in]{Star_Schema_Simple.png}
+	\caption{Conceptual Diagram of the Data Warehouse 
+		Denormalized Star Schema}
+	\label{star}
 \end{figure}
+
+\subsection{Snowflake Schema}
 
 As noted previously, the fact table of this star design contained the
  company information and timestamps.
@@ -423,14 +464,6 @@ Each secondary member of the Twitter dimension hierarchical structure was
 The schema resulting from this denormalization process is shown
  conceptually in Fig. \ref{star}.
 
-
-\begin{figure}
-    \centering
-    \includegraphics[width=2.5in]{Star_Schema_Simple.png}
-    \caption{Conceptual Diagram of the Data Warehouse 
-        Denormalized Star Schema}
-    \label{star}
-\end{figure}
 
 \section{Implementation}
 
@@ -583,9 +616,9 @@ The scalability of large sets of data is of ever-increasing importance in the da
     \begin{tabular}{c|c|c|c|c}
         \hline
         \hline
-        \multirow{2}{*}{Schema} & \multirow{2}{*}{Block Size} &  \multicolumn{3}{c}{Query Time (seconds)}   \\
+        \multirow{2}{*}{Schema} & \multirow{2}{*}{Cluster Nodes} &  \multicolumn{3}{c}{Query Time (seconds)}   \\
         \cline{3-5}
-        & & Average  & Median & Variance\\
+        & & Mean  & 95\% CI & Variance\\
         \hline
         \multirow{3}{*}{Snowflake}         & 64 MB    & 124.00 & 124.38 & 14.08 \\
         \cline{2-5}
