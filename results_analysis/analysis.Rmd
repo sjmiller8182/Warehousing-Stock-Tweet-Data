@@ -49,11 +49,12 @@ This is assuming that schema is the main driving factor of variation.
 
 ```{r, summary_stats, echo=FALSE}
 grouped <- data %>% 
-  group_by(server_num,schema, block_size) %>% 
+  group_by(server_num,schema) %>% 
   summarise(mean_time = mean(time),
             median_time = median(time),
             IQR_time = IQR(time),
-            variance = var(time))
+            std_dev = sd(time),
+            varaince = var(time))
 grouped
 ```
 
