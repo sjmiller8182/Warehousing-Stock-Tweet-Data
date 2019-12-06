@@ -286,7 +286,7 @@ This resulted in a total of 49, 093, 917 stock data points.
 \subsection{Twitter Data}
 
 Messages on Twitter (called tweets) are mainly comprised of
- tweet ID, timestamp, author (screen name), and text.
+ tweet ID, timestamp, user (screen name), and text.
 Tweets can also contain many other features such as
  URLs, hashtags, emojis,  and mentions.
 For this analysis, in addition to the main features,
@@ -313,9 +313,9 @@ After the tweets were extracted from Twitter,
  matching sections of tweet text to company names and company stock symbols.
 All other featured were extracted from the JSON by key.
 
-As shown in Listing \ref{SampleTweet}, the timestamp and text
- can be accessed at the top level of the JSON object with \texttt{created\_at} and
- \texttt{full\_text}, respectively. 
+As shown in Listing \ref{SampleTweet}, the timestamp, text, and tweet ID
+ can be accessed at the top level of the JSON object with \texttt{created\_at},
+ \texttt{full\_text}, and \texttt{id\_str}, respectively. 
 The user information can be accessed from the key \texttt{user}, 
  which accesses another set of objects. 
 The values for \texttt{screen\_name} and \texttt{id\_str} were extracted for the user.
@@ -336,6 +336,7 @@ Only the value of \texttt{expanded\_url} was collected user \texttt{urls}
 	emph={
 		created\_at,
 	    full\_text,
+	    id\_str,
 	    entities,
 	    hashtags,
 	    urls,
