@@ -595,8 +595,8 @@ During performance testing, we gathered all fields from all tables, joining all 
 	\begin{tabular}{c c c c}
 		\hline
 		\hline
-		\multirow{2}{*}{Schema} & \multirow{2}{*}{Cluster Nodes} &
-		\multicolumn{2}{c}{Query Time (seconds)}   \\
+		\multirow{2}{*}{\textbf{Schema}} & \multirow{2}{*}{\textbf{Cluster Nodes}} &
+		\multicolumn{2}{c}{\textbf{Query Time} (seconds)}   \\
 		\cline{3-4}
 		&     & Mean & Standard Deviation\\
 		\hline
@@ -619,7 +619,7 @@ During performance testing, we gathered all fields from all tables, joining all 
 As discussed in Section \ref{StudyDesign}, a two-way ANOVA test was performed.
 The two-way ANOVA that the interaction between schema design and server count provide significant results,
 indicating that there is a difference in the proportions of performance speed between the two schemas when considering count of servers in a cluster.
-The dependence of performance on combinations of schema and cluster size is apparent in Fig. \ref{HDFS},
+The dependence of performance on combinations of schema and cluster size is apparent in Fig. \ref{Results},
  which shows boxplots of the query times of each combination of schema and cluster size.
 The red boxes represent the times for the snowflake schema and
  the blue boxes represent the query times for the denormalized schema.
@@ -672,7 +672,7 @@ The scalability of large sets of data is of ever-increasing importance in the da
 	\centering
 	\includegraphics[width=2.5in]{Rplot.png}
 	\caption{Average of Query Time by Schema and Block Size with Standard Deviation Bars}
-	\label{HDFS}
+	\label{Results}
 \end{figure}
 
 \appendices
