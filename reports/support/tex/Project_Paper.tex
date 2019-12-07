@@ -573,13 +573,15 @@ Hue was used to interact with the EMR cluster and run Hive scripts.
 \end{figure}
 
 \section{Study Design}
+\label{StudyDesign}
 
 In this study, we will investigate the impact of schema normalization and
  EMR cluster size on the performance of a read query.
 Both schemas presented in Section \ref{DataWarehouseDevelopment} were tested on
  EMR clusters with 3 nodes and 5 nodes.
-This is a two-way ANOVA where ERM cluster size and schema are the
- explanatory factor variables and the response variable is query execution time.
+This is a two-way Analysis of Variance (ANOVA) where ERM cluster size and schema
+ are the explanatory factor variables and the response variable is query
+ execution time.
 
 
 [Paul update]
@@ -592,7 +594,7 @@ Performance testing needs more research.
 Results may be contained in something like Table \ref{ResultsTable}.
 
 [Paul update]
-As discussed in the Study Design section, a two-way Analysis of Variance (ANOVA) test was performed. The conclusion of this analysis is that – while holding cluster size constant – schema design is significant on performance across both server sizes (p-value < 0.0001, F-statistic 999.187). Furthermore, while holding schema design constant, performance speed difference was also significant (p-value < 0.0001, F-statistic 3399.954) between the two cluster sizes with the five-server cluster outperforming the three-server cluster. Finally, we also identified through the two-way ANOVA that the interaction between schema design and server count provide significant results, indicating that there is a difference in the proportions of performance speed between the two schemas when considering count of servers in a cluster.
+As discussed in Section \ref{StudyDesign}, a two-way ANOVA test was performed. The conclusion of this analysis is that – while holding cluster size constant – schema design is significant on performance across both server sizes (p-value $< 0.0001$, F-statistic $999.187$). Furthermore, while holding schema design constant, performance speed difference was also significant (p-value $< 0.0001$, F-statistic $3399.954$) between the two cluster sizes with the five-server cluster outperforming the three-server cluster. Finally, we also identified through the two-way ANOVA that the interaction between schema design and server count provide significant results, indicating that there is a difference in the proportions of performance speed between the two schemas when considering count of servers in a cluster.
 
 \section{Analysis}
 
