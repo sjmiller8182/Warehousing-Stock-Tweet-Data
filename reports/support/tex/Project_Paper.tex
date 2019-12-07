@@ -617,27 +617,27 @@ During performance testing, we gathered all fields from all tables, joining all 
 \section{Results}
 
 As discussed in Section \ref{StudyDesign}, a two-way ANOVA test was performed.
-The two-way ANOVA that the interaction between schema design and server count provide significant results,
+We identified that the interaction between schema design and server count provide significant results,
 indicating that there is a difference in the proportions of performance speed between the two schemas when considering count of servers in a cluster.
 The dependence of performance on combinations of schema and cluster size is apparent in Fig. \ref{Results},
  which shows boxplots of the query times of each combination of schema and cluster size.
-The red boxes represent the times for the snowflake schema and
+The red boxes represent the query times for the snowflake schema and
  the blue boxes represent the query times for the denormalized schema.
-The boxplot is faceted by cluster size with the 3 node results on the right and
- the 5 node results on the left.
+The boxplot is faceted by cluster size with the three-node results on the right and
+ the five-node results on the left.
 The query time of the denormalized schema is lower than the normalized schema for both sizes of clusters.
 
 We find that, while holding cluster size constant,
  schema design is significant on performance across both server sizes
  (p-value $< 0.0001$, F $ = 999.187$). 
 Denormalizing the snowflake schema provided a 14.27\% decrease in mean query time on
- the 3 node cluster and a 15.67\% decrease mean in query time on the 5 node cluster.
+ the three-node cluster and a 15.67\% decrease mean in query time on the five-node cluster.
 Furthermore, while holding schema design constant, 
  performance speed difference was also significant 
  (p-value $< 0.0001$, F $= 3399.954$) 
- between the two cluster sizes with the five-server cluster outperforming
- the three-server cluster. 
-A summary of the results in shown in Table \ref{ResultsTable}.
+ between the two cluster sizes with the five-node cluster outperforming
+ the three-node cluster. 
+A summary of the results is shown in Table \ref{ResultsTable}.
 
 
 \section{Analysis}
