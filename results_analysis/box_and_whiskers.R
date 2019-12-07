@@ -32,8 +32,7 @@ plotFrame$schema <- ifelse(plotFrame$schema==1, "Normalized", "Denormalized")
 # Box Plots
 ggplot(plotFrame, aes(x=factor(schema),y=time,fill=factor(schema)))+
 geom_boxplot() + 
-  labs(x = "Schema Type", y = "Query Time", title = "Schema Performance over Cluster Size",
-                      subtitle = "75,000 rows") + 
+  labs(x = "Schema Type", y = "Query Time") + 
   facet_wrap(~server_count) + 
   theme_fivethirtyeight() +
   theme(axis.text.x = element_text(angle=10, hjust=1, vjust=1, face="bold", size=15), 
