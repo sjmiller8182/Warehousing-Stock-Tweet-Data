@@ -494,7 +494,6 @@ Elastic MapReduce (EMR) was used for the implementation of Hadoop in this projec
 AWS EMR is a pre-configured compute cluster for Big Data.
 The cluster can be provisioned and terminated on demand as needed.
 It comes with a configurable set of the Hadoop ecosystem elements pre-installed and ready to use.
-Fig. \ref{EMR} shows the ecosystem of EMR ecosystem.
 The EMR cluster used in this study was provisioned with three
  m5.xlarge\footnote{https://aws.amazon.com/ec2/instance-types/m5/}
  elastic compute instances using version 5.27.0 of the EMR 
@@ -540,13 +539,6 @@ MapReduce uses the divide and conquer technique where the input is divided into 
 The key serves as a task ID and the value as the task output.
 Each task is then processed and executed by the mapper and
 the outputs are processed and merged by the reducer \cite{MapReduce}.
-
-\begin{figure}
-    \centering
-    \includegraphics[width=2.5in]{EMR_Ecosystem.png}
-    \caption{Elastic MapReduce Ecosystem}
-    \label{EMR}
-\end{figure}
 
 \subsection{AWS Simple Storage Service}
 
