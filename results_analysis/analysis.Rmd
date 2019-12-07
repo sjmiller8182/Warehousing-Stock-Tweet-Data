@@ -22,8 +22,17 @@ https://cran.r-project.org/web/packages/pwr2/pwr2.pdf
 
 ```{r, power_analysis}
 
-pwr.2way(a=2, b=3, alpha=0.05, size.A=30, size.B=30, f.A=NULL, f.B=NULL,
-delta.A=4, delta.B=2, sigma.A=2, sigma.B=2)
+pwr.2way(a=2,
+         b=2,
+         alpha=0.05,
+         size.A=90,
+         size.B=90,
+         f.A=NULL,
+         f.B=NULL,
+         delta.A=2,
+         delta.B=2,
+         sigma.A=4,
+         sigma.B=6)
 ```
 
 
@@ -42,6 +51,17 @@ data <- read_csv('./results.csv',
 data$server_num <- recode(data$server_num, '3' = 'three_nodes', '5' = 'five_nodes')
 data$schema <- recode(data$schema, '1' = 'normalized', '0' = 'denormalized')
 ```
+
+```{r}
+data %>% 
+  group_by(schema) %>% 
+  summarise(mean_time = mean(time),
+            median_time = median(time),
+            IQR_time = IQR(time),
+            std_dev = sd(time),
+            varaince = var(time))
+```
+
 
 ## Summary Stats for the Levels
 

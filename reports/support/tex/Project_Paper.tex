@@ -575,24 +575,13 @@ Hue was used to interact with the EMR cluster and run Hive scripts.
 
 \section{Study Design}
 
-In this study, the impact of data warehouse normalization and
- tuning the HDFS configuration on query execution time will be investigated.
-Both schemas presented in Section \ref{DataWarehouseDevelopment} were used in this study.
-The HDFS configuration was tuned by changing the HDFS block size.
+In this study, we will investigate the impact of schema normalization and
+ EMR cluster size on the performance of a read query.
+Both schemas presented in Section \ref{DataWarehouseDevelopment} were tested on
+ EMR clusters with 3 nodes and 5 nodes.
+This is a two-way ANOVA where ERM cluster size and schema are the
+ explanatory factor variables and the response variable is query execution time.
 
-Add something from \cite{OptimizeHadoop} here?
-
-This study is designed as a one-way ANOVA with repeated measures.
-The response variable is query execution time.
-The two schemas are treated as subjects and the MapReduce block size is the factor with
- levels of 64 MB, 128 MB, and 256 MB \cite{Sleuth}.
-The default block size on AWS EMR is 128
- MB\footnote{https://docs.aws.amazon.com/emr/latest/ReleaseGuide/emr-hdfs-config.html}.
-A query was designed for each schema with each query returning the same set of data.
-The queries were executed for each combination of schema and block size
- on the same EMR cluster 30 times.
-
-Add something on power analysis?
 
 \section{Results}
 
