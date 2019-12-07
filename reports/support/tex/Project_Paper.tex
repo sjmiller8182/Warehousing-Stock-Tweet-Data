@@ -88,7 +88,7 @@
 \begin{document}
 
 \title{Big Data Lake Solution for\\ 
-    Warehousing Stock Data and Tweet Data}
+    Time Series Data}
 
 \author{Paul~Adams, paula@smu.edu,
         Rikel~Djoko, rdjoko@smu.edu,
@@ -587,30 +587,65 @@ This is a two-way Analysis of Variance (ANOVA) where ERM cluster size and schema
 [Paul update]
 During performance testing, we gathered all fields from all tables, joining all tables in the schema together. Joining all tables enabled capturing the entirety of the database, under each schema, to produce the same results. These queries were limited to 75,000 returned records to enable gathering more runtime samples. This number was decided to be reasonable based on the difference in performance time. As noted in the analysis section below, the performance time between queries was significant at 75,000 records; limited a higher volume of returned records would have increased the significance. Therefore, 75,000 was determined reasonable for analysis.
 
+\begin{table}
+	\renewcommand{\arraystretch}{1.3}
+	\caption{Results Table}
+	\label{ResultsTable}
+	\centering
+	\begin{tabular}{c c c c}
+		\hline
+		\hline
+		\multirow{2}{*}{Schema} & \multirow{2}{*}{Cluster Nodes} &
+		\multicolumn{2}{c}{Query Time (seconds)}   \\
+		\cline{3-4}
+		&     & Mean & Standard Deviation\\
+		\hline
+		\multirow{2}{*}{Snowflake}         & 3   & 121.05 & 4.12 \\
+		
+		& 5   & 94.49 & 4.01  \\
+		
+		\hline
+		\multirow{2}{*}{Denormalized Star} & 3   & 103.77 & 2.99 \\
+		
+		& 5   & 79.68 & 5.86  \\
+		
+		\hline
+		\hline
+	\end{tabular}
+\end{table}
+
 \section{Results}
 
-Maybe a table comparing read times for the different options.
-Performance testing needs more research.
-Results may be contained in something like Table \ref{ResultsTable}.
+As discussed in Section \ref{StudyDesign}, a two-way ANOVA test was performed.
+The two-way ANOVA that the interaction between schema design and server count provide significant results,
+indicating that there is a difference in the proportions of performance speed between the two schemas when considering count of servers in a cluster.
+We find that, while holding cluster size constant,
+ schema design is significant on performance across both server sizes
+ (p-value $< 0.0001$, F $ = 999.187$). 
+Denormalizing the snowflake schema provided a 14.27\% decrease in mean query time on
+ the 3 node cluster and a 15.67\% decrease mean in query time on the 5 node cluster.
+Furthermore, while holding schema design constant, 
+ performance speed difference was also significant 
+ (p-value $< 0.0001$, F $= 3399.954$) 
+ between the two cluster sizes with the five-server cluster outperforming
+ the three-server cluster. 
+A summary of the results in shown in Table \ref{ResultsTable}.
 
-[Paul update]
-As discussed in Section \ref{StudyDesign}, a two-way ANOVA test was performed. The conclusion of this analysis is that – while holding cluster size constant – schema design is significant on performance across both server sizes (p-value $< 0.0001$, F-statistic $999.187$). Furthermore, while holding schema design constant, performance speed difference was also significant (p-value $< 0.0001$, F-statistic $3399.954$) between the two cluster sizes with the five-server cluster outperforming the three-server cluster. Finally, we also identified through the two-way ANOVA that the interaction between schema design and server count provide significant results, indicating that there is a difference in the proportions of performance speed between the two schemas when considering count of servers in a cluster.
 
 \section{Analysis}
 
-\textbf{EXAMPLE Discussion of Analysis:}
-[Paul update]
-In analyzing the exploratory graphical analysis of the clusters, the interaction between schema and cluster size is such that as cluster size increases, the normalized schema approaches a similar level of performance. However, testing indicates there is still a statistically significant difference between performance at the five-server cluster level. Further testing could identify that – while holding database size constant – at some server level, the normalized schema may outperform the de-normalized schema. However, this is based on linear approximation that may become non-linear with more samples and clusters. Regardless, under both cluster sizes, the de-normalized schema outperformed the normalized schema by a level of statistical significance.
+In analyzing the exploratory graphical analysis of the clusters, 
+ the interaction between schema and cluster size is such that as cluster size increases,
+ the normalized schema approaches a similar level of performance. 
+However, testing indicates there is still a statistically significant difference between 
+ performance at the five-server cluster level. 
+Further testing could identify that, while holding database size constant, at some server level, 
+ the normalized schema may outperform the de-normalized schema. 
+However, this is based on linear approximation that may become non-linear with more samples and clusters. 
+Regardless, under both cluster sizes,
+ the de-normalized schema outperformed the normalized schema by a level of statistical significance.
 
-
-
-\begin{itemize}
-    \item Discuss sample size of measures
-    \item Looks like a repeated measures analysis
-\end{itemize}
-
-
-\section{Conclusion}
+\section{Conclusions}
 
 \textbf{EXAMPLE Conclusion:}
 The scalability of large sets of data is of ever-increasing importance in the data community, which itself is ever-increasing with the advancement of modern technology. Modern technology itself is enabling both an increase in both data volume as well as data diversity being captured and stored. Consequently, parallelism is of utmost importance in making use of this data. Herein analyzed are methods that are proven within the scope of big data. As modern technology continues to advance, these parallel principals will serve as the root from which methodologies will be developed. As with the businesses and industries the data captured will serve, there will remain a trade-off that must be assessed for each business model. This study has provided two primary storage methods - S3 and HDFS - in addition to different data warehousing schema design - normalized versus optimized, star versus snowflake - and data distribution - herein, MapReduce - techniques. Through analysis using repeated measures, S3 outperforms HDFS when X, Y, Z and HDFS outperforms S3 when Z, Y, X. Furthermore, MapReduce configurations are constant across both storage methods - HDFS and S3 - with an optimized star schema performing faster, but a normalized snowflake schema performing more reliably within a conventional three-tiered system architecture.
@@ -621,38 +656,13 @@ The scalability of large sets of data is of ever-increasing importance in the da
   \newpage
 \fi
 
-\begin{table}
-    \renewcommand{\arraystretch}{1.3}
-    \caption{Results Table}
-    \label{ResultsTable}
-    \centering
-    \begin{tabular}{c c c c}
-        \hline
-        \hline
-        \multirow{2}{*}{Schema} & \multirow{2}{*}{Cluster Nodes} &
-        \multicolumn{2}{c}{Query Time (seconds)}   \\
-        \cline{3-4}
-                                           &     & Mean & Standard Deviation\\
-        \hline
-        \multirow{2}{*}{Snowflake}         & 3   & 121.05 & 4.12 \\
-        
-                                           & 5   & 94.49 & 4.01  \\
 
-        \hline
-        \multirow{2}{*}{Denormalized Star} & 3   & 103.77 & 2.99 \\
-        
-                                           & 5   & 79.68 & 5.86  \\
-
-        \hline
-        \hline
-    \end{tabular}
-\end{table}
 
 
 
 \begin{figure}
 	\centering
-	\includegraphics[width=2.5in]{profile_plot-1.png}
+	\includegraphics[width=2.5in]{Rplot.png}
 	\caption{Average of Query Time by Schema and Block Size with Standard Deviation Bars}
 	\label{HDFS}
 \end{figure}
