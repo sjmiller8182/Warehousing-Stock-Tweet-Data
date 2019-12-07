@@ -556,8 +556,7 @@ S3 is reliable, fast, and inexpensive.
 
 \subsection{Apache Hive}
 
-Apache Hive is a data warehouse application built on top of Hadoop. 
-Hive was used to structure, organize, model, and query the data using HQL.
+Apache Hive is a data warehouse application built on top of Hadoop. We used Hive to structure, organize, model, and query our data using the Hive Query Language, HQL. We structured files from within the Hadoop Distributed File System (HDFS) and loaded them into tables within Hive. Hive operates by using the HDFS storage to generate tables. However, when Hive queries are executed, the data is retrieved from HDFS via the compiler, which uses an execution engine and metastore to return results. See: http://www.guardxinc.com/blog/2017/04/10/hive-queries-whats-really-going-on-in-there/
 
 \subsection{Cloudera Hue}
 
@@ -594,15 +593,23 @@ The queries were executed for each combination of schema and block size
 
 Add something on power analysis?
 
+[Paul update]
+During performance testing, we gathered all fields from all tables, joining all tables in the schema together. Joining all tables enabled capturing the entirety of the database, under each schema, to produce the same results. These queries were limited to 75,000 returned records to enable gathering more runtime samples. This number was decided to be reasonable based on the difference in performance time. As noted in the analysis section below, the performance time between queries was significant at 75,000 records; limited a higher volume of returned records would have increased the significance. Therefore, 75,000 was determined reasonable for analysis.
+
 \section{Results}
 
 Maybe a table comparing read times for the different options.
 Performance testing needs more research.
 Results may be contained in something like Table \ref{ResultsTable}.
 
+[Paul update]
+As discussed in the Study Design section, a two-way Analysis of Variance (ANOVA) test was performed. The conclusion of this analysis is that – while holding cluster size constant – schema design is significant on performance across both server sizes (p-value < 0.0001, F-statistic 999.187). Furthermore, while holding schema design constant, performance speed difference was also significant (p-value < 0.0001, F-statistic 3399.954) between the two cluster sizes with the five-server cluster outperforming the three-server cluster. Finally, we also identified through the two-way ANOVA that the interaction between schema design and server count provide significant results, indicating that there is a difference in the proportions of performance speed between the two schemas when considering count of servers in a cluster.
+
 \section{Analysis}
 
-\textbf{EXAMPLE Discussion of Analysis:} Applying S3 with an optimized schema using 10 reduces, map memory allocation of 2,048 mb and a reduce memory allocation of 4,096 mb is optimal for a more expensive S3 approach. Using HDFS from local storage with a configuration of 20 reduces, map memory allocation of 8,096 megabytes and reduce memory allocation of 10,020 megabytes is ideal for batch-level migrations and querying for large-volume processing. Across n repeated measures, using a one-tailed alpha, the resulting p-value is significant at $Pr > |t| < x.xxxx$ (confidence interval $[x1, x2]$), indicating local storage from HDFS outperforms S3 when using the selected configurations. However, local data storage capacity does not scale well for HDFS compared to cloud-based S3
+\textbf{EXAMPLE Discussion of Analysis:}
+[Paul update]
+In analyzing the exploratory graphical analysis of the clusters, the interaction between schema and cluster size is such that as cluster size increases, the normalized schema approaches a similar level of performance. However, testing indicates there is still a statistically significant difference between performance at the five-server cluster level. Further testing could identify that – while holding database size constant – at some server level, the normalized schema may outperform the de-normalized schema. However, this is based on linear approximation that may become non-linear with more samples and clusters. Regardless, under both cluster sizes, the de-normalized schema outperformed the normalized schema by a level of statistical significance.
 
 
 
