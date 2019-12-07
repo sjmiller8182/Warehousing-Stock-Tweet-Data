@@ -87,12 +87,12 @@
 
 \begin{document}
 
-\title{Big Data Lake Solution for\\ 
-    Time Series Data}
+\title{A Big Datalake Solution for\\ 
+       Time Series Data}
 
 \author{Paul~Adams, paula@smu.edu,
         Rikel~Djoko, rdjoko@smu.edu,
-        and Stuart Miller, stuart@smu.edu}% <-this % stops a space
+        and Stuart Miller, stuart@smu.edu}
 
 % The paper headers
 \markboth{MSDS7330 Term Paper}
@@ -103,12 +103,20 @@
 % make the title area
 \maketitle
 
-% This should be about 250 words
+% This should be about 150-200 words
 \begin{abstract}
 
-Purpose - This research paper aims to discover an optimal solution for parallel management and processing of financial markets data into  warehousing and analysis engines used for buy-sell decision-making. Methods analyzed herein are components of the Hadoop ecosystem. Included is an in-depth analysis of parallel processing - using the Elastic MapReduce package on Amazon Web Services - and data warehousing with Apache Hive. Apache NiFi is used to direct workflow automation for data migration into the warehouse. Finally, a complete assessment of the combinations of levels of the various Hadoop ecosystem applications used is provided in the context of statistical inference.
-
-Design, Methodology, and Approach - One pertinent, underlying hypothesis within this study is to prove that there are differences in processing speeds between S3 and HDFS using normalized and optimized schema designs across multiple MapReduce configurations. This analysis is performed using 100 samples of the same volume of data in a repeated measures analysis using a Hotelling-T statistic. The two highest-performing configurations of S3 and HDFS are then assessed. (We need to get this information and report it) for the next section.
+In this paper we present a solution for warehousing time series of "Big Data"
+ with structured data and semi-structured data.
+Traditional systems, such as SQL databases, are well suited for storing highly structured data,
+ but were not designed to store semi-structured forms of data.
+Additionally, traditional systems, which operate with ACID transactions,
+ can be low over large volumes of data.
+"Big Data" systems were developed to store this type of data,
+ addressing this gap in data storage system technology.
+We developed a system to store structured and semi-structured time series data based on the 
+ Apache Hadoop ecosystem.
+We will also discuss the impact of schema design and horizontal scaling the Hadoop cluster.
 
 \end{abstract}
 
