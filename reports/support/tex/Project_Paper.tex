@@ -87,7 +87,7 @@
 
 \begin{document}
 
-\title{A Big Datalake Solution for\\ 
+\title{A Datalake Solution for\\ 
        Time Series Data}
 
 \author{Paul~Adams, paula@smu.edu,
@@ -169,30 +169,20 @@ Hadoop is an open source framework for distributed computing
  Apache Software Foundation\footnote{https://hadoop.apache.org/} \cite{HDFSarchitecture}.
 The Hadoop ecosystem consists of modules for file storage, data warehousing,
  data flow, data analysis, and machine learning.
-The components of Hadoop used in this system are HDFS and Hive.
+The components of Hadoop used in this system are
+ Hadoop Distributed File System (HDFS) and Hive.
 
-
-
-
-
-The server cluster enables users to read data from the same source,
-simultaneously, as the data at that source is partitioned and
-processed across multiple servers \textemdash a master and at least one slave. 
+HDFS is a file system distributed over multiple servers (a cluster) \cite{HDFSarchitecture}.
 The processing framework that enables this is called MapReduce, 
 which assigns nodes for ``mapping'' and ``reducing'' processes by applying  
 various configurations, such as related to memory allocation and numbers
-of mappers and reducers \cite{MappingReducing}. 
+of mappers and reducers \cite{MappingReducing}.
 As data is mapped, it is reprocessed into a derivative data set,
 split into tuples that are then processed across the cluster, in parallel,
-and reassembled in the reduce process \cite{MappingReducing}. 
-Following the reduce process, data is delivered to the end-user.
-
-The parallelizability of Hadoop is central to this study as the primary
-objective is to rapidly store and access financial market data for 
-buy-sell decision-making. 
-The scope of applied analysis in this study is focused on the ability to
-scale and process a combination of quantitative stock market data and
-qualitative Twitter data related to the quantitative data. 
+and reassembled in the reduce process \cite{MappingReducing}.
+Hive is a distributed data warehouse that manages data stored in HDFS \cite{HDFSarchitecture}.
+Hive provides an SQL-like query language to access and
+ retrieve the data stored in HDFS.
 
 Quantitative data was gathered from a stock market data vendor through an
 Application Programming Interface (API) on 15-minute intervals using the R
@@ -257,45 +247,14 @@ Twitter\footnote{https://www.twitter.com/}
 Categories of data are summarized in Table \ref{DataCategories} and a full
  list of features is given in Appendix \ref{DataFeatures}.
 
-\begin{table}
-    \renewcommand{\arraystretch}{1.3}
-    \caption{Data Categories}
-    \label{DataCategories}
-    \centering
-    \begin{tabular}{c l}
-        \hline
-        \hline
-        \textbf{Source}       & \textbf{Features}\\
-        \hline
-        \multirow{3}{*}{Stock Daily} &  Symbol \\
-        &  Time Stamp \\
-        &  Prices \\
-        \hline
-        \multirow{6}{*}{Stock Intraday} &  Symbol \\
-        &  Time Stamp \\
-        &  Prices \\
-        &  Bollinger Bands \\
-        &  Moving Averages \\
-        &  Stochastic Indicators \\
-        \hline
-        \multirow{7}{*}{Twitter} &  Symbol \\
-        &  Time Stamp \\
-        &  User \\
-        &  Text \\
-        &  URLs \\
-        &  Hashtags \\
-        &  Mentions \\
-        \hline
-        \hline
-    \end{tabular}
-\end{table}
 
 \subsection{Stock Data}
 
 The stock price data was collected through an API provided by
  \href{https://www.alphavantage.co/}{Alpha Vantage}\footnote{https://www.alphavantage.co/}.
-The R\footnote{Version 3.6.0}
- programming language was used to collect data from the Alpha Vantage API
+The R\footnote{Version 3.6.1}
+ programming language was used to collect data from the Alpha Vantage API,
+ using the R package alphavantager\footnote{https://cran.r-project.org/web/packages/alphavantager/index.html}
 \cite{R}.
 This API provided access to daily prices, intraday stock prices,
  and intraday price features from the following categories Bollinger bands, 
@@ -307,6 +266,39 @@ A single value was stored for each feature of the daily prices.
 The intraday values were sampled at 15 minute intervals from market open
  to market close.
 This resulted in a total of 49, 093, 917 stock data points.
+
+\begin{table}
+	\renewcommand{\arraystretch}{1.3}
+	\caption{Data Categories}
+	\label{DataCategories}
+	\centering
+	\begin{tabular}{c l}
+		\hline
+		\hline
+		\textbf{Source}       & \textbf{Features}\\
+		\hline
+		\multirow{3}{*}{Stock Daily} &  Symbol \\
+		&  Time Stamp \\
+		&  Prices \\
+		\hline
+		\multirow{6}{*}{Stock Intraday} &  Symbol \\
+		&  Time Stamp \\
+		&  Prices \\
+		&  Bollinger Bands \\
+		&  Moving Averages \\
+		&  Stochastic Indicators \\
+		\hline
+		\multirow{7}{*}{Twitter} &  Symbol \\
+		&  Time Stamp \\
+		&  User \\
+		&  Text \\
+		&  URLs \\
+		&  Hashtags \\
+		&  Mentions \\
+		\hline
+		\hline
+	\end{tabular}
+\end{table}
 
 
 \subsection{Twitter Data}
@@ -505,6 +497,12 @@ Each secondary member of the normalized tweet dimension was
 The schema resulting from this denormalization process is shown
  conceptually in Fig. \ref{star}.
 
+\begin{figure}
+	\centering
+	\includegraphics[width=2.5in]{HDFS_Arch.png}
+	\caption{HDFS Architecture \cite{HDFS}}
+	\label{HDFS}
+\end{figure}
 
 \section{Implementation}
 
@@ -568,17 +566,13 @@ Apache Hive is a data warehouse application built on top of Hadoop. We used Hive
 
 \subsection{Cloudera Hue}
 
-Cloudera Hue is an open source web application that served as user interface for Hadoop components.
+Cloudera Hue\footnote{https://gethue.com/}
+ is an open source web application that served as user interface for Hadoop components.
 Hue provides access to Hadoop from within a browser, allowing users to interact with the Hadoop ecosystem applications. 
 Hue is an alternative to accessing the Hadoop ecosystem applications from the command line interface.
 Hue was used to interact with the EMR cluster and run Hive scripts.
 
-\begin{figure}
-    \centering
-    \includegraphics[width=2.5in]{HDFS_Arch.png}
-    \caption{HDFS Architecture \cite{HDFS}}
-    \label{HDFS}
-\end{figure}
+
 
 \section{Study Design}
 \label{StudyDesign}
@@ -591,9 +585,16 @@ This is a two-way Analysis of Variance (ANOVA) where ERM cluster size and schema
  are the explanatory factor variables and the response variable is query
  execution time.
 
-
-[Paul update]
-During performance testing, we gathered all fields from all tables, joining all tables in the schema together. Joining all tables enabled capturing the entirety of the database, under each schema, to produce the same results. These queries were limited to 75,000 returned records to enable gathering more runtime samples. This number was decided to be reasonable based on the difference in performance time. As noted in the analysis section below, the performance time between queries was significant at 75,000 records; limited a higher volume of returned records would have increased the significance. Therefore, 75,000 was determined reasonable for analysis.
+During performance testing, we gathered all fields from all tables,
+ joining all tables in the schema together. 
+Joining all tables enabled capturing the entirety of the database,
+ under each schema, to produce the same results. 
+These queries were limited to 75,000 returned records to enable gathering more runtime samples. 
+This number was decided to be reasonable based on the difference in performance time. 
+As noted in the analysis section below,
+ the performance time between queries was significant at 75,000 records;
+ limited a higher volume of returned records would have increased the significance. 
+Therefore, 75,000 was determined reasonable for analysis.
 
 \begin{table}
 	\renewcommand{\arraystretch}{1.3}
@@ -647,6 +648,12 @@ Furthermore, while holding schema design constant,
  the three-node cluster. 
 A summary of the results is shown in Table \ref{ResultsTable}.
 
+\begin{figure}
+	\centering
+	\includegraphics[width=2.5in]{Rplot.png}
+	\caption{Average of Query Time by Schema and Block Size with Standard Deviation Bars}
+	\label{Results}
+\end{figure}
 
 \section{Analysis}
 
@@ -671,17 +678,6 @@ The scalability of large sets of data is of ever-increasing importance in the da
 \ifCLASSOPTIONcaptionsoff
   \newpage
 \fi
-
-
-
-
-
-\begin{figure}
-	\centering
-	\includegraphics[width=2.5in]{Rplot.png}
-	\caption{Average of Query Time by Schema and Block Size with Standard Deviation Bars}
-	\label{Results}
-\end{figure}
 
 \appendices
 
