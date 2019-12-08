@@ -567,7 +567,11 @@ Hue provides access to Hadoop from within a browser, allowing users to interact 
 Hue is an alternative to accessing the Hadoop ecosystem applications from the command line interface.
 Hue was used to interact with the EMR cluster and run Hive scripts.
 
-
+\subsection{System Design}
+Once fully configured, the system we developed includes three- and five-node clusters of EC2 servers on Amazon Web Service's Elastic MapReduce platform.
+On the cluster, we installed Hadoop, in addition to Hive and Hue. MapReduce and HDFS install with the EMR configuration, by default. Data collected by members
+of our team were stored in Amazon S3. Because S3 does not replace HDFS in the Hadoop system, we loaded into HDFS from S3 prior to creating structured tables
+in Hive. Once the Secure Shell (SSH) tunnel was connected to the Namenode master server from the browser, Hue was launched to support Hive tasks written in HQL.
 
 \section{Study Design}
 \label{StudyDesign}
