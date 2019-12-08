@@ -111,12 +111,13 @@ In this paper we present a solution for warehousing time series of "Big Data"
 Traditional systems, such as SQL databases, are well suited for storing highly structured data,
  but were not designed to store semi-structured forms of data.
 Additionally, traditional systems, which operate with ACID transactions,
- can be low over large volumes of data.
+ can be slow over large volumes of data.
 "Big Data" systems were developed to store this type of data,
  addressing this gap in data storage system technology.
 We developed a system to store structured and semi-structured time series data based on the 
  Apache Hadoop ecosystem.
-We will also discuss the impact of schema design and horizontal scaling the Hadoop cluster.
+We will also discuss the impact of schema design and
+ horizontal scaling of the Hadoop cluster on read query execution time.
 
 \end{abstract}
 
@@ -127,12 +128,16 @@ We will also discuss the impact of schema design and horizontal scaling the Hado
 The increase in data generation and recording is often referred to as "Big Data."
 Traditionally, data generation systems were slow and the data was easily structured, 
  which lent to the use of traditional systems.
-However, "Big Data" is often semi-structured or unstructured.
+However, "Big Data" is often semi-structured or unstructured and
+ can be generated at high rates \cite{Intel}.
+"Big Data" technologies were developed to address the gap between the current type of data
+ that are generated and collected and capacity of storage tools \cite{BigDataComputing}.
+These "Big Data" technologies are able to collect data in raw form and
+ provide assess SQL-like assess to the data.
 
-Every additional source of data that can act as a
-medium for data communication may contain useful information, which,
-with modern technology, can be structured and stored, accessible to any
-who have the skills and need to make use of it \cite{BigDataComputing}. 
+
+
+
 
 
 However, with the increasing ability to capture and store data from many
