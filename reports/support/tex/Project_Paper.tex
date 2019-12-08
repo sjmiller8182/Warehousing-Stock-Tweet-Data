@@ -568,10 +568,11 @@ Hue is an alternative to accessing the Hadoop ecosystem applications from the co
 Hue was used to interact with the EMR cluster and run Hive scripts.
 
 \subsection{System Design}
-Once fully configured, the system we developed includes three- and five-node clusters of EC2 servers on Amazon Web Service's Elastic MapReduce platform.
-On the cluster, we installed Hadoop, in addition to Hive and Hue. MapReduce and HDFS install with the EMR configuration, by default. Data collected by members
-of our team were stored in Amazon S3. Because S3 does not replace HDFS in the Hadoop system, we loaded into HDFS from S3 prior to creating structured tables
-in Hive. Once the Secure Shell (SSH) tunnel was connected to the Namenode master server from the browser, Hue was launched to support Hive tasks written in HQL.
+Once fully configured, the system we developed included three- or five-node EMR clusters.
+Data collected by members of our team were stored in Amazon S3.
+The data was loaded into HDFS from S3 prior to creating structured tables in Hive.
+Local hosts would connect to the Namenode master server by SSH to allow interfacing with Hue.
+Hive tasks would be executed on the EMR cluster from the Hue interfaces to create and load the data warehouse (as shown in Fig. 4).
 
 \section{Study Design}
 \label{StudyDesign}
