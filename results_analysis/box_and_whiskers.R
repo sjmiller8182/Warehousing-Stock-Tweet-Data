@@ -1,6 +1,13 @@
 library(pacman)
 p_load(tidyverse, reshape2, dplyr, ggthemes, ggpubr, lmerTest)
 
+library(tidyverse)
+library(reshape2)
+library(dplyr)
+library(ggthemes)
+library(ggpubr)
+library(lmerTest)
+
 serversThree <- read.csv("./results_3_servers.csv", header=T, sep=",", strip.white=T, stringsAsFactors = F,
                          na.strings=c("")) %>% data.frame()
 serversFive <- read.csv("./results_5_servers.csv", header=T, sep=",", strip.white=T, stringsAsFactors = F,
@@ -25,14 +32,20 @@ plotFrame$schema <- ifelse(plotFrame$schema==1, "Normalized", "Denormalized")
 # Box Plots
 ggplot(plotFrame, aes(x=factor(schema),y=time,fill=factor(schema)))+
 geom_boxplot() + 
-  labs(x = "Schema Type", y = "Query Time", title = "Schema Performance over Cluster Size",
-                      subtitle = "75,000 rows") + 
+  labs(x = "Schema Type", y = "Query Time") + 
   facet_wrap(~server_count) + 
   theme_fivethirtyeight() +
-  theme(axis.text.x=element_text(angle=20,hjust=1,vjust=1, face="bold", size=9), 
-        axis.text =element_text(face="bold"),
-        axis.title= element_text(face="bold"),
-        legend.position="none") +
+  theme(axis.text.x = element_text(angle=10, hjust=1, vjust=1, face="bold", size=15), 
+        axis.text = element_text(face="bold", size=15),
+        axis.title = element_text(face="bold", size=30),
+        plot.subtitle = element_text(face="bold", size=15),
+        plot.title = element_text(face="bold", size=15),
+        legend.position="none",
+        strip.text.x = element_text(size = 15),
+        panel.background = element_rect(fill = "white",
+                                        colour = "white",
+                                        size = 0.5, linetype = "solid"),
+        plot.background = element_rect(fill = "white")) +
         #legend.title=element_text("Schema Type"),
        # legend.position=c(0.8,1),
         #legend.justification = c(1, 1)) +
@@ -45,7 +58,7 @@ ggline(plotFrame, x = "server_count", y = "time", color = "schema",
   labs(x = "Schema Type", y = "Query Time", title = "Schema Performance over Cluster Size",
        subtitle = "75,000 rows") +
   theme_fivethirtyeight() +
-  theme(axis.text.x=element_text(angle=20,hjust=1,vjust=1, face="bold", size=9), 
+  theme(axis.text.x=element_text(angle=20,hjust=1,vjust=1, face="bold", size=12), 
         axis.text =element_text(face="bold"),
         axis.title= element_text(face="bold"),
         legend.position="none") +

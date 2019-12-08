@@ -53,7 +53,7 @@
 
 % from here
 %https://journals.ieeeauthorcenter.ieee.org/create-your-ieee-journal-article/authoring-tools-and-templates/ieee-article-templates/templates-for-transactions/
-
+%\UseRawInputEncoding
 \documentclass[journal]{IEEEtran}
 
 \usepackage{cite}
@@ -87,12 +87,12 @@
 
 \begin{document}
 
-\title{Big Data Lake Solution for\\ 
-    Warehousing Stock Data and Tweet Data}
+\title{A Datalake Solution for\\ 
+       Time Series Data}
 
 \author{Paul~Adams, paula@smu.edu,
         Rikel~Djoko, rdjoko@smu.edu,
-        and Stuart Miller, stuart@smu.edu}% <-this % stops a space
+        and Stuart Miller, stuart@smu.edu}
 
 % The paper headers
 \markboth{MSDS7330 Term Paper}
@@ -103,120 +103,117 @@
 % make the title area
 \maketitle
 
-% This should be about 250 words
+% This should be about 150-200 words
 \begin{abstract}
 
-Purpose - This research paper aims to discover an optimal solution for parallel management and processing of financial markets data into  warehousing and analysis engines used for buy-sell decision-making. Methods analyzed herein are components of the Hadoop ecosystem. Included is an in-depth analysis of parallel processing - using the Elastic MapReduce package on Amazon Web Services - and data warehousing with Apache Hive. Apache NiFi is used to direct workflow automation for data migration into the warehouse. Finally, a complete assessment of the combinations of levels of the various Hadoop ecosystem applications used is provided in the context of statistical inference.
-
-Design, Methodology, and Approach - One pertinent, underlying hypothesis within this study is to prove that there are differences in processing speeds between S3 and HDFS using normalized and optimized schema designs across multiple MapReduce configurations. This analysis is performed using 100 samples of the same volume of data in a repeated measures analysis using a Hotelling-T statistic. The two highest-performing configurations of S3 and HDFS are then assessed. (We need to get this information and report it) for the next section.
+In this paper, we present a solution for warehousing structured and semi-structured 
+financial markets time series data.
+Traditional systems, such as SQL databases, are well suited for storing highly structured data,
+ but were not designed to store semi-structured forms of data.
+Additionally, traditional systems, which operate with ACID transactions,
+ can be slow over large volumes of data.
+"Big Data" systems were developed to store this type of data,
+ addressing this gap in data storage system technology.
+We developed a system to store structured and semi-structured time series data based on the 
+ Apache Hadoop ecosystem.
+Based on the results of testing read query performance,
+ schema denormalization and increasing the Hadoop cluster size will reduce query times.
+A distributed data warehouse framework like Hadoop could be used in cases where data scaling is expected,
+ requiring the computing infrastructure to scale with the data.
 
 \end{abstract}
 
 \section{Introduction}
 
-\IEEEPARstart{D}{ata} in the twenty-first century is expanding in volumes
-at large rates. 
-Every additional source of data that can act as a
-medium for data communication may contain useful information, which,
-with modern technology, can be structured and stored, accessible to any
-who have the skills and need to make use of it \cite{BigDataComputing}. 
-This information is increasingly profitable. 
-However, with the increasing ability to capture and store data from many
-disparate sources, the need to store larger volumes of the data is
-likewise an increasing issue when it comes time to access and use the data,
-as many of the data gathered exist across very dynamic, diverse, and
-large partitions. 
-As such, the scalability of storing and accessing big data must increase
-with it, relevant to the structures and locations of these data repositories. 
-Developing a database with the Hadoop ecosystem, our team has built a data
-warehousing solution to structure and store the data based on both
-optimized and normalized schema designs, drafted from entity-relationship
-models designed with the intention of enabling rapid storing and accessing
-through the Hadoop MapReduce process \cite{BigDataComputing}. 
-Through a combination of these systems and data storage within
-Amazon Simple Storage Service (S3) and Apache Hadoop's native Hadoop
-Distributed File System (HDFS), we analyze performance between two
-approaches toward data- and task-parallelism using data gathered from
-the stock market.
-Motivated by the opportunity within "Big Data" to store and structure disparate data,
-we designed a system to store stock data and Twitter data,
-which could be used to service a large scale machine learning system.
-To accomplish this, we aligned our project with a modern database
-application called Hadoop. 
-Hadoop provides a data lake ``ecosystem'' 
-supporting both task- and data-parallelism across the many software
-applications within the Apache suite in addition to software that can 
-be managed and accessed within a network of servers (a compute cluster)
-\cite{Intel, BigDataComputing}.
+% - paragraph 1 – motivation; set the stage
+% - This is the topic and this is why it is important
+% - don’t be too specific
 
-The server cluster enables users to read data from the same source,
-simultaneously, as the data at that source is partitioned and
-processed across multiple servers \textemdash a master and at least one slave. 
+\IEEEPARstart{T}{h}e ability to capture and generate large volumes of data is an issue
+ many enterprises face.
+Traditionally, data generation systems were slow and the data was easily structured, 
+ which lent to the use of traditional systems.
+However, ``Big Data" is often semi-structured or unstructured and
+ can be generated at high rates,
+  such as server logs or real-time sensor data \cite{Intel}.
+"Big Data" technologies were developed to address the gap between the current type of data
+ that are generated and collected and capacity of traditional storage tools \cite{BigDataComputing}.
+These ``Big Data" technologies are able to collect data in raw form and
+provide access to the data, often using languages similar to Structured Query Language (SQL).
+
+% - paragraph 2 – the specific problem
+
+An example of ``Big Data" is financial market data and
+ related "alternative" data that may be useful for prediction.
+For alternative data to be useful to a prediction system,
+ it must be stored in a system that can provide low query time.
+Additionally, it must be able to work with data that does not follow strict structuring,
+ such as text-based messages or images.
+In financial market modeling, alternative data is any type of data outside the
+ financial domain \cite{xiao2018trading}.
+An application of financial market prediction using alternative data is
+ utilizing Twitter data to make predictions on the stock market \cite{twittermood}.
+A data storage system would need to store large volumes of time series data and
+ provide rapid query access to those volumes to support a financial 
+ market prediction engine.
+In this paper, we will present a ``Big Data" system that can be used to store and
+ access large volumes of time series data. 
+Stock data, intraday and daily,
+ will be the primary time series used in the analysis.
+Data from Twitter will serve as the primary source of alternative data.
+For this analysis, we collected approximately four-hundred thousand tweets from over 
+one-hundred Twitter accounts and approximately 49 million stock data points.
+
+% - paragraph 3 and beyond - your solution
+
+The Hadoop ecosystem is at the core of this system.
+Hadoop is an open source framework for distributed computing
+ that is sponsored by the 
+ Apache Software Foundation\footnote{https://hadoop.apache.org/} \cite{HDFSarchitecture}.
+Since Hadoop is a distributed computing framework,
+ the server cluster used in the implementation can be horizontally scaled to
+ accommodate the need for more computing power as the data storage grows.
+The Hadoop ecosystem consists of modules for file storage, data warehousing,
+ data flow, data analysis, and machine learning.
+The primary components of Hadoop used in this system are
+ Hadoop Distributed File System (HDFS) and Hive.
+
+HDFS is a file system distributed over multiple servers (a server cluster) \cite{HDFSarchitecture}.
 The processing framework that enables this is called MapReduce, 
-which assigns nodes for ``mapping'' and ``reducing'' processes by applying  
-various configurations, such as related to memory allocation and numbers
-of mappers and reducers \cite{MappingReducing}. 
+ which assigns nodes for ``mapping'' and ``reducing'' processes by applying  
+ various configurations, such as related to memory allocation and numbers
+ of mappers and reducers \cite{MappingReducing}.
 As data is mapped, it is reprocessed into a derivative data set,
-split into tuples that are then processed across the cluster, in parallel,
-and reassembled in the reduce process \cite{MappingReducing}. 
-Following the reduce process, data is delivered to the end-user.
+ split into tuples that are then processed across the cluster, in parallel,
+ and reassembled in the reduce process \cite{MappingReducing}.
+Hive is a distributed data warehouse that manages data stored in HDFS \cite{HDFSarchitecture}.
+Hive provides an SQL-like query language to access and
+ retrieve the data stored in HDFS.
 
-The parallelizability of Hadoop is central to this study as the primary
-objective is to rapidly store and access financial market data for 
-buy-sell decision-making. 
-The scope of applied analysis in this study is focused on the ability to
-scale and process a combination of quantitative stock market data and
-qualitative Twitter data related to the quantitative data. 
+We implemented the solution with Amazon Web Services (AWS),
+ which provides a set of cloud services for data storage and warehousing.
+Elastic MapReduce (EMR) is a preconfigured service for Hadoop provided by AWS.
+EMR runs on a cluster of Elastic Compute 2 (EC2) servers,
+ which can be horizontally scaled as needed.
+We used EMR for the physical implementation of the Hadoop ecosystem in this project.
 
-Quantitative data was gathered from a stock market data vendor through an
-Application Programming Interface (API) on 15-minute intervals using the R
-programming language \cite{R}. 
-Qualitative data was gathered and processed through a Twitter API
-using the Python programming language. 
-The data was structured and stored in a Hive data warehouse, 
-which was created and managed using Hive Query Language (HQL).
-R will be used via Open Database Connectivity (ODBC) to access and
-build proof-of-concept models using the data. 
-Once the data warehouse is developed,
-Python will be deployed within the data lake to
-derive predictive data through machine learning.
+We designed two schemas for the data warehouse in a star configuration.
+The first schema was designed in a fully normalized fashion,
+ which is known as a snowflake schema.
+Our second schema was based on the snowflake schema, 
+ but denormalized to limit the number of tables, 
+ which limits the number of joins required in queries.
+Query performance will be measured on these schemas to determine 
+how much improvement in query time is provided by schema denormalziation.
 
-In order to provide manageable storage repositories that scale well to size and
-data diversity, we have implemented this project using Simple Storage Service (S3)
-and Elastic MapReduce (EMR) from Amazon Web Services (AWS). 
-S3 and EMR are designed for large sets of data. 
-Therefore, integrity of data and ingestion systems are to manage. 
-This is essential in an environment that may need to support many simultaneous users,
-each with different data needs. 
-The EMR implementation in this project is housed across three 
-- one master and two slave - Elastic Compute 2 (EC2) servers 
-whereas S3 is a standalone repository within the AWS cloud suite.
-
-Additionally, Apache Hive is used as a data warehouse 
-because it is operated with HQL, 
-which is easily communicable for SQL users. 
-Furthermore, Hive allows for storage of massive databases tables and
-is well-suited for big data application integration, 
-including the Apache software suite. 
-The data warehouse graphical user interface is provided by Cloudera Hue.
-
-Two schemas were designed for the warehouse in a star configuration.
-This first schema was designed in a full normalized fashion,
-which is known as a snowflake schema.
-The second schema was based on the snowflake schema, 
-but denormalized to limit the number of tables, 
-which limits the number of joins required in queries.
-Query performance will be measured on these schemas to determine
-which design will be better for this use case. 
-
-Performance of the data warehouse is based on time taken to process the data
-collected for this project into the Hive data warehouse,
-which includes table creation and loading. 
-We will use a repeated measures analysis and a one-tailed hypothesis 
-test to determine optimal performance among S3 and HDFS groups, 
-which is then used to compare and assess benchmarks between the 
-combinations of MapReduce settings and database schemas among the
-best-performing S3 and HDFS configuration.
+We will test the performance of this system implementation with the collected stock and 
+ Twitter data. 
+Performance of the data warehouse is based on time taken to process the data queried in the Hive 
+ warehouse.
+The analysis will examine the improvement in performance from the schema denormalization and
+ increasing the EMR cluster size.
+We will use a two-way analysis of variance (ANOVA) to compare the differences
+ in combinations of schema and EMR cluster size.
 
 \section{Data}
 
@@ -231,57 +228,25 @@ Twitter\footnote{https://www.twitter.com/}
 Categories of data are summarized in Table \ref{DataCategories} and a full
  list of features is given in Appendix \ref{DataFeatures}.
 
-\begin{table}
-    \renewcommand{\arraystretch}{1.3}
-    \caption{Data Categories}
-    \label{DataCategories}
-    \centering
-    \begin{tabular}{c l}
-        \hline
-        \hline
-        \textbf{Source}       & \textbf{Features}\\
-        \hline
-        \multirow{3}{*}{Stock Daily} &  Symbol \\
-        &  Time Stamp \\
-        &  Prices \\
-        \hline
-        \multirow{6}{*}{Stock Intraday} &  Symbol \\
-        &  Time Stamp \\
-        &  Prices \\
-        &  Bollinger Bands \\
-        &  Moving Averages \\
-        &  Stochastic Indicators \\
-        \hline
-        \multirow{7}{*}{Twitter} &  Symbol \\
-        &  Time Stamp \\
-        &  User \\
-        &  Text \\
-        &  URLs \\
-        &  Hashtags \\
-        &  Mentions \\
-        \hline
-        \hline
-    \end{tabular}
-\end{table}
 
 \subsection{Stock Data}
 
 The stock price data was collected through an API provided by
  \href{https://www.alphavantage.co/}{Alpha Vantage}\footnote{https://www.alphavantage.co/}.
-The R\footnote{Version 3.6.0}
- programming language was used to collect data from the Alpha Vantage API
+The R\footnote{Version 3.6.1}
+ programming language was used to collect data from the Alpha Vantage API,
+ using the R package alphavantager\footnote{https://cran.r-project.org/web/packages/alphavantager/index.html}
 \cite{R}.
 This API provided access to daily prices, intraday stock prices,
- and intraday price features from the following categories Bollinger bands, 
+ and intraday price features from the following associated categories: Bollinger bands, 
  stochastic oscillators, moving averages, and exponential moving averages. 
 
 The stock data was collected from Oct. 04, 2019 to Oct. 24, 2019 on
  all 2520 symbols traded on the NYSE and all 3213 symbols traded on the NASDAQ.
 A single value was stored for each feature of the daily prices.
-The intraday values were sampled at 15 minute intervals from market open
+The intraday values were sampled at 15-minute intervals from market open
  to market close.
-This resulted in a total of 49, 093, 917 stock data points.
-
+This resulted in a total of 49,093,917 stock data points.
 
 \subsection{Twitter Data}
 
@@ -301,35 +266,50 @@ An example of a tweet containing one hashtag (\texttt{\#FF}) and one
 mention (\texttt{@everett}) is given in Listing \ref{SampleTweet} (the value of
  '\texttt{full\_text}').
 
-We collected 423, 802 tweets from 108 Twitter users, using the
- python\footnote{Version 3.6.8}
+\begin{table}
+	\renewcommand{\arraystretch}{1.3}
+	\caption{Data Categories}
+	\label{DataCategories}
+	\centering
+	\begin{tabular}{c l}
+		\hline
+		\hline
+		\textbf{Source}       & \textbf{Features}\\
+		\hline
+		\multirow{3}{*}{Stock Daily} &  Symbol \\
+		&  Time Stamp \\
+		&  Prices \\
+		\hline
+		\multirow{6}{*}{Stock Intraday} &  Symbol \\
+		&  Time Stamp \\
+		&  Prices \\
+		&  Bollinger Bands \\
+		&  Moving Averages \\
+		&  Stochastic Indicators \\
+		\hline
+		\multirow{7}{*}{Twitter} &  Symbol \\
+		&  Time Stamp \\
+		&  User \\
+		&  Text \\
+		&  URLs \\
+		&  Hashtags \\
+		&  Mentions \\
+		\hline
+		\hline
+	\end{tabular}
+\end{table}
+
+We collected 423,802 tweets from 108 Twitter users, using the
+ Python\footnote{Version 3.6.8}
  module Twython\footnote{https://pypi.org/project/twython/3.6.0/}.
 The data from Twitter is returned in JavaScript Object Notation (JSON); 
  an example is shown in Listing \ref{SampleTweet}.
 The features of interest were extracted from the JSON files and reformatted in tab
- separated files (TSV) using python and the built-in JSON and CSV modules.
+ separated files (TSV) using Python and the built-in JSON and CSV modules.
 After the tweets were extracted from Twitter,
  mentions of company names or stock symbols were extracted from the tweet text by
  matching sections of tweet text to company names and company stock symbols.
-All other featured were extracted from the JSON by key.
-
-As shown in Listing \ref{SampleTweet}, the timestamp, text, and tweet ID
- can be accessed at the top level of the JSON object with \texttt{created\_at},
- \texttt{full\_text}, and \texttt{id\_str}, respectively. 
-The user information can be accessed from the key \texttt{user}, 
- which accesses another set of objects. 
-The values for \texttt{screen\_name} and \texttt{id\_str} were extracted for the user.
-The hashtags, mentions, and URLs are located under the key \texttt{entities} as
- \texttt{hashtags}, \texttt{user\_mentions}, and \texttt{urls}, respectively.
-Each of these keys under \texttt{entities}, return an array of objects,
- containing the features of interest. 
-The value for \texttt{text} under \texttt{hashtags} was the only value collected
- for the hashtags (\texttt{\#FF} in the example).
-The values for \texttt{screen\_name} and \texttt{id\_str} under 
- \texttt{user\_mentions} were collected for mentions (\texttt{even\_everett} and
- \texttt{21841004}, respectively, in the example).
-Only the value of \texttt{expanded\_url} was collected user \texttt{urls}
- (\texttt{http://www.you.com/watch?v=TZR} in the example).
+All other featured were extracted from the JSON, by key.
 
 \lstset{
 	breaklines=true,
@@ -383,6 +363,24 @@ Only the value of \texttt{expanded\_url} was collected user \texttt{urls}
 }
 \end{lstlisting}
 
+As shown in Listing \ref{SampleTweet}, the timestamp, text, and tweet ID
+ can be accessed at the top level of the JSON object with \texttt{created\_at},
+ \texttt{full\_text}, and \texttt{id\_str}, respectively. 
+The user information can be accessed from the key \texttt{user}, 
+ which accesses another set of objects. 
+The values for \texttt{screen\_name} and \texttt{id\_str} were extracted for the user.
+The hashtags, mentions, and URLs are located under the key \texttt{entities} as
+ \texttt{hashtags}, \texttt{user\_mentions}, and \texttt{urls}, respectively.
+Each of these keys under \texttt{entities}, return an array of objects,
+ containing the features of interest. 
+The value for \texttt{text} under \texttt{hashtags} was the only value collected
+ for the hashtags (\texttt{\#FF} in the example).
+The values for \texttt{screen\_name} and \texttt{id\_str} under 
+ \texttt{user\_mentions} were collected for mentions (\texttt{even\_everett} and
+ \texttt{21841004}, respectively, in the example).
+Only the value of \texttt{expanded\_url} was collected for \texttt{urls}
+ (\texttt{http://www.you.com/watch?v=TZR} in the example).
+
 \begin{figure}
 	\centering
 	\includegraphics[width=2.5in]{SnowFlake_Schema_Simple.png}
@@ -432,7 +430,7 @@ We will consider a star schema in snowflake form when it is normalized into
 
 As noted previously, the fact table of this star design contained the
  company symbols and timestamps as a composite primary key.
-The three dimensions of fact table, daily stock data, intraday stock data, and 
+The three dimensions of the fact table, daily stock data, intraday stock data, and 
  tweet data, share the primary key of the fact table.
 
 The stock data comes in a form suitable for the snowflake design; 
@@ -479,6 +477,12 @@ Each secondary member of the normalized tweet dimension was
 The schema resulting from this denormalization process is shown
  conceptually in Fig. \ref{star}.
 
+\begin{figure}
+	\centering
+	\includegraphics[width=3.5in]{HDFS_Arch.png}
+	\caption{HDFS Architecture \cite{HDFS}}
+	\label{HDFS}
+\end{figure}
 
 \section{Implementation}
 
@@ -494,7 +498,6 @@ Elastic MapReduce (EMR) was used for the implementation of Hadoop in this projec
 AWS EMR is a pre-configured compute cluster for Big Data.
 The cluster can be provisioned and terminated on demand as needed.
 It comes with a configurable set of the Hadoop ecosystem elements pre-installed and ready to use.
-Fig. \ref{EMR} shows the ecosystem of EMR ecosystem.
 The EMR cluster used in this study was provisioned with three
  m5.xlarge\footnote{https://aws.amazon.com/ec2/instance-types/m5/}
  elastic compute instances using version 5.27.0 of the EMR 
@@ -502,75 +505,101 @@ The EMR cluster used in this study was provisioned with three
 
 \subsection{Apache Hadoop}
 
-Hadoop is an open source software framework for the distributed storage and
- distributed processing of a very large datasets. 
-The core of Apache Hadoop consists of a storage part: Hadoop Distributed File System
- (HDFS) and a processing part MapReduce.
+Hadoop is an open source software framework for distributed storage and
+ distributed processing of very large datasets. 
+The core of Apache Hadoop consists of a storage part - Hadoop Distributed File System (HDFS) - and 
+a processing part - Hadoop MapReduce.
 
-\subsubsection{Hadoop Distributed File System}
+\begin{figure}
+	\centering
+	\includegraphics[width=3in]{system_overview_final.png}
+	\caption{Overview of Data Warehouse System}
+	\label{system_overview_final}
+\end{figure}
 
-Unlike traditional file system, HDFS is a distributed file system designed to run on commodity hardware. 
-HDFS the architecture consists of a master (NameNode) and at least one slave (DataNodes)\cite{HDFSarchitecture}.
-The NameNode is the controller which consist storing data and metadata of the data no the DataNodes.
- The metadata includes a Namespace lookup table used to locate each file from the DataNodes. 
-The Fig. \ref{HDFS} shows the Architecture of HDFS \cite{HDFS}.
+\subsubsection{Hadoop Distributed File System (HDFS) and  MapReduce}
+
+Unlike traditional file systems, the Hadoop Distributed File System (HDFS) is a distributed file system designed to run on commodity hardware. 
+HDFS architecture consists of a master node, called a ``NameNode" and at least one slave node, called ``DataNodes."\cite{HDFSarchitecture}.
+The NameNode is the controller which manages storing data and providing metadata of the data to the DataNodes. 
+The metadata includes a Namespace lookup table used to locate each file from the Datanodes, which assist in node cluster-computing. 
+
+HDFS works by storing duplicate copies of data blocks across multiple servers. Those blocks are then split into chunks, which are then 
+replicated across the cluster, partitioned by server rack. Data jobs take advantage of this feature by breaking down into tasks, 
+where each task pairs with blocks of data and are then processed across the cluster. If one job fails, it can be restarted 
+by the other running tasks until all tasks have been completed and data compiled for the end-user \cite{HadoopAdmin}.
+
+In reference to Fig. \ref{HDFS}, the client - in our case, Hive, but this can be a different application supported by the Hadoop ecosystem - 
+requests a read operation by passing blocks of HDFS files from Datanodes in server Rack 1 with their associated metadata to the Namenode,
+which then delegates block processing operations to the Datanodes in serverRack 2. 
+Tasks are assigned from the Namenode and partitioned across the racks of servers. 
+Although all data is in both racks - because write operations replicate data across the server racks, as indicated in Fig. \ref{HDFS} - 
+each server rack has unique tasks to operate.
+As mentioned, in the event a task fails in a node, another node will resume the task since the data is duplicated \cite{HadoopAdmin}.
 
 \subsubsection{Hadoop MapReduce}
 
-Hadoop MapReduce is a programming model for large scale data processing. 
-With the high demand of computing power,
- computer architecture has evolved over the years from serial computing to parallel computing
- where tasks are distributed and executed simultaneously across multiple processors within the same computer. 
-With MapReduce,
- instead of using one server instance with multiple processors, 
- multiple servers with multiple processors are used for computation.
-This is called distributed computing system. 
-The parallelism in Hadoop is categorized into data-parallelism and task-parallelism.
-Data-parallelism is focused on processing data across multiple processors whereas
- task-parallelism is focused on distributing execution threads across multiple servers \cite{Parallelism}. 
-Utilizing one or the other is dependent upon whether data is being provided into
- the system or being utilized for events such as machine learning. 
-This is what enables management and processing of "Big Data" (multi-terabyte datasets)
- in parallel on large clusters (thousands of nodes) of commodity hardware in a reliable,
- fault-tolerant manner. 
-A MapReduce framework consists of two types of workers: mappers and reducers.
+Hadoop MapReduce is a programming model for large-scale data processing. With MapReduce, instead of using one server instance with multiple 
+processors, multiple servers with multiple processors are used for computation. This is refered to as a distributed computing system.
 
-MapReduce uses the divide and conquer technique where the input is divided into a set
- of small tasks and each task is identified by a key-value pair \cite{Divide-and-Conquer}.
-The key serves as a task ID and the value as the task output.
-Each task is then processed and executed by the mapper and
-the outputs are processed and merged by the reducer \cite{MapReduce}.
-
-\begin{figure}
-    \centering
-    \includegraphics[width=2.5in]{EMR_Ecosystem.png}
-    \caption{Elastic MapReduce Ecosystem}
-    \label{EMR}
-\end{figure}
+MapReduce uses the ``divide and conquer technique" where the input is divided into a set of small tasks. Each task is identified by a key-value 
+pair \cite{Divide-and-Conquer}. The key serves as a task ID and the value as the task output. Each task is then processed and executed by the 
+mapper and the outputs are processed and merged by the reducer \cite{MapReduce}. MapReduce couples with HDFS to enable horizontal
+scaling in a cluster-computing environment.
 
 \subsection{AWS Simple Storage Service}
 
-As the name implies, the S3 is a storage system.
-It is used to store and retrieve any amount of data any time, from anywhere on the web. 
-S3 is reliable, fast, and inexpensive.
+As the name implies, the S3 is a storage system. It is used to store and retrieve any amount of data any time, from anywhere on the web. 
+S3 is reliable, fast, and inexpensive. We used this to share data and load directly into HDFS.
 
 \subsection{Apache Hive}
 
-Apache Hive is a data warehouse application built on top of Hadoop. We used Hive to structure, organize, model, and query our data using the Hive Query Language, HQL. We structured files from within the Hadoop Distributed File System (HDFS) and loaded them into tables within Hive. Hive operates by using the HDFS storage to generate tables. However, when Hive queries are executed, the data is retrieved from HDFS via the compiler, which uses an execution engine and metastore to return results. See: http://www.guardxinc.com/blog/2017/04/10/hive-queries-whats-really-going-on-in-there/
+Apache Hive is a data warehouse application built on top of Hadoop. We used Hive to structure, organize, model, and query our data using the Hive 
+Query Language, HQL. We structured files from within the Hadoop Distributed File System (HDFS) and loaded them into tables within Hive. 
+Hive operates by using the HDFS storage to generate tables. However, when Hive queries are executed, the data is retrieved from HDFS via the compiler, 
+which uses an execution engine and metastore to return results \cite{Hivemetastore}. 
 
 \subsection{Cloudera Hue}
 
-Cloudera Hue is an open source web application that served as user interface for Hadoop components.
+Cloudera Hue\footnote{https://gethue.com/}
+ is an open source web application that served as user interface for Hadoop components.
 Hue provides access to Hadoop from within a browser, allowing users to interact with the Hadoop ecosystem applications. 
 Hue is an alternative to accessing the Hadoop ecosystem applications from the command line interface.
 Hue was used to interact with the EMR cluster and run Hive scripts.
 
-\begin{figure}
-    \centering
-    \includegraphics[width=2.5in]{HDFS_Arch.png}
-    \caption{HDFS Architecture \cite{HDFS}}
-    \label{HDFS}
-\end{figure}
+\subsection{System Design}
+Once fully configured, the system we developed included three- or five-node EMR clusters.
+Data collected by members of our team were stored in Amazon S3.
+The data was loaded into HDFS from S3 prior to creating structured tables in Hive.
+Local hosts would connect to the Namenode master server by SSH to allow interfacing with Hue.
+Hive tasks would be executed on the EMR cluster from the Hue interfaces to create and load the data warehouse (as shown in Fig. 4).
+
+\begin{table}
+	\renewcommand{\arraystretch}{1.3}
+	\caption{Read Query Results}
+	\label{ResultsTable}
+	\centering
+	\begin{tabular}{c c c c}
+		\hline
+		\hline
+		\multirow{2}{*}{\textbf{Schema}} & \multirow{2}{*}{\textbf{Cluster Nodes}} &
+		\multicolumn{2}{c}{\textbf{Query Time} (seconds)}   \\
+		\cline{3-4}
+		&     & Mean & Standard Deviation\\
+		\hline
+		\multirow{2}{*}{Snowflake}         & 3   & 121.05 & 4.12 \\
+		
+		& 5   & 94.49 & 4.01  \\
+		
+		\hline
+		\multirow{2}{*}{Denormalized Star} & 3   & 103.77 & 2.99 \\
+		
+		& 5   & 79.68 & 5.86  \\
+		
+		\hline
+		\hline
+	\end{tabular}
+\end{table}
 
 \section{Study Design}
 \label{StudyDesign}
@@ -579,83 +608,85 @@ In this study, we will investigate the impact of schema normalization and
  EMR cluster size on the performance of a read query.
 Both schemas presented in Section \ref{DataWarehouseDevelopment} were tested on
  EMR clusters with 3 nodes and 5 nodes.
-This is a two-way Analysis of Variance (ANOVA) where ERM cluster size and schema
+This is a two-way ANOVA where ERM cluster size and schema
  are the explanatory factor variables and the response variable is query
- execution time.
+ execution time \cite{RepeatMeasures}.
 
-
-[Paul update]
-During performance testing, we gathered all fields from all tables, joining all tables in the schema together. Joining all tables enabled capturing the entirety of the database, under each schema, to produce the same results. These queries were limited to 75,000 returned records to enable gathering more runtime samples. This number was decided to be reasonable based on the difference in performance time. As noted in the analysis section below, the performance time between queries was significant at 75,000 records; limited a higher volume of returned records would have increased the significance. Therefore, 75,000 was determined reasonable for analysis.
+During performance testing, we gathered all fields from all tables,
+ joining all tables in the schema together. 
+Joining all tables enabled capturing the entirety of the database,
+ under each schema, to produce the same results. 
+These queries were limited to 75,000 returned records to enable gathering more runtime samples. 
+This number was decided to be reasonable based on the difference in performance time. 
+As noted in the analysis section below,
+ the performance time between queries was significant at 75,000 records;
+ limited a higher volume of returned records would have increased the significance. 
+Therefore, 75,000 was determined reasonable for analysis.
 
 \section{Results}
 
-Maybe a table comparing read times for the different options.
-Performance testing needs more research.
-Results may be contained in something like Table \ref{ResultsTable}.
+As discussed in Section \ref{StudyDesign}, a two-way ANOVA test was performed.
+We identified that the interaction between schema design and server count provide significant results,
+indicating that there is a difference in the proportions of performance speed between the two schemas when considering count of servers in a cluster.
+The dependence of performance on combinations of schema and cluster size is apparent in Fig. \ref{Results},
+ which shows boxplots of the query times of each combination of schema and cluster size.
+The red boxes represent the query times for the snowflake schema and
+ the blue boxes represent the query times for the denormalized schema.
+The boxplot is faceted by cluster size with the three-node results on the right and
+ the five-node results on the left.
+The query time of the denormalized schema is lower than the normalized schema for both sizes of clusters.
 
-[Paul update]
-As discussed in Section \ref{StudyDesign}, a two-way ANOVA test was performed. The conclusion of this analysis is that – while holding cluster size constant – schema design is significant on performance across both server sizes (p-value $< 0.0001$, F-statistic $999.187$). Furthermore, while holding schema design constant, performance speed difference was also significant (p-value $< 0.0001$, F-statistic $3399.954$) between the two cluster sizes with the five-server cluster outperforming the three-server cluster. Finally, we also identified through the two-way ANOVA that the interaction between schema design and server count provide significant results, indicating that there is a difference in the proportions of performance speed between the two schemas when considering count of servers in a cluster.
+We find that, while holding cluster size constant,
+ schema design is significant on performance across both server sizes
+ (p-value $< 0.0001$, F $ = 999.187$). 
+Denormalizing the snowflake schema provided a 14.27\% decrease in mean query time on
+ the three-node cluster and a 15.67\% decrease mean in query time on the five-node cluster.
+Furthermore, while holding schema design constant, 
+ performance speed difference was also significant 
+ (p-value $< 0.0001$, F $= 3399.954$) 
+ between the two cluster sizes with the five-node cluster outperforming
+ the three-node cluster. 
+A summary of the results is shown in Table \ref{ResultsTable}.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=3.3in]{Rplot.png}
+	\caption{Average of Query Time by Schema and Block Size with Standard Deviation Bars}
+	\label{Results}
+\end{figure}
 
 \section{Analysis}
 
-\textbf{EXAMPLE Discussion of Analysis:}
-[Paul update]
-In analyzing the exploratory graphical analysis of the clusters, the interaction between schema and cluster size is such that as cluster size increases, the normalized schema approaches a similar level of performance. However, testing indicates there is still a statistically significant difference between performance at the five-server cluster level. Further testing could identify that – while holding database size constant – at some server level, the normalized schema may outperform the de-normalized schema. However, this is based on linear approximation that may become non-linear with more samples and clusters. Regardless, under both cluster sizes, the de-normalized schema outperformed the normalized schema by a level of statistical significance.
+In analyzing the exploratory graphical analysis of the clusters, 
+ the interaction between schema and cluster size is such that as cluster size increases,
+ the normalized schema approaches a similar level of performance. 
+However, testing indicates there is still a statistically significant difference between 
+ performance at the five-server cluster level. 
+Further testing could identify that, while holding database size constant, at some server level, 
+ the normalized schema may outperform the de-normalized schema. 
+However, this is based on linear approximation that may become non-linear with more samples and clusters. 
+Regardless, under both cluster sizes,
+ the de-normalized schema outperformed the normalized schema by a level of statistical significance.
 
+\section{Conclusions}
 
-
-\begin{itemize}
-    \item Discuss sample size of measures
-    \item Looks like a repeated measures analysis
-\end{itemize}
-
-
-\section{Conclusion}
-
-\textbf{EXAMPLE Conclusion:}
-The scalability of large sets of data is of ever-increasing importance in the data community, which itself is ever-increasing with the advancement of modern technology. Modern technology itself is enabling both an increase in both data volume as well as data diversity being captured and stored. Consequently, parallelism is of utmost importance in making use of this data. Herein analyzed are methods that are proven within the scope of big data. As modern technology continues to advance, these parallel principals will serve as the root from which methodologies will be developed. As with the businesses and industries the data captured will serve, there will remain a trade-off that must be assessed for each business model. This study has provided two primary storage methods - S3 and HDFS - in addition to different data warehousing schema design - normalized versus optimized, star versus snowflake - and data distribution - herein, MapReduce - techniques. Through analysis using repeated measures, S3 outperforms HDFS when X, Y, Z and HDFS outperforms S3 when Z, Y, X. Furthermore, MapReduce configurations are constant across both storage methods - HDFS and S3 - with an optimized star schema performing faster, but a normalized snowflake schema performing more reliably within a conventional three-tiered system architecture.
+With the increase in data collection activities,
+ data storage systems will need to provide results of read queries on large datasets.
+This analysis shows that query times of distributed data warehouses can be reduced by denormalizing the schema or 
+ scaling up the number of servers in the physical implementation.
+While schema denormalization does provide improvements for read queries,
+ migration to a new schema may not be possible
+ or may introduce other undesirable effects because the data definition and manipulation logic will be affected.
+Since the logical design of the warehouse is abstracted from the physical implementation,
+ increasing cluster size would be a better solution.
+If read performance improvement on a distributed data warehousing system is needed,
+ we recommend increasing the cluster size of the physical system. 
 
 % Can use something like this to put references on a page
 % by themselves when using endfloat and the captionsoff option.
 \ifCLASSOPTIONcaptionsoff
   \newpage
 \fi
-
-\begin{table}
-    \renewcommand{\arraystretch}{1.3}
-    \caption{Results Table}
-    \label{ResultsTable}
-    \centering
-    \begin{tabular}{c c c c}
-        \hline
-        \hline
-        \multirow{2}{*}{Schema} & \multirow{2}{*}{Cluster Nodes} &
-        \multicolumn{2}{c}{Query Time (seconds)}   \\
-        \cline{3-4}
-                                           &     & Mean & Standard Deviation\\
-        \hline
-        \multirow{2}{*}{Snowflake}         & 3   & 121.05 & 4.12 \\
-        
-                                           & 5   & 94.49 & 4.01  \\
-
-        \hline
-        \multirow{2}{*}{Denormalized Star} & 3   & 103.77 & 2.99 \\
-        
-                                           & 5   & 79.68 & 5.86  \\
-
-        \hline
-        \hline
-    \end{tabular}
-\end{table}
-
-
-
-\begin{figure}
-	\centering
-	\includegraphics[width=2.5in]{profile_plot-1.png}
-	\caption{Average of Query Time by Schema and Block Size with Standard Deviation Bars}
-	\label{HDFS}
-\end{figure}
 
 \appendices
 
@@ -666,13 +697,36 @@ This section contains a full listing of all the features collected for this
  study. The features are listed by general category as shown in 
  Table \ref{DataCategories}.
 
+\subsection{Daily Stock Features}
+
+The daily stock features are described below and are organized in the
+ following categories: Key Values and Prices.
+The value for time was imputed to a standard value for the daily values.
+
+\subsubsection{Key Values}
+
+\begin{itemize}
+	\item Symbol
+	\item Time
+	\item Date
+\end{itemize}
+
+\subsubsection{Prices}
+
+\begin{itemize}
+	\item Open
+	\item Close
+	\item High
+	\item Low
+\end{itemize}
+
 \subsection{Intraday Stock Features}
 
 The intraday stock features are described below and are organized in the 
- following categories: Key, Prices, Bollenger Bands, Moving Averages, and Stochastic 
- Indicators.
+ following categories: Key Values, Prices, Bollenger Bands, Moving Averages, and
+  Stochastic Indicators.
 
-\subsubsection{Key}
+\subsubsection{Key Values}
 
 \begin{itemize}
 	\item Symbol
@@ -692,63 +746,39 @@ The intraday stock features are described below and are organized in the
 \subsubsection{Bollenger Bands}
 
 \begin{itemize}
-	\item Open
-	\begin{itemize}
-		\item Lower Band
-		\item Middle Band
-		\item Upper Band
-	\end{itemize}
-	\item Close
-	\begin{itemize}
-		\item Lower Band
-		\item Middle Band
-		\item Upper Band
-	\end{itemize}
-	\item High
-	\begin{itemize}
-		\item Lower Band
-		\item Middle Band
-		\item Upper Band
-	\end{itemize}
-	\item Low
-	\begin{itemize}
-		\item Lower Band
-		\item Middle Band
-		\item Upper Band
-	\end{itemize}
+	\item Open Lower Band
+	\item Open Middle Band
+	\item Open Upper Band
+	\item Close Lower Band
+	\item Close Middle Band
+	\item Close Upper Band
+	\item High Lower Band
+	\item High Middle Band
+	\item High Upper Band
+	\item Low Lower Band
+	\item Low Middle Band
+	\item Low Upper Band
 \end{itemize}
 
 \subsubsection{Moving Averages}
 
 \begin{itemize}
-	\item Open
-	\begin{itemize}
-		\item Convergence Divergence
-		\item Convergence Divergence Signal
-		\item Convergence Divergence Historical
-		\item Exponential
-	\end{itemize}
-	\item Close
-	\begin{itemize}
-		\item Convergence Divergence
-		\item Convergence Divergence Signal
-		\item Convergence Divergence Historical
-		\item Exponential
-	\end{itemize}
-	\item High
-	\begin{itemize}
-		\item Convergence Divergence
-		\item Convergence Divergence Signal
-		\item Convergence Divergence Historical
-		\item Exponential
-	\end{itemize}
-	\item Low
-	\begin{itemize}
-		\item Convergence Divergence
-		\item Convergence Divergence Signal
-		\item Convergence Divergence Historical
-		\item Exponential
-	\end{itemize}
+	\item Open Convergence Divergence
+	\item Open Convergence Divergence Signal
+	\item Open Convergence Divergence Historical
+	\item Open Exponential
+	\item Close Convergence Divergence
+	\item Close Convergence Divergence Signal
+	\item Close Convergence Divergence Historical
+	\item Close Exponential
+	\item High Convergence Divergence 
+	\item High Convergence Divergence Signal
+	\item High Convergence Divergence Historical
+	\item High Exponential
+	\item Low Convergence Divergence
+	\item Low Convergence Divergence Signal
+	\item Low Convergence Divergence Historical
+	\item Low Exponential
 \end{itemize}
 
 \subsubsection{Stochastic Indicators}
@@ -756,6 +786,30 @@ The intraday stock features are described below and are organized in the
 \begin{itemize}
 	\item 5-day indicator
 	\item 3-day indicator
+\end{itemize}
+
+\subsection{Twitter Features}
+
+The twitter features are described below and are organized in the
+ following categories: Unique and Common.
+Unique features are specific to a particular tweet and
+ common features are shared across many tweets.
+
+\subsubsection{Unique}
+
+\begin{itemize}
+	\item Tweet ID
+	\item Timestamp
+	\item User (Author)
+	\item Text
+\end{itemize}
+
+\subsubsection{Common}
+
+\begin{itemize}
+	\item Hashtags
+	\item URLs
+	\item User Mentions
 \end{itemize}
 
 \begin{thebibliography}{1}
@@ -788,6 +842,9 @@ A. Gorelik, "Historical Perspectives," in
  "Extract, Transform, and Load Big Data with Apache Hadoop," Intel, USA, 2013.
  Available:\\ https://software.intel.com/sites/default/files/article/402274/etl-big-data-with-hadoop.pdf
 
+\bibitem{HadoopAdmin}
+S. Alapati, Expert Hadoop Administration, 1st ed. Boston, MA: Addison-Wesley, 2017.
+
 \bibitem{HDFS}
 D. Borthakur, HDFS Architecture Guide, The Apache Software Foundation,
  August 22 2019. Accessed on: Nov. 8, 2019. [Online] Available: \\
@@ -799,7 +856,7 @@ D. Sitaram, G. Manjunath \textit{Moving To The Cloud}. Boston: Syngress, 2012, p
 \bibitem{Divide-and-Conquer} 
 S. Zhao, R. Li, W. Tian, W. Xiao, X. Dong, D. Liao, S. U. Khan, L. Keqin, 
  “Divide-and-conquer approach for solving singular value decomposition based on MapReduce,” Abbrev. Title of Journal, vol. 28, no. 2, pp. 331–350, Nov. 2016. 
- Accessed on: Nov. 10, 2019 [Online]. Available: doi:10.1002/cpe.3436, 
+ Accessed on: Nov. 10, 2019 [Online]. Available: doi:10.1002/cpe.3436.
 
 \bibitem{MapReduce}
 D. Miner, A. Shook, MapReduce Design Patterns, 1st ed. Sebastopol, CA: O'Reilly Media, 2012,
@@ -808,7 +865,10 @@ D. Miner, A. Shook, MapReduce Design Patterns, 1st ed. Sebastopol, CA: O'Reilly 
 \bibitem{MappingReducing}
 D. Miner, A. Shook, Hadoop MapReduce v2 Cookbook, 2nd ed. Sebastopol, CA: O'Reilly Media,
  2015, pp. 1.
- 
+
+\bibitem{Hivemetastore}
+ H. Bansal, S. Chauhan, S. Mehrota, Apache Hive Cookbook, 1st ed. Birmingham, UK: Packt Publishing, Limited, 2016.
+
 \bibitem{HDFSarchitecture}
 T. White, Hadoop: The Definitive Guide, 1st ed. Sebastopol,
  CA: O'Reilly Media, 2009, pp. 44.
@@ -816,11 +876,6 @@ T. White, Hadoop: The Definitive Guide, 1st ed. Sebastopol,
 \bibitem{R}
 R Core Team, R: A language and environment for Statistical Computing, Vienna, Austria: 2018.
  Available: https://www.R-project.org/
- 
-\bibitem{Sleuth}
-F. Ramsey and D. Schafer, "Repeated Measures and Other Multivariate Responses," 
- in \textit{The Statistical Sleuth}, 3rd ed. Boston: Brooks/Cole, 2013,
- ch. 16, pp. 479-485.  
 
 \bibitem{RepeatMeasures}
 M. Crawley, "Analysis of Variance," in \textit{The R Book},
@@ -837,6 +892,17 @@ K. Tannir, "Enhancing Map and Reduce Tasks," in
 A. Silberschatz, H. Korth, and S. Sudarshan, "Relational Database Design," in
  \textit{Database Design Concepts}, 6th ed. NY: McGraw-Hill, 2011, ch. 8, sec. 8.3,
  pp. 329 - 338. 
+
+\bibitem{xiao2018trading}
+C. Xiao and W. Chen, “Trading the Twitter Sentiment with Reinforcement Learning,”
+ arXiv:1801.02243v1 [cs.AI], Jan. 2018. Accessed on: Dec. 7, 2019 [Online].
+ Available: https://arxiv.org/pdf/1801.02243.pdf.
+
+\bibitem{twittermood}
+J. Bollen and H. Mao. "Twitter mood as a stock market predictor,"
+ Computer, Vol. 44, no. 10, pp. 91–94, 2011. Accessed on: Dec. 7, 2019 [Online].
+ Available: doi: 10.1109/MC.2011.323
+
 
 \end{thebibliography}
 
