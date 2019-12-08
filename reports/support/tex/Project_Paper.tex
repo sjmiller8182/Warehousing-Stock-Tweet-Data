@@ -551,9 +551,9 @@ by the other running tasks until all tasks have been completed and data compiled
 
 In reference to figure 3, the client - in our case, Hive, but this can be a different application supported by the Hadoop ecosystem - requests a 
 read operation by passing blocks of HDFS files from Datanodes in Rack 1 with their associated metadata to the Namenode, which then delegates
-block processing operations to the Datanodes in Rack 2, replicating data across both blocks. Tasks are assigned from the Namenode and partitioned
-across the racks. Although all data is in both racks, each rack has unique tasks to operate. In the event a task fails in a node, another node will resume
-the task since the data is duplicated. \cite{HadoopAdmin}
+block processing operations to the Datanodes in Rack 2. Tasks are assigned from the Namenode and partitioned across the racks. 
+Although all data is in both racks - because write operations replicate data across the racks, as indicated in figure 3 - each rack has unique tasks
+to operate. In the event a task fails in a node, another node will resume the task since the data is duplicated. \cite{HadoopAdmin}
 
 Fig. \ref{HDFS} shows the Architecture of HDFS \cite{HDFS}.
 
