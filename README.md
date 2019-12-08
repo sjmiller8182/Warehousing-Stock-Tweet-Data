@@ -17,8 +17,6 @@ Created by [Stuart Miller](https://github.com/sjmiller8182), [Paul Adams](https:
   * [Denormalized Star Schema](https://github.com/sjmiller8182/DBMS_Proj#denormalized-star-schema)
 * [Big Data Solution Implementation](https://github.com/sjmiller8182/DBMS_Proj#big-data-solution-implementation)
 * [Results](https://github.com/sjmiller8182/DBMS_Proj#results)
-* [Analysis](https://github.com/sjmiller8182/DBMS_Proj#analysis)
-* [Conclusion](https://github.com/sjmiller8182/DBMS_Proj#conclusion)
 * [Reports](https://github.com/sjmiller8182/DBMS_Proj#reports)
 
 ## Problem Statement
