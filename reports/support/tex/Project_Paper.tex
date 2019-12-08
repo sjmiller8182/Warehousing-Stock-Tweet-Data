@@ -247,7 +247,25 @@ The stock data was collected from Oct. 04, 2019 to Oct. 24, 2019 on
 A single value was stored for each feature of the daily prices.
 The intraday values were sampled at 15 minute intervals from market open
  to market close.
-This resulted in a total of 49, 093, 917 stock data points.
+This resulted in a total of 49,093,917 stock data points.
+
+\subsection{Twitter Data}
+
+Messages on Twitter (called tweets) are mainly comprised of
+ tweet ID, timestamp, user (screen name), and text.
+Tweets can also contain many other features such as
+ URLs, hashtags, emojis,  and mentions.
+For this analysis, in addition to the main features,
+ URLs, hashtags, and mentions were also collected in the data warehouse.
+A mention is a reference to another Twitter user's screen name
+ in the text of a tweet.
+A hashtag is some collection of characters starting with
+ '\#' without white space.
+Generally, the character portion of a hashtag will be a word or set of words,
+ but this is not necessary.
+An example of a tweet containing one hashtag (\texttt{\#FF}) and one 
+mention (\texttt{@everett}) is given in Listing \ref{SampleTweet} (the value of
+ '\texttt{full\_text}').
 
 \begin{table}
 	\renewcommand{\arraystretch}{1.3}
@@ -282,26 +300,7 @@ This resulted in a total of 49, 093, 917 stock data points.
 	\end{tabular}
 \end{table}
 
-
-\subsection{Twitter Data}
-
-Messages on Twitter (called tweets) are mainly comprised of
- tweet ID, timestamp, user (screen name), and text.
-Tweets can also contain many other features such as
- URLs, hashtags, emojis,  and mentions.
-For this analysis, in addition to the main features,
- URLs, hashtags, and mentions were also collected in the data warehouse.
-A mention is a reference to another Twitter user's screen name
- in the text of a tweet.
-A hashtag is some collection of characters starting with
- '\#' without white space.
-Generally, the character portion of a hashtag will be a word or set of words,
- but this is not necessary.
-An example of a tweet containing one hashtag (\texttt{\#FF}) and one 
-mention (\texttt{@everett}) is given in Listing \ref{SampleTweet} (the value of
- '\texttt{full\_text}').
-
-We collected 423, 802 tweets from 108 Twitter users, using the
+We collected 423,802 tweets from 108 Twitter users, using the
  python\footnote{Version 3.6.8}
  module Twython\footnote{https://pypi.org/project/twython/3.6.0/}.
 The data from Twitter is returned in JavaScript Object Notation (JSON); 
@@ -312,24 +311,6 @@ After the tweets were extracted from Twitter,
  mentions of company names or stock symbols were extracted from the tweet text by
  matching sections of tweet text to company names and company stock symbols.
 All other featured were extracted from the JSON by key.
-
-As shown in Listing \ref{SampleTweet}, the timestamp, text, and tweet ID
- can be accessed at the top level of the JSON object with \texttt{created\_at},
- \texttt{full\_text}, and \texttt{id\_str}, respectively. 
-The user information can be accessed from the key \texttt{user}, 
- which accesses another set of objects. 
-The values for \texttt{screen\_name} and \texttt{id\_str} were extracted for the user.
-The hashtags, mentions, and URLs are located under the key \texttt{entities} as
- \texttt{hashtags}, \texttt{user\_mentions}, and \texttt{urls}, respectively.
-Each of these keys under \texttt{entities}, return an array of objects,
- containing the features of interest. 
-The value for \texttt{text} under \texttt{hashtags} was the only value collected
- for the hashtags (\texttt{\#FF} in the example).
-The values for \texttt{screen\_name} and \texttt{id\_str} under 
- \texttt{user\_mentions} were collected for mentions (\texttt{even\_everett} and
- \texttt{21841004}, respectively, in the example).
-Only the value of \texttt{expanded\_url} was collected user \texttt{urls}
- (\texttt{http://www.you.com/watch?v=TZR} in the example).
 
 \lstset{
 	breaklines=true,
@@ -382,6 +363,24 @@ Only the value of \texttt{expanded\_url} was collected user \texttt{urls}
    ...}
 }
 \end{lstlisting}
+
+As shown in Listing \ref{SampleTweet}, the timestamp, text, and tweet ID
+ can be accessed at the top level of the JSON object with \texttt{created\_at},
+ \texttt{full\_text}, and \texttt{id\_str}, respectively. 
+The user information can be accessed from the key \texttt{user}, 
+ which accesses another set of objects. 
+The values for \texttt{screen\_name} and \texttt{id\_str} were extracted for the user.
+The hashtags, mentions, and URLs are located under the key \texttt{entities} as
+ \texttt{hashtags}, \texttt{user\_mentions}, and \texttt{urls}, respectively.
+Each of these keys under \texttt{entities}, return an array of objects,
+ containing the features of interest. 
+The value for \texttt{text} under \texttt{hashtags} was the only value collected
+ for the hashtags (\texttt{\#FF} in the example).
+The values for \texttt{screen\_name} and \texttt{id\_str} under 
+ \texttt{user\_mentions} were collected for mentions (\texttt{even\_everett} and
+ \texttt{21841004}, respectively, in the example).
+Only the value of \texttt{expanded\_url} was collected user \texttt{urls}
+ (\texttt{http://www.you.com/watch?v=TZR} in the example).
 
 \begin{figure}
 	\centering
@@ -644,7 +643,7 @@ A summary of the results is shown in Table \ref{ResultsTable}.
 
 \begin{figure}
 	\centering
-	\includegraphics[width=2.5in]{Rplot.png}
+	\includegraphics[width=3.3in]{Rplot.png}
 	\caption{Average of Query Time by Schema and Block Size with Standard Deviation Bars}
 	\label{Results}
 \end{figure}
