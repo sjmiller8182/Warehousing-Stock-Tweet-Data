@@ -670,13 +670,13 @@ Regardless, under both cluster sizes,
 
 \section{Conclusions}
 
-With the increase in data collect activities,
+With the increase in data collection activities,
  data storage systems will need to provide results of read queries on large datasets.
 This analysis shows that query times of distributed data warehouses can be reduced by denormalizing the schema or 
  scaling up the number of servers in the physical implementation.
 While schema denormalization does provide improvements for read queries,
- migration to a new schema may no be possible
- or may introduce other undesirable effects because the logic will be affected.
+ migration to a new schema may not be possible
+ or may introduce other undesirable effects because the data definition and manipulation logic will be affected.
 Since the logical design of the warehouse is abstracted from the physical implementation,
  increasing cluster size would be a better solution.
 If read performance improvement on a distributed data warehousing system is needed,
