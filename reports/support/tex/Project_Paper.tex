@@ -53,7 +53,7 @@
 
 % from here
 %https://journals.ieeeauthorcenter.ieee.org/create-your-ieee-journal-article/authoring-tools-and-templates/ieee-article-templates/templates-for-transactions/
-
+\UseRawInputEncoding
 \documentclass[journal]{IEEEtran}
 
 \usepackage{cite}
@@ -520,39 +520,29 @@ Hadoop is an open source software framework for the distributed storage and
 The core of Apache Hadoop consists of a storage part: Hadoop Distributed File System
  (HDFS) and a processing part MapReduce.
 
-\subsubsection{Hadoop Distributed File System}
+\subsubsection{Hadoop Distributed File System (HDFS) and  MapReduce}
 
-Unlike traditional file system, HDFS is a distributed file system designed to run on commodity hardware. 
-HDFS the architecture consists of a master (NameNode) and at least one slave (DataNodes)\cite{HDFSarchitecture}.
-The NameNode is the controller which consist storing data and metadata of the data no the DataNodes.
- The metadata includes a Namespace lookup table used to locate each file from the DataNodes. 
-The Fig. \ref{HDFS} shows the Architecture of HDFS \cite{HDFS}.
+Unlike traditional file systems, the Hadoop Distributed File System (HDFS) is a distributed file system designed to run on commodity hardware. 
+HDFS architecture consists of a master node, called a "NameNode" and at least one slave node, called "DataNodes."\cite{HDFSarchitecture}.
+The NameNode is the controller which consist storing data and metadata of the data no the DataNodes. 
+The metadata includes a Namespace lookup table used to locate each file from the DataNodes, which assists in node cluster-computing. 
+
+HDFS works by storing duplicate copies of data blocks across multiple servers. Those blocks are then split into chunks, which are then 
+replicated across the cluster. Data jobs take advantage of this feature by breaking down into tasks, where each task pairs with blocks of
+ data and are therefore replicated across the cluster as well. If one job fails, it can be restarted by the other running tasks until all tasks have
+been completed and data compiled for the end-user. \cite{HadoopAdmin}
+
+Fig. \ref{HDFS} shows the Architecture of HDFS \cite{HDFS}.
 
 \subsubsection{Hadoop MapReduce}
 
-Hadoop MapReduce is a programming model for large scale data processing. 
-With the high demand of computing power,
- computer architecture has evolved over the years from serial computing to parallel computing
- where tasks are distributed and executed simultaneously across multiple processors within the same computer. 
-With MapReduce,
- instead of using one server instance with multiple processors, 
- multiple servers with multiple processors are used for computation.
-This is called distributed computing system. 
-The parallelism in Hadoop is categorized into data-parallelism and task-parallelism.
-Data-parallelism is focused on processing data across multiple processors whereas
- task-parallelism is focused on distributing execution threads across multiple servers \cite{Parallelism}. 
-Utilizing one or the other is dependent upon whether data is being provided into
- the system or being utilized for events such as machine learning. 
-This is what enables management and processing of "Big Data" (multi-terabyte datasets)
- in parallel on large clusters (thousands of nodes) of commodity hardware in a reliable,
- fault-tolerant manner. 
-A MapReduce framework consists of two types of workers: mappers and reducers.
+Hadoop MapReduce is a programming model for large scale data processing. With MapReduce, instead of using one server instance with multiple 
+processors, multiple servers with multiple processors are used for computation. This is refers to a distributed computing system.
 
-MapReduce uses the divide and conquer technique where the input is divided into a set
- of small tasks and each task is identified by a key-value pair \cite{Divide-and-Conquer}.
-The key serves as a task ID and the value as the task output.
-Each task is then processed and executed by the mapper and
-the outputs are processed and merged by the reducer \cite{MapReduce}.
+MapReduce uses the divide and conquer technique where the input is divided into a set of small tasks. Each task is identified by a key-value 
+pair \cite{Divide-and-Conquer}. The key serves as a task ID and the value as the task output. Each task is then processed and executed by the 
+mapper and the outputs are processed and merged by the reducer \cite{MapReduce}. MapReduce couples with HDFS to enable horizontal
+scaling in a cluster-computing environment.
 
 \subsection{AWS Simple Storage Service}
 
@@ -811,6 +801,9 @@ A. Gorelik, "Historical Perspectives," in
 \bibitem{Intel}
  "Extract, Transform, and Load Big Data with Apache Hadoop," Intel, USA, 2013.
  Available:\\ https://software.intel.com/sites/default/files/article/402274/etl-big-data-with-hadoop.pdf
+
+\bibitem{HadoopAdmin}
+S. Alapati, Expert Hadoop Administration, 1st ed. Boston, MA: Addison-Wesley, 2017.
 
 \bibitem{HDFS}
 D. Borthakur, HDFS Architecture Guide, The Apache Software Foundation,
