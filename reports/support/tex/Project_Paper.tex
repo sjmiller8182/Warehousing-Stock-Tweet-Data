@@ -592,7 +592,6 @@ This is a two-way Analysis of Variance (ANOVA) where ERM cluster size and schema
  execution time.
 
 
-[Paul update]
 During performance testing, we gathered all fields from all tables, joining all tables in the schema together. Joining all tables enabled capturing the entirety of the database, under each schema, to produce the same results. These queries were limited to 75,000 returned records to enable gathering more runtime samples. This number was decided to be reasonable based on the difference in performance time. As noted in the analysis section below, the performance time between queries was significant at 75,000 records; limited a higher volume of returned records would have increased the significance. Therefore, 75,000 was determined reasonable for analysis.
 
 \begin{table}
