@@ -4,12 +4,20 @@
 ![GitHub repo size](https://img.shields.io/github/repo-size/sjmiller8182/DBMS_Proj)
 
 
-# Big Data Solution for Stock Prices and Tweet Collections
+# Big Data Lake Solution for Warehousing Stock Data and Tweet Data
 
 Created by [Stuart Miller](https://github.com/sjmiller8182), [Paul Adams](https://github.com/PaulAdams4361), and [Rikel Djoko](https://github.com/leriky).
 
-This project is currently in progress.
-The [project outline](https://github.com/sjmiller8182/DBMS_Proj/blob/master/Project_Outline.md) provides a list of [projected milestones](https://github.com/sjmiller8182/DBMS_Proj/blob/master/Project_Outline.md#milestones-and-status) for completion of the project.
+**Table of Contents**
+
+* [Problem Statement](https://github.com/sjmiller8182/DBMS_Proj#problem-statement)
+* [Overview of the Big Data Solution](https://github.com/sjmiller8182/DBMS_Proj#overview-of-the-big-data-solution)
+* [Data Warehouse Overview](https://github.com/sjmiller8182/DBMS_Proj#data-warehouse-overview)
+  * [Snowflake Schema](https://github.com/sjmiller8182/DBMS_Proj#snowflake-schema)
+  * [Denormalized Star Schema](https://github.com/sjmiller8182/DBMS_Proj#denormalized-star-schema)
+* [Big Data Solution Implementation](https://github.com/sjmiller8182/DBMS_Proj#big-data-solution-implementation)
+* [Results](https://github.com/sjmiller8182/DBMS_Proj#results)
+* [Reports](https://github.com/sjmiller8182/DBMS_Proj#reports)
 
 ## Problem Statement
 
@@ -30,7 +38,11 @@ For this project, we will use the following types of data
 
 ## Data Warehouse Overview
 
-Conceptual schema of the data warehouses are shown below.
+Two star schemas were designed for this data warehouse: a fully normalized schema and a denormalized schema.
+We will investigate the performance of the two schemes in the context of this problem.
+Conceptual diagrams of the data warehouse schemas are shown below.
+
+More detailed schema diagrams were created with MySQL WorkBench the schema design can be accessed [here](https://github.com/sjmiller8182/DBMS_Proj/tree/master/reports/support/schemas).
 
 ### Snowflake Schema
 
@@ -38,13 +50,11 @@ A diagram of the dataware house snowflake schema is shown below.
 
 ![Snowflake](https://github.com/sjmiller8182/DBMS_Proj/blob/master/reports/support/images/Snowflake_Conceptual_Schema.png)
 
-### Opimized Star Schema
+### Denormalized Star Schema
 
 A diagram of the dataware house star schema is shown below. 
 
 ![Optimized_Star_Schema](https://github.com/sjmiller8182/DBMS_Proj/blob/master/reports/support/images/Star_Conceptual_Schema.png)
-
-This schema was created with MySQL WorkBench the schema design can be accessed [here](https://github.com/sjmiller8182/DBMS_Proj/tree/master/reports/support/schemas).
 
 ## Big Data Solution Implementation
 
@@ -54,9 +64,11 @@ The big data solution is build on AWS.
 
 ## Results
 
-## Analysis
+Queries were run on the two schemas with different EMR cluster sizes to see the impact of normalization on query time.
+The collected data is located [here](https://github.com/sjmiller8182/DBMS_Proj/blob/master/results_analysis/results.csv).
+A table summarizing the results is shown below.
 
-## Conclusion
+![box_plot](https://github.com/sjmiller8182/DBMS_Proj/blob/master/reports/support/images/Rplot.png)
 
 ## Reports
 
@@ -64,6 +76,8 @@ These reports were created during the course of this project.
 
 * [Project Proposal](https://github.com/sjmiller8182/DBMS_Proj/blob/master/reports/Proposal.pdf): Initial proposal regarding the problem and the proposed solution for investigation.
 * [Initial Project Presentation](https://github.com/sjmiller8182/DBMS_Proj/blob/master/reports/Initial_Presentation.pdf): A high level overview of the project idea and current status.
+* [Final Project Presentation](https://github.com/sjmiller8182/DBMS_Proj/blob/master/reports/Final_Presentation.pdf): A presentation describing the project goals, findings, and conclusions.
+* [Project Paper](https://github.com/sjmiller8182/DBMS_Proj/blob/master/reports/Project_Paper.pdf): A paper describing the project.
 
 ## Repo Structure
     .

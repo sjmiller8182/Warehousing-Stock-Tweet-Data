@@ -1,0 +1,159 @@
+---
+title: "Analysis"
+author: "Stuart Miller, Paul Adams, Rikel Djoko"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, setup_, echo=FALSE, message=FALSE}
+library(pwr2)
+library(tidyverse)
+```
+
+# Power Analysis
+
+The power analysis for this project was done using R package (pwr2).
+
+https://cran.r-project.org/web/packages/pwr2/pwr2.pdf
+
+
+```{r, power_analysis}
+
+pwr.2way(a=2,
+         b=2,
+         alpha=0.05,
+         size.A=90,
+         size.B=90,
+         f.A=NULL,
+         f.B=NULL,
+         delta.A=2,
+         delta.B=2,
+         sigma.A=4,
+         sigma.B=6)
+```
+
+
+# Results of Study
+
+```{r, load_data, echo=FALSE}
+data <- read_csv('./results.csv',
+                 col_types = cols(
+                   schema = col_factor(levels = c('1','0')),
+                   block_size = col_factor(levels = c('64','128','256')),
+                   server_num = col_factor(levels = c('3','5')),
+                   time = col_double()
+                 )
+        )
+
+data$server_num <- recode(data$server_num, '3' = 'three_nodes', '5' = 'five_nodes')
+data$schema <- recode(data$schema, '1' = 'normalized', '0' = 'denormalized')
+```
+
+```{r}
+data %>% 
+  group_by(schema) %>% 
+  summarise(mean_time = mean(time),
+            median_time = median(time),
+            IQR_time = IQR(time),
+            std_dev = sd(time),
+            varaince = var(time))
+```
+
+
+## Summary Stats for the Levels
+
+This is assuming that schema is the main driving factor of variation.
+
+```{r, summary_stats, echo=FALSE}
+grouped <- data %>% 
+  group_by(server_num,schema) %>% 
+  summarise(mean_time = mean(time),
+            median_time = median(time),
+            IQR_time = IQR(time),
+            std_dev = sd(time),
+            varaince = var(time))
+grouped
+```
+
+## 2-Way ANOVA Profile Plot
+
+```{r}
+ggplot(data = grouped, aes(y = mean_time, x = block_size, color = schema)) +
+  geom_point() +
+  geom_errorbar(aes(ymin = mean_time - sqrt(variance), ymax = mean_time + sqrt(variance)), width = .1) +
+  facet_grid( ~ server_num) + 
+  xlab('HDFS Block Size (MB)') +
+  ylab('Query Time (seconds)') +
+  ggtitle('Query Time for Schemas, MapReduce Block Size, and Cluster Size')
+```
+
+
+
+
+
+
+
+## 2-Way ANOVA Profile Plot
+
+Profile plot is colored by schema.
+
+```{r, profile_plot, echo=FALSE}
+mysummary<-function(x){
+  result<-c(length(x),mean(x),sd(x),sd(x)/length(x),min(x),max(x),IQR(x))
+  names(result)<-c("N","Mean","SD","SE","Min","Max","IQR")
+  return(result)
+}
+
+sumstats<-aggregate(time ~ schema:block_size, data = data, mysummary)
+sumstats<-cbind(sumstats[,1:2],sumstats[,-(1:2)])
+
+ggplot(sumstats, aes(x = block_size, y = Mean, group = schema, color = schema)) +
+  ylab("Query Time (seconds)") +
+  xlab("MapReduce Block Size (MB)") +
+  ggtitle('Query Time for Schemas and MapReduce Block Size') +
+  geom_line() +
+  geom_point() +
+  geom_errorbar(aes(ymin = Mean - SD, ymax = Mean + SD), width = .1) +
+  facet_grid( ~ schema)
+
+sumstats
+```
+
+
+
+## Fit the ANOVA on the Data
+
+This assumes data replication with schema as the primary source of variation.
+
+```{r, anova, echo=FALSE}
+analysis.aov <- data %>% 
+  aov(time ~ schema + Error(block_size/schema), data = .)
+
+aov.summ <- summary(analysis.aov)
+aov.summ
+```
+
+## Plot Multiple Comparisons
+
+
+
+```{r, mult_compare, echo=FALSE}
+analysis.aov <- data %>% 
+  aov(time ~ schema:block_size, data = .)
+
+with(par(mai=c(1,2.5,1,1)),
+     {plot(TukeyHSD(analysis.aov),
+           las=1,
+           cex.axis=0.4)
+       }
+     )
+```
+
+
+
+
+
+
