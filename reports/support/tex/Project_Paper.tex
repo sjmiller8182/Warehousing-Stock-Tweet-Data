@@ -155,14 +155,21 @@ An application of financial market prediction using alternative data is
 A data storage system would need to store large volumes of time series data and
  provide rapid query access to the large volume of data to support a financial 
  market prediction engine.
+In this paper, we will present a "Big Data" system that can be used to store and
+ access large volumes of time series data. 
+Stock data, intraday and daily,
+ will be the primary time series used in the analysis.
+Data from Twitter will serve as the primary source alternative data.
 
 % - paragraph 3 and beyond - your solution
 
-In this paper, we will address how "Big Data" tools can be used to store and
- access large volumes of time series data. 
-
-
-
+The Hadoop ecosystem is at the core of this system.
+Hadoop is an open source framework for distributed computing
+ that is sponsored by the 
+ Apache Software Foundation\footnote{https://hadoop.apache.org/} \cite{HDFSarchitecture}.
+The Hadoop ecosystem consists of modules for file storage, data warehousing,
+ data flow, data analysis, and machine learning.
+The components of Hadoop used in this system are HDFS and Hive.
 
 
 
