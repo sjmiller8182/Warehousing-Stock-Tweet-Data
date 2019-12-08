@@ -106,8 +106,8 @@
 % This should be about 150-200 words
 \begin{abstract}
 
-In this paper, we present a solution for warehousing time series of "Big Data"
- for structured data and semi-structured data.
+In this paper, we present a solution for warehousing structured and semi-structured 
+financial markets time series data.
 Traditional systems, such as SQL databases, are well suited for storing highly structured data,
  but were not designed to store semi-structured forms of data.
 Additionally, traditional systems, which operate with ACID transactions,
@@ -129,8 +129,8 @@ A distributed data warehouse framework like Hadoop could be used in cases where 
 % - This is the topic and this is why it is important
 % - don’t be too specific
 
-\IEEEPARstart{I}{n} recent times, the volume of data generation and
- data recording has been increasing.
+\IEEEPARstart{T}{h}e ability to capture and generate large volumes of data is an issue
+ many enterprises face.
 The increase in data generation and recording is often referred to as "Big Data."
 Traditionally, data generation systems were slow and the data was easily structured, 
  which lent to the use of traditional systems.
@@ -140,7 +140,7 @@ However, "Big Data" is often semi-structured or unstructured and
 "Big Data" technologies were developed to address the gap between the current type of data
  that are generated and collected and capacity of traditional storage tools \cite{BigDataComputing}.
 These "Big Data" technologies are able to collect data in raw form and
- provide access SQL-like to the data.
+provide access to the data, often using languages similar to Structured Query Languages (SQL).
 
 % - paragraph 2 – the specific problem
 
@@ -149,21 +149,21 @@ An example of "Big Data" is financial market data and
 For alternative data to be useful to a prediction system,
  it must be stored in a system that can provide low query time.
 Additionally, it must be able to work with data that does not follow strict structuring,
- such as text based messages or images.
+ such as text-based messages or images.
 In financial market modeling, alternative data is any type of data outside the
  financial domain \cite{xiao2018trading}.
 An application of financial market prediction using alternative data is
- utilizing twitter data to make predictions on the stock market \cite{twittermood}.
+ utilizing Twitter data to make predictions on the stock market \cite{twittermood}.
 A data storage system would need to store large volumes of time series data and
- provide rapid query access to the large volume of data to support a financial 
+ provide rapid query access to those volumes to support a financial 
  market prediction engine.
 In this paper, we will present a "Big Data" system that can be used to store and
  access large volumes of time series data. 
 Stock data, intraday and daily,
  will be the primary time series used in the analysis.
-Data from Twitter will serve as the primary source alternative data.
-For this analysis, we collected approximately 400 thousand tweets from over 100 twitter accounts and
- approximately 49 million stock data points.
+Data from Twitter will serve as the primary source of alternative data.
+For this analysis, we collected approximately four-hundred thousand tweets from over 
+one-hundred Twitter accounts and approximately 49 million stock data points.
 
 % - paragraph 3 and beyond - your solution
 
@@ -176,7 +176,7 @@ Since Hadoop is a distributed computing framework,
  accommodate the need for more computing power as the data storage grows.
 The Hadoop ecosystem consists of modules for file storage, data warehousing,
  data flow, data analysis, and machine learning.
-The components of Hadoop used in this system are
+The primary components of Hadoop used in this system are
  Hadoop Distributed File System (HDFS) and Hive.
 
 HDFS is a file system distributed over multiple servers (a server cluster) \cite{HDFSarchitecture}.
@@ -191,17 +191,17 @@ Hive is a distributed data warehouse that manages data stored in HDFS \cite{HDFS
 Hive provides an SQL-like query language to access and
  retrieve the data stored in HDFS.
 
-This solution was implemented with Amazon Web Services (AWS),
+We implemented the solution with Amazon Web Services (AWS),
  which provides a set of cloud services for data storage and warehousing.
 Elastic MapReduce (EMR) is a preconfigured service for Hadoop provided by AWS.
 EMR runs on a cluster of Elastic Compute 2 (EC2) servers,
  which can be horizontally scaled as needed.
-EMR was used for the physical implementation of the Hadoop ecosystem.
+We used EMR for the physical implementation of the Hadoop ecosystem in this project.
 
-Two schemas were designed for the data warehouse in a star configuration.
+We designed two schemas for the data warehouse in a star configuration.
 The first schema was designed in a fully normalized fashion,
  which is known as a snowflake schema.
-The second schema was based on the snowflake schema, 
+Our second schema was based on the snowflake schema, 
  but denormalized to limit the number of tables, 
  which limits the number of joins required in queries.
 Query performance will be measured on these schemas to determine
@@ -209,7 +209,7 @@ Query performance will be measured on these schemas to determine
 
 We will test the performance of this system implementation with the collected stock and 
  Twitter data. 
-Performance of the data warehouse is based on time taken to process the data the Hive 
+Performance of the data warehouse is based on time taken to process the data queried in the Hive 
  warehouse.
 The analysis will examine the improvement in performance from the schema denormalization and
  increasing the EMR cluster size.
