@@ -53,7 +53,7 @@
 
 % from here
 %https://journals.ieeeauthorcenter.ieee.org/create-your-ieee-journal-article/authoring-tools-and-templates/ieee-article-templates/templates-for-transactions/
-\UseRawInputEncoding
+%\UseRawInputEncoding
 \documentclass[journal]{IEEEtran}
 
 \usepackage{cite}
@@ -116,8 +116,10 @@ Additionally, traditional systems, which operate with ACID transactions,
  addressing this gap in data storage system technology.
 We developed a system to store structured and semi-structured time series data based on the 
  Apache Hadoop ecosystem.
-We will also discuss the impact of schema design and
- horizontal scaling of the Hadoop cluster on read query execution time.
+Based on the results of testing read query performance,
+ schema denormalization and increasing the Hadoop cluster size will reduce query times.
+A distributed data warehouse framework like Hadoop could be used in cases where data scaling is expected,
+ requiring the computing infrastructure to scale with the data.
 
 \end{abstract}
 
@@ -160,6 +162,8 @@ In this paper, we will present a "Big Data" system that can be used to store and
 Stock data, intraday and daily,
  will be the primary time series used in the analysis.
 Data from Twitter will serve as the primary source alternative data.
+For this analysis, we collected approximately 400 thousand tweets from over 100 twitter accounts and
+ approximately 49 million stock data points.
 
 % - paragraph 3 and beyond - your solution
 
@@ -167,51 +171,50 @@ The Hadoop ecosystem is at the core of this system.
 Hadoop is an open source framework for distributed computing
  that is sponsored by the 
  Apache Software Foundation\footnote{https://hadoop.apache.org/} \cite{HDFSarchitecture}.
+Since Hadoop is a distributed computing framework,
+ the server cluster used in the implementation can be horizontally scaled to
+ accommodate the need for more computing power as the data storage grows.
 The Hadoop ecosystem consists of modules for file storage, data warehousing,
  data flow, data analysis, and machine learning.
 The components of Hadoop used in this system are
  Hadoop Distributed File System (HDFS) and Hive.
 
-HDFS is a file system distributed over multiple servers (a cluster) \cite{HDFSarchitecture}.
+HDFS is a file system distributed over multiple servers (a server cluster) \cite{HDFSarchitecture}.
 The processing framework that enables this is called MapReduce, 
-which assigns nodes for ``mapping'' and ``reducing'' processes by applying  
-various configurations, such as related to memory allocation and numbers
-of mappers and reducers \cite{MappingReducing}.
+ which assigns nodes for ``mapping'' and ``reducing'' processes by applying  
+ various configurations, such as related to memory allocation and numbers
+ of mappers and reducers \cite{MappingReducing}.
 As data is mapped, it is reprocessed into a derivative data set,
-split into tuples that are then processed across the cluster, in parallel,
-and reassembled in the reduce process \cite{MappingReducing}.
+ split into tuples that are then processed across the cluster, in parallel,
+ and reassembled in the reduce process \cite{MappingReducing}.
 Hive is a distributed data warehouse that manages data stored in HDFS \cite{HDFSarchitecture}.
 Hive provides an SQL-like query language to access and
  retrieve the data stored in HDFS.
 
 This solution was implemented with Amazon Web Services (AWS),
- which provides a set of services for data storage and warehousing.
+ which provides a set of cloud services for data storage and warehousing.
 Elastic MapReduce (EMR) is a preconfigured service for Hadoop provided by AWS.
 EMR runs on a cluster of Elastic Compute 2 (EC2) servers,
- which can be horizonal scaled as needed.
+ which can be horizontally scaled as needed.
+EMR was used for the physical implementation of the Hadoop ecosystem.
 
-
-
-
-
-
-Two schemas were designed for the warehouse in a star configuration.
-This first schema was designed in a full normalized fashion,
-which is known as a snowflake schema.
+Two schemas were designed for the data warehouse in a star configuration.
+The first schema was designed in a fully normalized fashion,
+ which is known as a snowflake schema.
 The second schema was based on the snowflake schema, 
-but denormalized to limit the number of tables, 
-which limits the number of joins required in queries.
+ but denormalized to limit the number of tables, 
+ which limits the number of joins required in queries.
 Query performance will be measured on these schemas to determine
-which design will be better for this use case. 
+ which how much improvement is provided by schema denormalziation.
 
-Performance of the data warehouse is based on time taken to process the data
-collected for this project into the Hive data warehouse,
-which includes table creation and loading. 
-We will use a repeated measures analysis and a one-tailed hypothesis 
-test to determine optimal performance among S3 and HDFS groups, 
-which is then used to compare and assess benchmarks between the 
-combinations of MapReduce settings and database schemas among the
-best-performing S3 and HDFS configuration.
+We will test the performance of this system implementation with the collected stock and 
+ Twitter data. 
+Performance of the data warehouse is based on time taken to process the data the Hive 
+ warehouse.
+The analysis will examine the improvement in performance from the schema denormalization and
+ increasing the EMR cluster size.
+We will use a two-way analysis of variance (ANVOA) to compare the differences
+ in combinations of schema and EMR cluster size.
 
 \section{Data}
 
