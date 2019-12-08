@@ -53,7 +53,7 @@
 
 % from here
 %https://journals.ieeeauthorcenter.ieee.org/create-your-ieee-journal-article/authoring-tools-and-templates/ieee-article-templates/templates-for-transactions/
-\UseRawInputEncoding
+%\UseRawInputEncoding
 \documentclass[journal]{IEEEtran}
 
 \usepackage{cite}
@@ -106,7 +106,7 @@
 % This should be about 150-200 words
 \begin{abstract}
 
-In this paper we present a solution for warehousing time series of "Big Data"
+In this paper, we present a solution for warehousing time series of "Big Data"
  for structured data and semi-structured data.
 Traditional systems, such as SQL databases, are well suited for storing highly structured data,
  but were not designed to store semi-structured forms of data.
@@ -123,6 +123,10 @@ We will also discuss the impact of schema design and
 
 \section{Introduction}
 
+% - paragraph 1 – motivation; set the stage
+% - This is the topic and this is why it is important
+% - don’t be too specific
+
 \IEEEPARstart{I}{n} recent times, the volume of data generation and
  data recording has been increasing.
 The increase in data generation and recording is often referred to as "Big Data."
@@ -133,40 +137,35 @@ However, "Big Data" is often semi-structured or unstructured and
 "Big Data" technologies were developed to address the gap between the current type of data
  that are generated and collected and capacity of storage tools \cite{BigDataComputing}.
 These "Big Data" technologies are able to collect data in raw form and
- provide assess SQL-like assess to the data.
+ provide access SQL-like to the data.
+
+% - paragraph 2 – the specific problem
+
+An example of "Big Data" is financial market data and
+ related "alternative" data that may be useful for prediction.
+For alternative data to be useful to a prediction system,
+ it must be stored in a system that can provide low query time.
+Additionally, it must be able to work with data that does not follow strict structuring,
+ such as text based messages or images.
+In financial market modeling, alternative data is any type of data outside the
+ financial domain \cite{xiao2018trading}.
+An application of financial market prediction using alternative data is utilizing twitter data to make predictions on the stock market \cite{twittermood}.
+
+
+
+
+
+% - paragraph 3 and beyond - your solution
+
+In this paper, we will address how "Big Data" tools can be used to store and
+ access large volumes of time series data. 
 
 
 
 
 
 
-However, with the increasing ability to capture and store data from many
-disparate sources, the need to store larger volumes of the data is
-likewise an increasing issue when it comes time to access and use the data,
-as many of the data gathered exist across very dynamic, diverse, and
-large partitions. 
-As such, the scalability of storing and accessing big data must increase
-with it, relevant to the structures and locations of these data repositories. 
-Developing a database with the Hadoop ecosystem, our team has built a data
-warehousing solution to structure and store the data based on both
-optimized and normalized schema designs, drafted from entity-relationship
-models designed with the intention of enabling rapid storing and accessing
-through the Hadoop MapReduce process \cite{BigDataComputing}. 
-Through a combination of these systems and data storage within
-Amazon Simple Storage Service (S3) and Apache Hadoop's native Hadoop
-Distributed File System (HDFS), we analyze performance between two
-approaches toward data- and task-parallelism using data gathered from
-the stock market.
-Motivated by the opportunity within "Big Data" to store and structure disparate data,
-we designed a system to store stock data and Twitter data,
-which could be used to service a large scale machine learning system.
-To accomplish this, we aligned our project with a modern database
-application called Hadoop. 
-Hadoop provides a data lake ``ecosystem'' 
-supporting both task- and data-parallelism across the many software
-applications within the Apache suite in addition to software that can 
-be managed and accessed within a network of servers (a compute cluster)
-\cite{Intel, BigDataComputing}.
+
 
 The server cluster enables users to read data from the same source,
 simultaneously, as the data at that source is partitioned and
@@ -859,6 +858,14 @@ K. Tannir, "Enhancing Map and Reduce Tasks," in
 A. Silberschatz, H. Korth, and S. Sudarshan, "Relational Database Design," in
  \textit{Database Design Concepts}, 6th ed. NY: McGraw-Hill, 2011, ch. 8, sec. 8.3,
  pp. 329 - 338. 
+
+\bibitem{xiao2018trading}
+C. Xiao and W. Chen, “Trading the Twitter Sentiment with Reinforcement Learning,”
+ arXiv:1801.02243v1 [cs.AI], Jan. 2018.
+
+\bibitem{twittermood}
+J. Bollen and H. Mao. Twitter mood as a stock market predictor.
+Computer, 44(10):91–94, 2011
 
 \end{thebibliography}
 
