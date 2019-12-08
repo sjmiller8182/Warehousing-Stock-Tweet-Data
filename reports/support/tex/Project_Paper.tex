@@ -513,8 +513,8 @@ The core of Apache Hadoop consists of a storage part: Hadoop Distributed File Sy
 
 \begin{figure}
 	\centering
-	\includegraphics[width=2.7in]{system_overview_final.png}
-	\caption{Overview of Data System}
+	\includegraphics[width=3in]{system_overview_final.png}
+	\caption{Overview of Data Warehouse System}
 	\label{system_overview_final}
 \end{figure}
 
@@ -530,10 +530,10 @@ replicated across the cluster, partitioned by server rack. Data jobs take advant
 where each task pairs with blocks of data and are therefore replicated across the cluster as well. If one job fails, it can be restarted 
 by the other running tasks until all tasks have been completed and data compiled for the end-user \cite{HadoopAdmin}.
 
-In reference to Fig. 3, the client - in our case, Hive, but this can be a different application supported by the Hadoop ecosystem - requests a 
+In reference to Fig. \ref{HDFS}, the client - in our case, Hive, but this can be a different application supported by the Hadoop ecosystem - requests a 
 read operation by passing blocks of HDFS files from Datanodes in Rack 1 with their associated metadata to the Namenode, which then delegates
 block processing operations to the Datanodes in Rack 2. Tasks are assigned from the Namenode and partitioned across the racks. 
-Although all data is in both racks - because write operations replicate data across the racks, as indicated in Fig. 3 - each rack has unique tasks
+Although all data is in both racks - because write operations replicate data across the racks, as indicated in Fig. \ref{HDFS} - each rack has unique tasks
 to operate. In the event a task fails in a node, another node will resume the task since the data is duplicated \cite{HadoopAdmin}. 
 
 \subsubsection{Hadoop MapReduce}
@@ -557,7 +557,7 @@ S3 is reliable, fast, and inexpensive.
 Apache Hive is a data warehouse application built on top of Hadoop. We used Hive to structure, organize, model, and query our data using the Hive 
 Query Language, HQL. We structured files from within the Hadoop Distributed File System (HDFS) and loaded them into tables within Hive. 
 Hive operates by using the HDFS storage to generate tables. However, when Hive queries are executed, the data is retrieved from HDFS via the compiler, 
-which uses an execution engine and metastore to return results. \cite{Hivemetastore}
+which uses an execution engine and metastore to return results \cite{Hivemetastore}. 
 
 \subsection{Cloudera Hue}
 
@@ -573,32 +573,9 @@ On the cluster, we installed Hadoop, in addition to Hive and Hue. MapReduce and 
 of our team were stored in Amazon S3. Because S3 does not replace HDFS in the Hadoop system, we loaded into HDFS from S3 prior to creating structured tables
 in Hive. Once the Secure Shell (SSH) tunnel was connected to the Namenode master server from the browser, Hue was launched to support Hive tasks written in HQL.
 
-\section{Study Design}
-\label{StudyDesign}
-
-In this study, we will investigate the impact of schema normalization and
- EMR cluster size on the performance of a read query.
-Both schemas presented in Section \ref{DataWarehouseDevelopment} were tested on
- EMR clusters with 3 nodes and 5 nodes.
-This is a two-way ANOVA where ERM cluster size and schema
- are the explanatory factor variables and the response variable is query
- execution time \cite{RepeatMeasures}.
-
-During performance testing, we gathered all fields from all tables,
- joining all tables in the schema together. 
-Joining all tables enabled capturing the entirety of the database,
- under each schema, to produce the same results. 
-These queries were limited to 75,000 returned records to enable gathering more runtime samples. 
-This number was decided to be reasonable based on the difference in performance time. 
-As noted in the analysis section below,
- the performance time between queries was significant at 75,000 records;
- limited a higher volume of returned records would have increased the significance. 
-Therefore, 75,000 was determined reasonable for analysis.
-
-
 \begin{table}
 	\renewcommand{\arraystretch}{1.3}
-	\caption{Results Table}
+	\caption{Read Query Results}
 	\label{ResultsTable}
 	\centering
 	\begin{tabular}{c c c c}
@@ -622,6 +599,28 @@ Therefore, 75,000 was determined reasonable for analysis.
 		\hline
 	\end{tabular}
 \end{table}
+
+\section{Study Design}
+\label{StudyDesign}
+
+In this study, we will investigate the impact of schema normalization and
+ EMR cluster size on the performance of a read query.
+Both schemas presented in Section \ref{DataWarehouseDevelopment} were tested on
+ EMR clusters with 3 nodes and 5 nodes.
+This is a two-way ANOVA where ERM cluster size and schema
+ are the explanatory factor variables and the response variable is query
+ execution time \cite{RepeatMeasures}.
+
+During performance testing, we gathered all fields from all tables,
+ joining all tables in the schema together. 
+Joining all tables enabled capturing the entirety of the database,
+ under each schema, to produce the same results. 
+These queries were limited to 75,000 returned records to enable gathering more runtime samples. 
+This number was decided to be reasonable based on the difference in performance time. 
+As noted in the analysis section below,
+ the performance time between queries was significant at 75,000 records;
+ limited a higher volume of returned records would have increased the significance. 
+Therefore, 75,000 was determined reasonable for analysis.
 
 \section{Results}
 
@@ -791,7 +790,7 @@ The intraday stock features are described below and are organized in the
 \subsection{Twitter Features}
 
 The twitter features are described below and are organized in the
-following categories: Unique and Common.
+ following categories: Unique and Common.
 Unique features are specific to a particular tweet and
  common features are shared across many tweets.
 
@@ -876,11 +875,6 @@ T. White, Hadoop: The Definitive Guide, 1st ed. Sebastopol,
 \bibitem{R}
 R Core Team, R: A language and environment for Statistical Computing, Vienna, Austria: 2018.
  Available: https://www.R-project.org/
- 
-\bibitem{Sleuth}
-F. Ramsey and D. Schafer, "Repeated Measures and Other Multivariate Responses," 
- in \textit{The Statistical Sleuth}, 3rd ed. Boston: Brooks/Cole, 2013,
- ch. 16, pp. 479-485.  
 
 \bibitem{RepeatMeasures}
 M. Crawley, "Analysis of Variance," in \textit{The R Book},
