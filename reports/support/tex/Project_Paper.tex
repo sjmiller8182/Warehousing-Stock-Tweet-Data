@@ -131,20 +131,19 @@ A distributed data warehouse framework like Hadoop could be used in cases where 
 
 \IEEEPARstart{T}{h}e ability to capture and generate large volumes of data is an issue
  many enterprises face.
-The increase in data generation and recording is often referred to as "Big Data."
 Traditionally, data generation systems were slow and the data was easily structured, 
  which lent to the use of traditional systems.
-However, "Big Data" is often semi-structured or unstructured and
+However, ``Big Data" is often semi-structured or unstructured and
  can be generated at high rates,
   such as server logs or real-time sensor data \cite{Intel}.
 "Big Data" technologies were developed to address the gap between the current type of data
  that are generated and collected and capacity of traditional storage tools \cite{BigDataComputing}.
-These "Big Data" technologies are able to collect data in raw form and
-provide access to the data, often using languages similar to Structured Query Languages (SQL).
+These ``Big Data" technologies are able to collect data in raw form and
+provide access to the data, often using languages similar to Structured Query Language (SQL).
 
 % - paragraph 2 – the specific problem
 
-An example of "Big Data" is financial market data and
+An example of ``Big Data" is financial market data and
  related "alternative" data that may be useful for prediction.
 For alternative data to be useful to a prediction system,
  it must be stored in a system that can provide low query time.
@@ -157,7 +156,7 @@ An application of financial market prediction using alternative data is
 A data storage system would need to store large volumes of time series data and
  provide rapid query access to those volumes to support a financial 
  market prediction engine.
-In this paper, we will present a "Big Data" system that can be used to store and
+In this paper, we will present a ``Big Data" system that can be used to store and
  access large volumes of time series data. 
 Stock data, intraday and daily,
  will be the primary time series used in the analysis.
@@ -204,8 +203,8 @@ The first schema was designed in a fully normalized fashion,
 Our second schema was based on the snowflake schema, 
  but denormalized to limit the number of tables, 
  which limits the number of joins required in queries.
-Query performance will be measured on these schemas to determine
- which how much improvement is provided by schema denormalziation.
+Query performance will be measured on these schemas to determine 
+how much improvement in query time is provided by schema denormalziation.
 
 We will test the performance of this system implementation with the collected stock and 
  Twitter data. 
@@ -213,7 +212,7 @@ Performance of the data warehouse is based on time taken to process the data que
  warehouse.
 The analysis will examine the improvement in performance from the schema denormalization and
  increasing the EMR cluster size.
-We will use a two-way analysis of variance (ANVOA) to compare the differences
+We will use a two-way analysis of variance (ANOVA) to compare the differences
  in combinations of schema and EMR cluster size.
 
 \section{Data}
@@ -239,13 +238,13 @@ The R\footnote{Version 3.6.1}
  using the R package alphavantager\footnote{https://cran.r-project.org/web/packages/alphavantager/index.html}
 \cite{R}.
 This API provided access to daily prices, intraday stock prices,
- and intraday price features from the following categories Bollinger bands, 
+ and intraday price features from the following associated categories: Bollinger bands, 
  stochastic oscillators, moving averages, and exponential moving averages. 
 
 The stock data was collected from Oct. 04, 2019 to Oct. 24, 2019 on
  all 2520 symbols traded on the NYSE and all 3213 symbols traded on the NASDAQ.
 A single value was stored for each feature of the daily prices.
-The intraday values were sampled at 15 minute intervals from market open
+The intraday values were sampled at 15-minute intervals from market open
  to market close.
 This resulted in a total of 49,093,917 stock data points.
 
@@ -301,16 +300,16 @@ mention (\texttt{@everett}) is given in Listing \ref{SampleTweet} (the value of
 \end{table}
 
 We collected 423,802 tweets from 108 Twitter users, using the
- python\footnote{Version 3.6.8}
+ Python\footnote{Version 3.6.8}
  module Twython\footnote{https://pypi.org/project/twython/3.6.0/}.
 The data from Twitter is returned in JavaScript Object Notation (JSON); 
  an example is shown in Listing \ref{SampleTweet}.
 The features of interest were extracted from the JSON files and reformatted in tab
- separated files (TSV) using python and the built-in JSON and CSV modules.
+ separated files (TSV) using Python and the built-in JSON and CSV modules.
 After the tweets were extracted from Twitter,
  mentions of company names or stock symbols were extracted from the tweet text by
  matching sections of tweet text to company names and company stock symbols.
-All other featured were extracted from the JSON by key.
+All other featured were extracted from the JSON, by key.
 
 \lstset{
 	breaklines=true,
@@ -379,7 +378,7 @@ The value for \texttt{text} under \texttt{hashtags} was the only value collected
 The values for \texttt{screen\_name} and \texttt{id\_str} under 
  \texttt{user\_mentions} were collected for mentions (\texttt{even\_everett} and
  \texttt{21841004}, respectively, in the example).
-Only the value of \texttt{expanded\_url} was collected user \texttt{urls}
+Only the value of \texttt{expanded\_url} was collected for \texttt{urls}
  (\texttt{http://www.you.com/watch?v=TZR} in the example).
 
 \begin{figure}
@@ -431,7 +430,7 @@ We will consider a star schema in snowflake form when it is normalized into
 
 As noted previously, the fact table of this star design contained the
  company symbols and timestamps as a composite primary key.
-The three dimensions of fact table, daily stock data, intraday stock data, and 
+The three dimensions of the fact table, daily stock data, intraday stock data, and 
  tweet data, share the primary key of the fact table.
 
 The stock data comes in a form suitable for the snowflake design; 
@@ -506,10 +505,10 @@ The EMR cluster used in this study was provisioned with three
 
 \subsection{Apache Hadoop}
 
-Hadoop is an open source software framework for the distributed storage and
- distributed processing of a very large datasets. 
-The core of Apache Hadoop consists of a storage part: Hadoop Distributed File System
- (HDFS) and a processing part MapReduce.
+Hadoop is an open source software framework for distributed storage and
+ distributed processing of very large datasets. 
+The core of Apache Hadoop consists of a storage part - Hadoop Distributed File System (HDFS) - and 
+a processing part - Hadoop MapReduce.
 
 \begin{figure}
 	\centering
@@ -521,36 +520,35 @@ The core of Apache Hadoop consists of a storage part: Hadoop Distributed File Sy
 \subsubsection{Hadoop Distributed File System (HDFS) and  MapReduce}
 
 Unlike traditional file systems, the Hadoop Distributed File System (HDFS) is a distributed file system designed to run on commodity hardware. 
-HDFS architecture consists of a master node, called a "NameNode" and at least one slave node, called "DataNodes."\cite{HDFSarchitecture}.
-The NameNode is the controller which consist storing data and metadata of the data no the DataNodes. 
-The metadata includes a Namespace lookup table used to locate each file from the DataNodes, which assists in node cluster-computing. 
+HDFS architecture consists of a master node, called a ``NameNode" and at least one slave node, called ``DataNodes."\cite{HDFSarchitecture}.
+The NameNode is the controller which manages storing data and providing metadata of the data to the DataNodes. 
+The metadata includes a Namespace lookup table used to locate each file from the Datanodes, which assist in node cluster-computing. 
 
 HDFS works by storing duplicate copies of data blocks across multiple servers. Those blocks are then split into chunks, which are then 
 replicated across the cluster, partitioned by server rack. Data jobs take advantage of this feature by breaking down into tasks, 
-where each task pairs with blocks of data and are therefore replicated across the cluster as well. If one job fails, it can be restarted 
+where each task pairs with blocks of data and are then processed across the cluster. If one job fails, it can be restarted 
 by the other running tasks until all tasks have been completed and data compiled for the end-user \cite{HadoopAdmin}.
 
 In reference to Fig. 3, the client - in our case, Hive, but this can be a different application supported by the Hadoop ecosystem - requests a 
-read operation by passing blocks of HDFS files from Datanodes in Rack 1 with their associated metadata to the Namenode, which then delegates
-block processing operations to the Datanodes in Rack 2. Tasks are assigned from the Namenode and partitioned across the racks. 
-Although all data is in both racks - because write operations replicate data across the racks, as indicated in Fig. 3 - each rack has unique tasks
-to operate. In the event a task fails in a node, another node will resume the task since the data is duplicated \cite{HadoopAdmin}. 
+read operation by passing blocks of HDFS files from Datanodes in server Rack 1 with their associated metadata to the Namenode, which then delegates
+block processing operations to the Datanodes in serverRack 2. Tasks are assigned from the Namenode and partitioned across the racks of servers. 
+Although all data is in both racks - because write operations replicate data across the server racks, as indicated in Fig. 3 - each server rack has unique tasks
+to operate. As mentioned, in the event a task fails in a node, another node will resume the task since the data is duplicated \cite{HadoopAdmin}.
 
 \subsubsection{Hadoop MapReduce}
 
-Hadoop MapReduce is a programming model for large scale data processing. With MapReduce, instead of using one server instance with multiple 
-processors, multiple servers with multiple processors are used for computation. This is refers to a distributed computing system.
+Hadoop MapReduce is a programming model for large-scale data processing. With MapReduce, instead of using one server instance with multiple 
+processors, multiple servers with multiple processors are used for computation. This is refered to as a distributed computing system.
 
-MapReduce uses the divide and conquer technique where the input is divided into a set of small tasks. Each task is identified by a key-value 
+MapReduce uses the ``divide and conquer technique" where the input is divided into a set of small tasks. Each task is identified by a key-value 
 pair \cite{Divide-and-Conquer}. The key serves as a task ID and the value as the task output. Each task is then processed and executed by the 
 mapper and the outputs are processed and merged by the reducer \cite{MapReduce}. MapReduce couples with HDFS to enable horizontal
 scaling in a cluster-computing environment.
 
 \subsection{AWS Simple Storage Service}
 
-As the name implies, the S3 is a storage system.
-It is used to store and retrieve any amount of data any time, from anywhere on the web. 
-S3 is reliable, fast, and inexpensive.
+As the name implies, the S3 is a storage system. It is used to store and retrieve any amount of data any time, from anywhere on the web. 
+S3 is reliable, fast, and inexpensive. We used this to share data and load directly into HDFS.
 
 \subsection{Apache Hive}
 
