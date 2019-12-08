@@ -664,8 +664,7 @@ Regardless, under both cluster sizes,
 
 \section{Conclusions}
 
-\textbf{EXAMPLE Conclusion:}
-The scalability of large sets of data is of ever-increasing importance in the data community, which itself is ever-increasing with the advancement of modern technology. Modern technology itself is enabling both an increase in both data volume as well as data diversity being captured and stored. Consequently, parallelism is of utmost importance in making use of this data. Herein analyzed are methods that are proven within the scope of big data. As modern technology continues to advance, these parallel principals will serve as the root from which methodologies will be developed. As with the businesses and industries the data captured will serve, there will remain a trade-off that must be assessed for each business model. This study has provided two primary storage methods - S3 and HDFS - in addition to different data warehousing schema design - normalized versus optimized, star versus snowflake - and data distribution - herein, MapReduce - techniques. Through analysis using repeated measures, S3 outperforms HDFS when X, Y, Z and HDFS outperforms S3 when Z, Y, X. Furthermore, MapReduce configurations are constant across both storage methods - HDFS and S3 - with an optimized star schema performing faster, but a normalized snowflake schema performing more reliably within a conventional three-tiered system architecture.
+
 
 % Can use something like this to put references on a page
 % by themselves when using endfloat and the captionsoff option.
@@ -682,13 +681,36 @@ This section contains a full listing of all the features collected for this
  study. The features are listed by general category as shown in 
  Table \ref{DataCategories}.
 
+\subsection{Daily Stock Features}
+
+The daily stock features are described below and are organized in the
+ following categories: Key Values and Prices.
+The value for time was imputed to a standard value for the daily values.
+
+\subsubsection{Key Values}
+
+\begin{itemize}
+	\item Symbol
+	\item Time
+	\item Date
+\end{itemize}
+
+\subsubsection{Prices}
+
+\begin{itemize}
+	\item Open
+	\item Close
+	\item High
+	\item Low
+\end{itemize}
+
 \subsection{Intraday Stock Features}
 
 The intraday stock features are described below and are organized in the 
- following categories: Key, Prices, Bollenger Bands, Moving Averages, and Stochastic 
- Indicators.
+ following categories: Key Values, Prices, Bollenger Bands, Moving Averages, and
+  Stochastic Indicators.
 
-\subsubsection{Key}
+\subsubsection{Key Values}
 
 \begin{itemize}
 	\item Symbol
@@ -708,63 +730,39 @@ The intraday stock features are described below and are organized in the
 \subsubsection{Bollenger Bands}
 
 \begin{itemize}
-	\item Open
-	\begin{itemize}
-		\item Lower Band
-		\item Middle Band
-		\item Upper Band
-	\end{itemize}
-	\item Close
-	\begin{itemize}
-		\item Lower Band
-		\item Middle Band
-		\item Upper Band
-	\end{itemize}
-	\item High
-	\begin{itemize}
-		\item Lower Band
-		\item Middle Band
-		\item Upper Band
-	\end{itemize}
-	\item Low
-	\begin{itemize}
-		\item Lower Band
-		\item Middle Band
-		\item Upper Band
-	\end{itemize}
+	\item Open Lower Band
+	\item Open Middle Band
+	\item Open Upper Band
+	\item Close Lower Band
+	\item Close Middle Band
+	\item Close Upper Band
+	\item High Lower Band
+	\item High Middle Band
+	\item High Upper Band
+	\item Low Lower Band
+	\item Low Middle Band
+	\item Low Upper Band
 \end{itemize}
 
 \subsubsection{Moving Averages}
 
 \begin{itemize}
-	\item Open
-	\begin{itemize}
-		\item Convergence Divergence
-		\item Convergence Divergence Signal
-		\item Convergence Divergence Historical
-		\item Exponential
-	\end{itemize}
-	\item Close
-	\begin{itemize}
-		\item Convergence Divergence
-		\item Convergence Divergence Signal
-		\item Convergence Divergence Historical
-		\item Exponential
-	\end{itemize}
-	\item High
-	\begin{itemize}
-		\item Convergence Divergence
-		\item Convergence Divergence Signal
-		\item Convergence Divergence Historical
-		\item Exponential
-	\end{itemize}
-	\item Low
-	\begin{itemize}
-		\item Convergence Divergence
-		\item Convergence Divergence Signal
-		\item Convergence Divergence Historical
-		\item Exponential
-	\end{itemize}
+	\item Open Convergence Divergence
+	\item Open Convergence Divergence Signal
+	\item Open Convergence Divergence Historical
+	\item Open Exponential
+	\item Close Convergence Divergence
+	\item Close Convergence Divergence Signal
+	\item Close Convergence Divergence Historical
+	\item Close Exponential
+	\item High Convergence Divergence 
+	\item High Convergence Divergence Signal
+	\item High Convergence Divergence Historical
+	\item High Exponential
+	\item Low Convergence Divergence
+	\item Low Convergence Divergence Signal
+	\item Low Convergence Divergence Historical
+	\item Low Exponential
 \end{itemize}
 
 \subsubsection{Stochastic Indicators}
@@ -772,6 +770,30 @@ The intraday stock features are described below and are organized in the
 \begin{itemize}
 	\item 5-day indicator
 	\item 3-day indicator
+\end{itemize}
+
+\subsection{Twitter Features}
+
+The twitter features are described below and are organized in the
+following categories: Unique and Common.
+Unique features are specific to a particular tweet and
+ common features are shared across many tweets.
+
+\subsubsection{Unique}
+
+\begin{itemize}
+	\item Tweet ID
+	\item Timestamp
+	\item User (Author)
+	\item Text
+\end{itemize}
+
+\subsubsection{Common}
+
+\begin{itemize}
+	\item Hashtags
+	\item URLs
+	\item User Mentions
 \end{itemize}
 
 \begin{thebibliography}{1}
