@@ -1,5 +1,4 @@
 [![GitHub](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/sjmiller8182/DBMS_Proj/blob/master/LICENSE)
-![Travis_CI](https://travis-ci.org/sjmiller8182/DBMS_Proj.svg?branch=master)
 ![GitHub contributors](https://img.shields.io/github/contributors/sjmiller8182/DBMS_Proj)
 ![GitHub repo size](https://img.shields.io/github/repo-size/sjmiller8182/DBMS_Proj)
 
