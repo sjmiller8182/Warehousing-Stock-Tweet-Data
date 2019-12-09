@@ -8,9 +8,6 @@
 
 Created by [Stuart Miller](https://github.com/sjmiller8182), [Paul Adams](https://github.com/PaulAdams4361), and [Rikel Djoko](https://github.com/leriky).
 
-This project is currently in progress.
-The [project outline](https://github.com/sjmiller8182/DBMS_Proj/blob/master/Project_Outline.md) provides a list of [projected milestones](https://github.com/sjmiller8182/DBMS_Proj/blob/master/Project_Outline.md#milestones-and-status) for completion of the project.
-
 **Table of Contents**
 
 * [Problem Statement](https://github.com/sjmiller8182/DBMS_Proj#problem-statement)
@@ -20,8 +17,6 @@ The [project outline](https://github.com/sjmiller8182/DBMS_Proj/blob/master/Proj
   * [Denormalized Star Schema](https://github.com/sjmiller8182/DBMS_Proj#denormalized-star-schema)
 * [Big Data Solution Implementation](https://github.com/sjmiller8182/DBMS_Proj#big-data-solution-implementation)
 * [Results](https://github.com/sjmiller8182/DBMS_Proj#results)
-* [Analysis](https://github.com/sjmiller8182/DBMS_Proj#analysis)
-* [Conclusion](https://github.com/sjmiller8182/DBMS_Proj#conclusion)
 * [Reports](https://github.com/sjmiller8182/DBMS_Proj#reports)
 
 ## Problem Statement
@@ -69,22 +64,11 @@ The big data solution is build on AWS.
 
 ## Results
 
-Queries were run on the two schemas with different HDFS block sizes to see the impact of normalization on query time.
+Queries were run on the two schemas with different EMR cluster sizes to see the impact of normalization on query time.
 The collected data is located [here](https://github.com/sjmiller8182/DBMS_Proj/blob/master/results_analysis/results.csv).
 A table summarizing the results is shown below.
 
-| EMR Cluster Size |     Schema    | Block Size | Average | Median | Variance |
-|:----------------:|:-------------:|:---------:|:--------:|:------:|:--------:|
-| 3                 | Normalized    |   64 MB   | 124.00   | 124.38 |  14.08   |
-| 3                 | Normalized    |   128 MB  | 120.29   | 119.43 |  16.85   |
-| 3                 | Normalized    |   256 MB  | 118.85   | 118.22 |  6.49    |
-| 3                 | Denormalized  |   64 MB   | 105.19   | 105.35 |  3.50    |
-| 3                 | Denormalized  |   128 MB  | 100.98   | 100.91 |  3.60    |
-| 3                 | Denormalized  |   256 MB  | 105.14   | 105.14 |  8.13    |
-
-## Analysis
-
-## Conclusion
+![box_plot](https://github.com/sjmiller8182/DBMS_Proj/blob/master/reports/support/images/Rplot.png)
 
 ## Reports
 
@@ -93,7 +77,7 @@ These reports were created during the course of this project.
 * [Project Proposal](https://github.com/sjmiller8182/DBMS_Proj/blob/master/reports/Proposal.pdf): Initial proposal regarding the problem and the proposed solution for investigation.
 * [Initial Project Presentation](https://github.com/sjmiller8182/DBMS_Proj/blob/master/reports/Initial_Presentation.pdf): A high level overview of the project idea and current status.
 * [Final Project Presentation](https://github.com/sjmiller8182/DBMS_Proj/blob/master/reports/Final_Presentation.pdf): A presentation describing the project goals, findings, and conclusions.
-* [Project Paper](https://github.com/sjmiller8182/DBMS_Proj/blob/master/reports/Project_Paper.pdf): **Draft in Work** - A paper describing the project.
+* [Project Paper](https://github.com/sjmiller8182/DBMS_Proj/blob/master/reports/Project_Paper.pdf): A paper describing the project.
 
 ## Repo Structure
     .
