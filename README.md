@@ -20,9 +20,9 @@ Created by [Stuart Miller](https://github.com/sjmiller8182), [Paul Adams](https:
 
 ## Problem Statement
 
-We want to build a large-scale data framework that will enable us to store and analyze financial market data and drive future predictions for inverstment.
+We want to build a large-scale data framework that will enable us to store and analyze financial market data as well as drive future predictions for investment.
 
-For this project, we will use the following types of data
+For this project, we will use the following types of data.
 
 * Daily stock prices for all companies traded on the NYSE and the NASDAQ.
 * Intra-day values for all companies traded on the NYSE and the NASDAQ.
@@ -38,7 +38,7 @@ For this project, we will use the following types of data
 ## Data Warehouse Overview
 
 Two star schemas were designed for this data warehouse: a fully normalized schema and a denormalized schema.
-We will investigate the performance of the two schemes in the context of this problem.
+We will investigate the performance of the two schemas in the context of this problem.
 Conceptual diagrams of the data warehouse schemas are shown below.
 
 More detailed schema diagrams were created with MySQL WorkBench the schema design can be accessed [here](./reports/support/schemas).
